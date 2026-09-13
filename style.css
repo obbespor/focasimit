@@ -342,3 +342,13 @@ a { text-decoration: none; color: inherit; }
     .about-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
 }
+/* =========================================
+   MASAÜSTÜ GÖRÜNÜMÜNDE MOBİL BUTONLARI KESİN GİZLE
+   ========================================= */
+@media (min-width: 769px) {
+    .hamburger-btn, 
+    .close-menu-btn, 
+    .mobile-menu-overlay {
+        display: none !important; /* PC'de kesinlikle görünmez yapar */
+    }
+}
