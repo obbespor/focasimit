@@ -22,7 +22,6 @@ a { text-decoration: none; color: inherit; }
 .gold-text { color: var(--gold); }
 
 /* HEADER TASARIMI */
-/* Header arkasına yukarıdan aşağıya hafif bir karartma (gradient) ekliyoruz */
 .main-header {
     position: fixed;
     top: 0;
@@ -33,7 +32,6 @@ a { text-decoration: none; color: inherit; }
     transition: all 0.3s ease;
 }
 
-/* Sayfa aşağı kaydırıldığında zaten tamamen siyah olmalı */
 .main-header.scrolled {
     background: rgba(15, 15, 15, 0.98);
     padding: 15px 0;
@@ -47,7 +45,7 @@ a { text-decoration: none; color: inherit; }
     font-size: 0.9rem;
     letter-spacing: 1px;
     transition: color 0.3s;
-    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8); /* Linklerin her görselde okunması için gölge eklendi */
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
 }
 .header-container {
     max-width: 1200px; margin: 0 auto;
@@ -60,10 +58,6 @@ a { text-decoration: none; color: inherit; }
 }
 .logo span { color: var(--gold); font-size: 1rem; }
 .desktop-nav { display: flex; gap: 30px; }
-.desktop-nav a {
-    font-size: 0.9rem; font-weight: 600; text-transform: uppercase;
-    transition: color 0.3s;
-}
 .desktop-nav a:hover, .desktop-nav a.active { color: var(--gold); }
 .btn-gold {
     border: 1px solid var(--gold); color: var(--gold);
@@ -78,14 +72,13 @@ a { text-decoration: none; color: inherit; }
     background: url('https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
     display: flex; align-items: center; justify-content: center; text-align: center;
 }
-/* Arka plan görselini hafifçe daha da koyulaştıran filtre */
 .hero-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.55); /* 0.4'ten 0.55'e çıkardık, metinler daha iyi patlayacak */
+    background: rgba(0, 0, 0, 0.55);
     z-index: 1;
 }
 
@@ -100,19 +93,19 @@ a { text-decoration: none; color: inherit; }
     font-size: 3.5rem;
     font-family: var(--font-heading);
     margin-bottom: 15px;
-    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9); /* Başlığa derin ve sert gölge eklendi */
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9);
 }
 
 .hero-content p {
     font-size: 1.1rem;
-    color: #ffffff; /* Gri yerine tam beyaz kullanıyoruz ki parlak alanlarda kaybolmasın */
+    color: #ffffff;
     margin-bottom: 30px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     line-height: 1.6;
     font-weight: 500;
-    text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.95); /* Metni arka plandan koparan güçlü gölge */
+    text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.95);
 }
 .scroll-down-btn {
     color: var(--gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
@@ -169,14 +162,6 @@ a { text-decoration: none; color: inherit; }
 .footer-col p, .footer-col a { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 10px; }
 .footer-col a:hover { color: var(--gold); }
 .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #555; font-size: 0.85rem; }
-
-/* MOBİL UYUM */
-@media (max-width: 768px) {
-    .desktop-nav { display: none; } /* Mobilde hamburger menü yapılabilir */
-    .hero-content h1 { font-size: 3rem; }
-    .about-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr; text-align: center; }
-}
 
 /* DİL BUTONU */
 .lang-btn {
@@ -235,13 +220,13 @@ a { text-decoration: none; color: inherit; }
 .btn-branch:hover { background: var(--gold); color: var(--dark-bg); }
 
 /* =========================================
-   HEADER LOGO GÖRÜNÜMÜ (MOBİL UYUMLU)
+   HEADER LOGO GÖRÜNÜMÜ
    ========================================= */
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    flex-shrink: 0; /* Logonun yanlardan ezilmesini ve sıkışmasını engeller */
+    flex-shrink: 0; /* Logonun ezilmesini engeller */
 }
 
 .header-logo-img {
@@ -251,15 +236,49 @@ a { text-decoration: none; color: inherit; }
     transition: transform 0.3s ease;
 }
 
-/* Fareyle üzerine gelince hafifçe büyüme efekti */
 .header-logo-img:hover {
     transform: scale(1.05);
 }
 
-/* --- TELEFON EKRANLARI İÇİN ÖZEL AYAR --- */
+/* =========================================
+   MOBİL UYUM (TÜM SAYFA VE YENİ HEADER DÜZENİ)
+   ========================================= */
 @media (max-width: 768px) {
-    .header-logo-img {
-        max-height: 35px; /* Mobilde boyunu kısaltıp butonlara yer açar */
-        max-width: 55vw; /* Ekranın %55'inden fazlasını kaplamasını engeller */
+    /* 1. Header'ı alt alta (dikey) dizer */
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 12px 15px;
     }
+    
+    /* 2. Menü linklerini göster ve ortala */
+    .desktop-nav { 
+        display: flex; 
+        flex-wrap: wrap; 
+        justify-content: center; 
+        gap: 15px; 
+    }
+    
+    .desktop-nav a { 
+        font-size: 0.85rem; 
+    }
+
+    /* 3. Logonun mobil boyutu (Rahatça sığması için) */
+    .header-logo-img {
+        max-height: 50px; 
+        max-width: 90vw;
+    }
+
+    /* 4. Sağdaki dil/QR butonlarını ortalar */
+    .header-container > div:last-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* Diğer mobil ayarları */
+    .hero-content h1 { font-size: 3rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
 }
