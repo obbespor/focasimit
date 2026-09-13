@@ -129,3 +129,13 @@ function toggleLanguage() {
         }
     });
 }
+// --- MOBİL HAMBURGER MENÜ (ÜÇ ÇİZGİ) ---
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('mobile-overlay');
+    
+    if(menu && overlay) {
+        menu.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+}
