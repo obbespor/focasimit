@@ -1,18 +1,28 @@
 <header class="main-header">
     <div class="header-container">
-        <div class="logo">
-<a href="index.html" class="logo-link">
+        <!-- 1. Üç Çizgi Butonu (Sadece mobilde görünür) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()">☰</button>
+        
+        <!-- 2. Logo -->
+        <a href="index.html" class="logo-link">
             <img src="focasimitlogo.png" alt="Tarihi Foça Simit Fırını" class="header-logo-img">
-        </a>        </div>
-        <nav class="desktop-nav">
-            <!-- Linklerin başına index.html eklendi -->
+        </a>
+        
+        <!-- 3. Yandan Açılan Menü (Masaüstünde normal görünür) -->
+        <nav class="desktop-nav" id="mobile-menu">
+            <button class="close-menu-btn" onclick="toggleMobileMenu()">✕</button>
             <a href="index.html" data-i18n="navHome">Ana Sayfa</a>
             <a href="index.html#hakkimizda" data-i18n="navAbout">Hakkımızda</a>
             <a href="index.html#subeler" data-i18n="navBranches">Şubelerimiz</a>
         </nav>
-        <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
+        
+        <!-- 4. Sağ Butonlar -->
+        <div class="header-right-actions">
             <button class="lang-btn" onclick="toggleLanguage()">EN</button>
             <button class="btn-gold" onclick="openBranchModal()" data-i18n="qrBtn">QR Menü</button>
         </div>
     </div>
 </header>
+
+<!-- Menü açıldığında arkayı karartacak şeffaf siyahlık -->
+<div class="mobile-menu-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
