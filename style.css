@@ -248,14 +248,12 @@ a { text-decoration: none; color: inherit; }
 }
 
 @media (max-width: 768px) {
-    /* Header'ı yan yana hizala */
     .header-container {
         flex-direction: row;
         justify-content: space-between;
         padding: 12px 15px;
     }
 
-    /* Üç Çizgi Butonu */
     .hamburger-btn {
         display: block;
         background: none;
@@ -266,16 +264,15 @@ a { text-decoration: none; color: inherit; }
         padding: 0 10px 0 0;
     }
 
-    /* Logoyu ortaya doğru it */
     .logo-link {
         flex-grow: 1;
     }
 
+    /* LOGO KÜÇÜLTÜLDÜ (42px'den 35px'e) */
     .header-logo-img {
-        max-height: 42px; 
+        max-height: 35px; 
     }
 
-    /* Sağdaki buton grubunu hafif küçült ki logoyu ezmesin */
     .header-right-actions {
         display: flex;
         align-items: center;
@@ -288,33 +285,38 @@ a { text-decoration: none; color: inherit; }
     .desktop-nav { 
         position: fixed;
         top: 0;
-        left: -300px; /* Başlangıçta ekranın dışında (solda) sakla */
+        left: -300px; 
         width: 250px;
         height: 100vh;
-        background: #0a0a0a;
+        background: #111111;
         flex-direction: column; 
         justify-content: flex-start;
         align-items: flex-start;
         padding: 80px 20px 20px; 
         gap: 20px; 
-        transition: left 0.3s ease; /* Kayarak açılma animasyonu */
+        transition: left 0.3s ease; 
         z-index: 2001;
-        border-right: 1px solid var(--gold);
+        border-right: 1px solid rgba(212, 175, 55, 0.3);
     }
     
-    /* Üç çizgiye basıldığında bu sınıf eklenip menüyü ekrana sokar */
     .desktop-nav.active {
         left: 0;
     }
     
+    /* KARARTI GİDERİLDİ: Yazılar artık bembeyaz ve net */
     .desktop-nav a { 
         font-size: 1.1rem; 
         width: 100%;
         padding-bottom: 15px;
-        border-bottom: 1px solid #222;
+        border-bottom: 1px solid #333;
+        color: #ffffff !important; 
+        text-shadow: none !important;
+    }
+    
+    .desktop-nav a:hover, .desktop-nav a:active {
+        color: var(--gold) !important;
     }
 
-    /* Menü Kapatma Çarpısı */
     .close-menu-btn {
         display: block;
         position: absolute;
@@ -327,16 +329,16 @@ a { text-decoration: none; color: inherit; }
         cursor: pointer;
     }
 
-    /* Menü açıldığında arka planı karartan siyahlık */
+    /* ARKA PLAN KARARTMASI HAFİFLETİLDİ (0.8'den 0.6'ya düşürüldü) */
     .mobile-menu-overlay.active {
         display: block;
         position: fixed;
         top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(3px); /* Şık bir bulanıklık eklendi */
         z-index: 2000;
     }
 
-    /* Diğer mobil ayarları */
     .hero-content h1 { font-size: 3rem; }
     .about-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
