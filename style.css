@@ -240,7 +240,7 @@ a { text-decoration: none; color: inherit; }
     transform: scale(1.05);
 }
 
-//* =========================================
+/* =========================================
    MOBİL UYUM VE HAMBURGER MENÜ (ÜÇ ÇİZGİ)
    ========================================= */
 .hamburger-btn, .close-menu-btn, .mobile-menu-overlay { 
