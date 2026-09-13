@@ -240,7 +240,7 @@ a { text-decoration: none; color: inherit; }
     transform: scale(1.05);
 }
 
-/* =========================================
+//* =========================================
    MOBİL UYUM VE HAMBURGER MENÜ (ÜÇ ÇİZGİ)
    ========================================= */
 .hamburger-btn, .close-menu-btn, .mobile-menu-overlay { 
@@ -268,9 +268,8 @@ a { text-decoration: none; color: inherit; }
         flex-grow: 1;
     }
 
-    /* LOGO KÜÇÜLTÜLDÜ (42px'den 35px'e) */
     .header-logo-img {
-        max-height: 35px; 
+        max-height: 35px; /* Logo tam istediğin gibi hafif küçültüldü */
     }
 
     .header-right-actions {
@@ -295,15 +294,16 @@ a { text-decoration: none; color: inherit; }
         padding: 80px 20px 20px; 
         gap: 20px; 
         transition: left 0.3s ease; 
-        z-index: 2001;
+        z-index: 1001; /* Menü en üstte olacak */
         border-right: 1px solid rgba(212, 175, 55, 0.3);
+        box-shadow: 5px 0 20px rgba(0,0,0,0.8);
     }
     
     .desktop-nav.active {
         left: 0;
     }
     
-    /* KARARTI GİDERİLDİ: Yazılar artık bembeyaz ve net */
+    /* Yazılar bembeyaz ve pırıl pırıl */
     .desktop-nav a { 
         font-size: 1.1rem; 
         width: 100%;
@@ -329,14 +329,13 @@ a { text-decoration: none; color: inherit; }
         cursor: pointer;
     }
 
-    /* ARKA PLAN KARARTMASI HAFİFLETİLDİ (0.8'den 0.6'ya düşürüldü) */
+    /* ARKA PLAN KARARTMASI (Artık menünün arkasında) */
     .mobile-menu-overlay.active {
         display: block;
         position: fixed;
         top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(3px); /* Şık bir bulanıklık eklendi */
-        z-index: 2000;
+        background: rgba(0, 0, 0, 0.7); /* Bulanıklık kaldırıldı, sadece temiz bir siyahlık */
+        z-index: 1000; /* Menünün(1001) bir tık altında */
     }
 
     .hero-content h1 { font-size: 3rem; }
