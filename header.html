@@ -8,7 +8,7 @@
             <img src="focasimitlogo.png" alt="Tarihi Foça Simit Fırını" class="header-logo-img">
         </a>
         
-        <!-- 3. Yandan Açılan Menü (Linklere kapanma özelliği eklendi) -->
+        <!-- 3. Yandan Açılan Menü (Linkler tıklanabilir hale geldi) -->
         <nav class="desktop-nav" id="mobile-menu">
             <button class="close-menu-btn" onclick="toggleMobileMenu()">✕</button>
             <a href="index.html" onclick="toggleMobileMenu()" data-i18n="navHome">Ana Sayfa</a>
@@ -22,7 +22,7 @@
             <button class="btn-gold" onclick="openBranchModal()" data-i18n="qrBtn">QR Menü</button>
         </div>
     </div>
-</header>
 
-<!-- Menü açıldığında arkayı karartacak şeffaf siyahlık -->
-<div class="mobile-menu-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+    <!-- Menü arkaplanı ARTIK HEADER İÇİNDE (Bulanıklık ve Tıklama hatasını kesin çözer) -->
+    <div class="mobile-menu-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+</header>
