@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Tarihi Foça Simit Fırını</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- 1. ŞİFRE GİRİŞ EKRANI -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box">
+            <h2>Yönetim Girişi</h2>
+            <p>Devam etmek için yetkilendirme şifresini giriniz.</p>
+            <input type="password" id="admin-password" placeholder="Şifre..." onkeypress="handleLogin(event)">
+            <button onclick="checkPassword()" class="btn-gold">Giriş Yap</button>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+    </div>
+
+    <!-- 2. GİZLİ YÖNETİM PANELİ -->
+    <div id="admin-panel" class="admin-container hidden">
+        <div class="admin-header">
+            <h2>Tarihi Foça | Menü Yönetimi</h2>
+            <button onclick="logout()" class="btn-logout">Çıkış Yap</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('add')">Yeni Ürün Ekle</button>
+            <button class="tab-btn" onclick="switchTab('edit')">Ürün Düzenle / Sil</button>
+        </div>
+
+        <!-- ÜRÜN EKLEME BÖLÜMÜ -->
+        <div id="tab-add" class="tab-content active">
+            <form id="add-form" onsubmit="addProduct(event)">
+                <div class="form-row">
+                    <select id="add-sube" required>
+                        <option value="">Şube Seçiniz...</option>
+                        <option value="foca">Foça Şube</option>
+                        <option value="bagarasi">Bağarası Şube</option>
+                    </select>
+                    <select id="add-kategori" required>
+                        <option value="">Kategori Seçiniz...</option>
+                        <option value="UNLU MAMULLER">Unlu Mamuller</option>
+                        <option value="KAHVALTILIK">Kahvaltılık</option>
+                        <option value="SANDVİÇLER">Sandviçler</option>
+                        <option value="SICAK İÇECEKLER">Sıcak İçecekler</option>
+                        <option value="SOĞUK İÇECEKLER">Soğuk İçecekler</option>
+                        <option value="KAHVELER">Kahveler</option>
+                        <option value="TATLILAR">Tatlılar</option>
+                        <option value="PASTALAR">Pastalar</option>
+                        <option value="DONDURMA">Dondurma</option>
+                        <option value="EKMEK">Ekmek</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="add-ad-tr" placeholder="Ürün Adı (TR) Örn: Sıcak Gevrek" required>
+                    <input type="text" id="add-ad-en" placeholder="Ürün Adı (EN) Örn: Hot Bagel" required>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="add-aciklama-tr" placeholder="Açıklama (TR)">
+                    <input type="text" id="add-aciklama-en" placeholder="Açıklama (EN)">
+                </div>
+                <div class="form-row">
+                    <input type="text" id="add-fiyat" placeholder="Fiyat Örn: 20 ₺" required>
+                    <input type="file" id="add-img-file" accept="image/*">
+                </div>
+                <button type="submit" class="btn-submit">Sisteme Ekle</button>
+                <p id="add-status" class="status-msg"></p>
+            </form>
+        </div>
+
+        <!-- ÜRÜN DÜZENLEME/SİLME BÖLÜMÜ VE ARAMA ÇUBUĞU -->
+        <div id="tab-edit" class="tab-content">
+            <div class="filter-bar form-row" style="margin-bottom: 20px;">
+                <select id="edit-sube" onchange="fetchProductsForEdit()">
+                    <option value="foca">Foça Şube Ürünleri</option>
+                    <option value="bagarasi">Bağarası Şube Ürünleri</option>
+                </select>
+                
+                <!-- YENİ EKLENEN KATEGORİ FİLTRESİ -->
+                <select id="edit-kategori" onchange="fetchProductsForEdit()">
+                    <option value="">Kategori Seçin (Sıralama İçin Zorunlu)</option>
+                    <option value="UNLU MAMULLER">Unlu Mamuller</option>
+                    <option value="KAHVALTILIK">Kahvaltılık</option>
+                    <option value="SANDVİÇLER">Sandviçler</option>
+                    <option value="SICAK İÇECEKLER">Sıcak İçecekler</option>
+                    <option value="SOĞUK İÇECEKLER">Soğuk İçecekler</option>
+                    <option value="KAHVELER">Kahveler</option>
+                    <option value="TATLILAR">Tatlılar</option>
+                    <option value="PASTALAR">Pastalar</option>
+                    <option value="DONDURMA">Dondurma</option>
+                    <option value="EKMEK">Ekmek</option>
+                </select>
+            </div>
+            <div class="filter-bar form-row">
+                <input type="text" id="search-product" placeholder="Ürün Ara (Örn: Boyoz)..." onkeyup="filterProducts()">
+            </div>
+            
+            <div class="edit-list" id="edit-product-list">
+                <p style="text-align: center; color: var(--gold); padding: 20px;">Lütfen Şube ve Kategori seçiniz...</p>
+            </div>
+        </div>
+
+    <!-- 3. ÜRÜN DETAYLI DÜZENLEME PENCERESİ (MODAL - KESİN ÇÖZÜMLÜ) -->
+    <div id="edit-modal" class="hidden" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 99999; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div class="modal-content" style="background: #111; padding: 25px; border-radius: 12px; width: 90%; max-width: 700px; border: 1px solid var(--gold); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+            
+            <div class="admin-header" style="margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color:var(--gold); margin:0;">Ürün Detaylarını Güncelle</h3>
+                <button type="button" class="btn-logout" onclick="closeEditModal()">İptal (X)</button>
+            </div>
+
+            <!-- ÜRÜN EKLEME EKRANININ BİREBİR AYNISI -->
+            <form id="update-form" onsubmit="submitFullUpdate(event)">
+                <input type="hidden" id="update-id">
+                <input type="hidden" id="update-old-img">
+                
+                <div class="form-row">
+                    <!-- ŞUBE SEÇİMİ BURAYA EKLENDİ -->
+                    <select id="update-sube" required>
+                        <option value="foca">Foça Şube</option>
+                        <option value="bagarasi">Bağarası Şube</option>
+                    </select>
+                    <select id="update-kategori" required>
+                        <option value="UNLU MAMULLER">Unlu Mamuller</option>
+                        <option value="KAHVALTILIK">Kahvaltılık</option>
+                        <option value="SANDVİÇLER">Sandviçler</option>
+                        <option value="SICAK İÇECEKLER">Sıcak İçecekler</option>
+                        <option value="SOĞUK İÇECEKLER">Soğuk İçecekler</option>
+                        <option value="KAHVELER">Kahveler</option>
+                        <option value="TATLILAR">Tatlılar</option>
+                        <option value="PASTALAR">Pastalar</option>
+                        <option value="DONDURMA">Dondurma</option>
+                        <option value="EKMEK">Ekmek</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <input type="text" id="update-ad-tr" placeholder="Ürün Adı (TR)" required>
+                    <input type="text" id="update-ad-en" placeholder="Ürün Adı (EN)" required>
+                </div>
+
+                <div class="form-row">
+                    <input type="text" id="update-aciklama-tr" placeholder="Açıklama (TR)">
+                    <input type="text" id="update-aciklama-en" placeholder="Açıklama (EN)">
+                </div>
+
+                <div class="form-row">
+                    <input type="text" id="update-fiyat" placeholder="Fiyat (Örn: 20 ₺)" required>
+                    <select id="update-aktif" required>
+                        <option value="true">Satışta (Menüde Görünür)</option>
+                        <option value="false">Tükendi (Menüden Gizle)</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <input type="file" id="update-img-file" accept="image/*">
+                </div>
+                <small style="color:#888; display:block; margin-bottom:15px;">* Yeni resim seçmezseniz mevcut resim korunur.</small>
+
+                <button type="submit" class="btn-submit" style="background: #2b5c8f; color:white; width: 100%;">Değişiklikleri Kaydet</button>
+                <p id="update-status" class="status-msg"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
