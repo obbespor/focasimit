@@ -241,40 +241,99 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* =========================================
-   MOBİL UYUM (TÜM SAYFA VE YENİ HEADER DÜZENİ)
+   MOBİL UYUM VE HAMBURGER MENÜ (ÜÇ ÇİZGİ)
    ========================================= */
+.hamburger-btn, .close-menu-btn, .mobile-menu-overlay { 
+    display: none; 
+}
+
 @media (max-width: 768px) {
-    /* 1. Header'ı alt alta (dikey) dizer */
+    /* Header'ı yan yana hizala */
     .header-container {
-        flex-direction: column;
-        gap: 15px;
+        flex-direction: row;
+        justify-content: space-between;
         padding: 12px 15px;
     }
-    
-    /* 2. Menü linklerini göster ve ortala */
+
+    /* Üç Çizgi Butonu */
+    .hamburger-btn {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--gold);
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 0 10px 0 0;
+    }
+
+    /* Logoyu ortaya doğru it */
+    .logo-link {
+        flex-grow: 1;
+    }
+
+    .header-logo-img {
+        max-height: 42px; 
+    }
+
+    /* Sağdaki buton grubunu hafif küçült ki logoyu ezmesin */
+    .header-right-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-gold { padding: 6px 12px; font-size: 0.8rem; }
+    .lang-btn { font-size: 0.85rem; }
+
+    /* YANDAN AÇILAN MOBİL MENÜ SİSTEMİ */
     .desktop-nav { 
-        display: flex; 
-        flex-wrap: wrap; 
-        justify-content: center; 
-        gap: 15px; 
+        position: fixed;
+        top: 0;
+        left: -300px; /* Başlangıçta ekranın dışında (solda) sakla */
+        width: 250px;
+        height: 100vh;
+        background: #0a0a0a;
+        flex-direction: column; 
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 80px 20px 20px; 
+        gap: 20px; 
+        transition: left 0.3s ease; /* Kayarak açılma animasyonu */
+        z-index: 2001;
+        border-right: 1px solid var(--gold);
+    }
+    
+    /* Üç çizgiye basıldığında bu sınıf eklenip menüyü ekrana sokar */
+    .desktop-nav.active {
+        left: 0;
     }
     
     .desktop-nav a { 
-        font-size: 0.85rem; 
+        font-size: 1.1rem; 
+        width: 100%;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #222;
     }
 
-    /* 3. Logonun mobil boyutu (Rahatça sığması için) */
-    .header-logo-img {
-        max-height: 50px; 
-        max-width: 90vw;
+    /* Menü Kapatma Çarpısı */
+    .close-menu-btn {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.8rem;
+        cursor: pointer;
     }
 
-    /* 4. Sağdaki dil/QR butonlarını ortalar */
-    .header-container > div:last-child {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
+    /* Menü açıldığında arka planı karartan siyahlık */
+    .mobile-menu-overlay.active {
+        display: block;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.8);
+        z-index: 2000;
     }
 
     /* Diğer mobil ayarları */
