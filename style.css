@@ -176,7 +176,9 @@ a { text-decoration: none; color: inherit; }
     .hero-content h1 { font-size: 3rem; }
     .about-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
-}/* DİL BUTONU */
+}
+
+/* DİL BUTONU */
 .lang-btn {
     background: transparent; border: none; color: var(--text-light);
     font-weight: 600; cursor: pointer; font-size: 0.95rem;
@@ -233,22 +235,31 @@ a { text-decoration: none; color: inherit; }
 .btn-branch:hover { background: var(--gold); color: var(--dark-bg); }
 
 /* =========================================
-   HEADER LOGO GÖRÜNÜMÜ
+   HEADER LOGO GÖRÜNÜMÜ (MOBİL UYUMLU)
    ========================================= */
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
+    flex-shrink: 0; /* Logonun yanlardan ezilmesini ve sıkışmasını engeller */
 }
 
 .header-logo-img {
-    max-height: 55px; /* Logonun yüksekliği. Küçültmek istersen bu değeri (örn: 45px) düşürebilirsin */
+    max-height: 55px;
     width: auto;
-    object-fit: contain; /* Logonun ezilmeden orantılı küçülmesini sağlar */
+    object-fit: contain;
     transition: transform 0.3s ease;
 }
 
-/* Fareyle üzerine gelince hafifçe büyüme efekti (Lüks hissiyatı için) */
+/* Fareyle üzerine gelince hafifçe büyüme efekti */
 .header-logo-img:hover {
     transform: scale(1.05);
+}
+
+/* --- TELEFON EKRANLARI İÇİN ÖZEL AYAR --- */
+@media (max-width: 768px) {
+    .header-logo-img {
+        max-height: 35px; /* Mobilde boyunu kısaltıp butonlara yer açar */
+        max-width: 55vw; /* Ekranın %55'inden fazlasını kaplamasını engeller */
+    }
 }
