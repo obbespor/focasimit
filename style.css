@@ -1,0 +1,254 @@
+:root {
+    --dark-bg: #111111;
+    --darker-bg: #0a0a0a;
+    --gold: #D4AF37;
+    --gold-hover: #b5952f;
+    --text-light: #f5f5f5;
+    --text-muted: #a0a0a0;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+.gold-text { color: var(--gold); }
+
+/* HEADER TASARIMI */
+/* Header arkasına yukarıdan aşağıya hafif bir karartma (gradient) ekliyoruz */
+.main-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Sayfa aşağı kaydırıldığında zaten tamamen siyah olmalı */
+.main-header.scrolled {
+    background: rgba(15, 15, 15, 0.98);
+    padding: 15px 0;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+
+.desktop-nav a {
+    color: var(--text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8); /* Linklerin her görselde okunması için gölge eklendi */
+}
+.header-container {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 20px;
+}
+.logo a {
+    font-family: var(--font-heading);
+    font-size: 1.2rem; font-weight: 700; letter-spacing: 2px;
+}
+.logo span { color: var(--gold); font-size: 1rem; }
+.desktop-nav { display: flex; gap: 30px; }
+.desktop-nav a {
+    font-size: 0.9rem; font-weight: 600; text-transform: uppercase;
+    transition: color 0.3s;
+}
+.desktop-nav a:hover, .desktop-nav a.active { color: var(--gold); }
+.btn-gold {
+    border: 1px solid var(--gold); color: var(--gold);
+    padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
+    transition: all 0.3s;
+}
+.btn-gold:hover { background: var(--gold); color: var(--dark-bg); }
+
+/* HERO BÖLÜMÜ */
+.hero-section {
+    position: relative; height: 100vh;
+    background: url('https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+}
+/* Arka plan görselini hafifçe daha da koyulaştıran filtre */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55); /* 0.4'ten 0.55'e çıkardık, metinler daha iyi patlayacak */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    font-family: var(--font-heading);
+    margin-bottom: 15px;
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.9); /* Başlığa derin ve sert gölge eklendi */
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: #ffffff; /* Gri yerine tam beyaz kullanıyoruz ki parlak alanlarda kaybolmasın */
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    font-weight: 500;
+    text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.95); /* Metni arka plandan koparan güçlü gölge */
+}
+.scroll-down-btn {
+    color: var(--gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+}
+
+/* HAKKIMIZDA */
+.about-section {
+    padding: 100px 20px; max-width: 1200px; margin: 0 auto;
+}
+.about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.about-text h2 {
+    font-family: var(--font-heading); font-size: 3rem; margin-bottom: 30px; line-height: 1.2;
+}
+.about-text p {
+    font-size: 1.05rem; line-height: 1.8; color: var(--text-muted); margin-bottom: 20px;
+}
+.about-image img {
+    width: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* VİTRİN / KATEGORİLER */
+.showcase-section { padding: 80px 20px 120px; background: var(--darker-bg); }
+.showcase-header { text-align: center; margin-bottom: 60px; }
+.showcase-header h2 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--gold); }
+.divider { width: 60px; height: 2px; background: var(--gold); margin: 20px auto; }
+
+.showcase-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; max-width: 1200px; margin: 0 auto;
+}
+.showcase-item {
+    position: relative; height: 400px; border-radius: 10px; overflow: hidden;
+    cursor: pointer;
+}
+.showcase-item img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+}
+.showcase-item:hover img { transform: scale(1.1); }
+.item-overlay {
+    position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 20px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+.item-overlay h3 { font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 1px; }
+
+/* FOOTER */
+.main-footer { background: #050505; padding: 80px 20px 20px; border-top: 1px solid #222; }
+.footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto 60px;
+}
+.footer-col h3 { font-family: var(--font-heading); color: var(--gold); margin-bottom: 20px; font-size: 1.5rem; }
+.footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+.footer-col p, .footer-col a { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 10px; }
+.footer-col a:hover { color: var(--gold); }
+.footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #1a1a1a; color: #555; font-size: 0.85rem; }
+
+/* MOBİL UYUM */
+@media (max-width: 768px) {
+    .desktop-nav { display: none; } /* Mobilde hamburger menü yapılabilir */
+    .hero-content h1 { font-size: 3rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
+}/* DİL BUTONU */
+.lang-btn {
+    background: transparent; border: none; color: var(--text-light);
+    font-weight: 600; cursor: pointer; font-size: 0.95rem;
+    transition: color 0.3s;
+}
+.lang-btn:hover { color: var(--gold); }
+
+/* ÖZEL SİPARİŞ BÖLÜMÜ */
+.special-orders {
+    background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop') center/cover fixed;
+    padding: 80px 20px; text-align: center; border-top: 1px solid #222; border-bottom: 1px solid #222;
+}
+.order-content h2 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--gold); margin-bottom: 15px; }
+.order-content p { font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.btn-whatsapp {
+    background: #25D366; color: #fff; padding: 12px 30px; border-radius: 30px;
+    font-weight: 600; display: inline-block; font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: transform 0.3s;
+}
+.btn-whatsapp:hover { transform: scale(1.05); }
+
+/* ŞUBELERİMİZ BÖLÜMÜ */
+.branches-section { padding: 80px 20px; background: var(--dark-bg); }
+.branches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1000px; margin: 0 auto; }
+.branch-card { background: var(--darker-bg); border-radius: 15px; overflow: hidden; border: 1px solid #222; }
+.branch-card img { width: 100%; height: 250px; object-fit: cover; }
+.branch-info { padding: 30px 20px; text-align: center; }
+.branch-info h3 { font-family: var(--font-heading); color: var(--gold); font-size: 1.6rem; margin-bottom: 10px; }
+.branch-info p { color: var(--text-muted); margin-bottom: 5px; font-size: 0.95rem; }
+.branch-info .hours { font-weight: 600; color: var(--text-light); margin-bottom: 20px; }
+.btn-map { display: inline-block; border: 1px solid var(--text-muted); padding: 8px 25px; border-radius: 20px; color: var(--text-light); transition: all 0.3s; }
+.btn-map:hover { border-color: var(--gold); color: var(--gold); }
+
+/* MODAL (ŞUBE SEÇİM EKRANI) */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content {
+    background: var(--darker-bg); padding: 40px; border-radius: 15px;
+    max-width: 400px; width: 90%; text-align: center; position: relative;
+    border: 1px solid var(--gold); transform: translateY(-20px); transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+.close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+.close-modal:hover { color: white; }
+.modal-content h3 { font-family: var(--font-heading); color: var(--gold); margin-bottom: 15px; font-size: 1.4rem; }
+.modal-content p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
+.modal-buttons { display: flex; flex-direction: column; gap: 15px; }
+.btn-branch { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 10px; font-weight: 600; transition: all 0.2s; }
+.btn-branch:hover { background: var(--gold); color: var(--dark-bg); }
+
+/* =========================================
+   HEADER LOGO GÖRÜNÜMÜ
+   ========================================= */
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.header-logo-img {
+    max-height: 55px; /* Logonun yüksekliği. Küçültmek istersen bu değeri (örn: 45px) düşürebilirsin */
+    width: auto;
+    object-fit: contain; /* Logonun ezilmeden orantılı küçülmesini sağlar */
+    transition: transform 0.3s ease;
+}
+
+/* Fareyle üzerine gelince hafifçe büyüme efekti (Lüks hissiyatı için) */
+.header-logo-img:hover {
+    transform: scale(1.05);
+}
