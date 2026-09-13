@@ -1,0 +1,61 @@
+/* Yönetim Paneli Genel */
+.admin-body { background-color: #0a0a0a; color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; }
+.hidden { display: none !important; }
+
+/* Şifre Ekranı */
+.login-container { height: 100vh; display: flex; align-items: center; justify-content: center; background: #111; }
+.login-box { background: #1a1a1a; padding: 40px; border-radius: 12px; border: 1px solid #333; text-align: center; width: 100%; max-width: 400px; }
+.login-box h2 { color: var(--gold); margin-bottom: 10px; }
+.login-box p { color: #888; font-size: 0.9rem; margin-bottom: 25px; }
+.login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: #0a0a0a; border: 1px solid #444; color: #fff; border-radius: 6px; }
+.error-msg { color: #ff4d4d; font-size: 0.85rem; margin-top: 15px; }
+.status-msg { color: #4caf50; font-size: 0.9rem; margin-top: 15px; text-align: center; }
+
+/* Admin Paneli Ana Taşıyıcı */
+.admin-container { max-width: 900px; margin: 40px auto; padding: 20px; }
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+.admin-header h2 { color: var(--gold); }
+.btn-logout { background: transparent; border: 1px solid #555; color: #ccc; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+.btn-logout:hover { background: #333; }
+
+/* Sekmeler (Tabs) */
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+.tab-btn { flex: 1; padding: 15px; background: #1a1a1a; border: 1px solid #333; color: #888; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
+.tab-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+.tab-content { display: none; background: #1a1a1a; padding: 30px; border-radius: 12px; border: 1px solid #333; }
+.tab-content.active { display: block; }
+
+/* Form Tasarımı */
+.form-row { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+.form-row input, .form-row select { flex: 1; min-width: 250px; padding: 12px; background: #0a0a0a; border: 1px solid #444; color: #fff; border-radius: 6px; font-family: inherit; }
+.btn-submit { width: 100%; padding: 15px; background: var(--gold); color: #000; border: none; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 1rem; }
+.btn-submit:hover { background: #b8860b; }
+
+/* Düzenleme Listesi */
+.filter-bar { margin-bottom: 20px; }
+.filter-bar select { width: 100%; padding: 12px; background: #0a0a0a; color: var(--gold); border: 1px solid #444; border-radius: 6px; }
+.edit-list { display: flex; flex-direction: column; gap: 10px; }
+.edit-item { display: flex; justify-content: space-between; align-items: center; background: #0f0f0f; padding: 15px; border: 1px solid #222; border-radius: 8px; }
+.edit-info h4 { margin: 0 0 5px 0; color: #fff; }
+.edit-info p { margin: 0; color: #888; font-size: 0.85rem; }
+.edit-actions { display: flex; gap: 10px; }
+.btn-update { background: #2b5c8f; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+.btn-delete { background: #8f2b2b; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+
+/* --- YENİ: ARAMA ÇUBUĞU VE MODAL (AÇILIR PENCERE) STİLLERİ --- */
+
+#search-product {
+    flex: 2; /* Arama çubuğunu şube seçiminden biraz daha geniş yapar */
+}
+
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); z-index: 2000; display: flex;
+    align-items: center; justify-content: center; backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #111; padding: 25px; border-radius: 12px; width: 90%;
+    max-width: 700px; border: 1px solid #333; max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
