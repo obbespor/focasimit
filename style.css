@@ -352,31 +352,4 @@ a { text-decoration: none; color: inherit; }
         display: none !important; /* PC'de kesinlikle görünmez yapar */
     }
 }
-/* =========================================
-   MENÜ KARTLARI DÜZEN VE ÜÇ NOKTA (...) AYARI
-   ========================================= */
 
-/* 1. Orta kısımdaki yazı alanının fiyatı itmesini engeller */
-.menu-item-info, .urun-bilgi, .item-info {
-    flex-grow: 1 !important;
-    overflow: hidden !important; 
-    padding-right: 15px !important; /* Fiyatla arasına nefes payı koyar */
-}
-
-/* 2. Açıklama metnine sınır koyar ve sığmazsa 3 nokta ekler */
-.menu-item-desc, .urun-aciklama, .item-desc, .menu-item p {
-    display: -webkit-box !important;
-    -webkit-line-clamp: 1 !important; /* Sadece 1 satır gösterir, fazlasını keser. (İstersen 2 yapabilirsin) */
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    margin-bottom: 0 !important;
-}
-
-/* 3. Fiyat kısmının KIRILMASINI (alt satıra inmesini) KESİN engeller */
-.menu-item-price, .urun-fiyat, .item-price, .price {
-    white-space: nowrap !important; /* Yazının asla alt satıra inmemesini sağlar */
-    flex-shrink: 0 !important; /* Kutunun fiyat alanını ezmesini engeller */
-    text-align: right !important;
-    min-width: max-content !important;
-}
