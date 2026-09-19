@@ -115,55 +115,61 @@
     <!-- ========================================== -->
     <!-- ÜRÜN DETAY PENCERESİ (AYDINLIK & KURŞUN GEÇİRMEZ) -->
     <!-- ========================================== -->
+<!-- CLOUDFLARE İNADINI KIRAN VE FİYATLARI DÜZELTEN KESİN ÇÖZÜM KODU -->
     <style>
-        #product-detail-modal {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background-color: rgba(0, 0, 0, 0.6) !important; /* Arka planı hafiflettim */
-            z-index: 9999999 !important;
-            display: none; 
+        .menu-item-card {
+            display: flex !important;
             align-items: center !important;
-            justify-content: center !important;
-            backdrop-filter: blur(5px) !important;
-            margin: 0 !important; padding: 0 !important;
-        }
-        .product-modal-content {
-            background: var(--white-bg) !important; /* Beyaz modal arka planı */
-            width: 90% !important; max-width: 400px !important;
-            border-radius: 16px !important;
-            border: 1px solid var(--border-color) !important;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
-            position: relative !important;
+            justify-content: space-between !important;
+            gap: 10px !important; /* 15px'ten 10px'e düşürdük */
+            padding: 10px 12px !important; /* Kutu içi genel boşluğu daralttık */
+            flex-wrap: nowrap !important;
             overflow: hidden !important;
-            animation: popIn 0.3s ease-out forwards !important;
         }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .close-modal-btn {
-            position: absolute !important; top: 12px !important; right: 12px !important;
-            width: 32px !important; height: 32px !important;
-            background: var(--light-bg) !important; color: var(--text-dark) !important;
-            border: 1px solid var(--border-color) !important; border-radius: 50% !important;
-            font-size: 1rem !important; cursor: pointer !important; z-index: 100 !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
-        }
-        .close-modal-btn:hover { background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
-        .product-modal-image { width: 100% !important; height: 240px !important; background: var(--light-bg) !important; }
-        .product-modal-image img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center !important; }
-        .product-modal-details { padding: 25px 20px !important; text-align: center !important; }
         
-        .product-modal-details h2 { color: var(--text-dark) !important; font-size: 1.6rem !important; margin: 0 0 10px 0 !important; font-family: 'Playfair Display', serif !important; font-weight: 800 !important; }
-        .product-modal-details .modal-price { color: var(--gold) !important; font-size: 1.4rem !important; font-weight: 700 !important; margin: 0 0 15px 0 !important; }
-        .product-modal-details .modal-divider { width: 50px !important; height: 3px !important; background: var(--gold) !important; margin: 0 auto 15px !important; opacity: 1 !important; border-radius: 2px !important;}
-        .product-modal-details p { color: var(--text-muted) !important; font-weight: 500 !important; font-size: 0.95rem !important; line-height: 1.6 !important; margin: 0 !important; }
+        /* Görseli biraz küçülterek yazı alanına ekstra yer açtık */
+        .item-image {
+            width: 70px !important; 
+            height: 70px !important;
+            flex-shrink: 0 !important;
+        }
+        
+        .item-info {
+            flex: 1 1 0% !important; 
+            min-width: 0 !important; 
+            padding-right: 5px !important; /* Fiyatla arasındaki payı daralttık */
+        }
+        
+        /* ÜRÜN ADI: Tek satır kalacak, gerekirse fontu ufakça küçülecek */
+        .item-info h3 {
+            display: block !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            font-size: clamp(0.9rem, 4vw, 1.05rem) !important; /* Ekrana göre esnek font */
+            letter-spacing: -0.2px !important; /* Harf aralığını belli belirsiz kıstık */
+            margin-bottom: 3px !important;
+        }
+        
+        /* AÇIKLAMALAR SADECE 1 SATIR GÖZÜKÜP (...) İLE KESİLECEK */
+        .item-info p {
+            display: block !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            font-size: 0.8rem !important;
+            margin: 0 !important;
+        }
+        
+        /* FİYAT BÖLÜMÜ: O da duruma göre esneyebilecek */
+        .item-price {
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
+            min-width: max-content !important;
+            text-align: right !important;
+            font-size: clamp(0.95rem, 4.5vw, 1.15rem) !important; /* Uzun metinlerde ezilmez, küçülür */
+        }
     </style>
-
     <div id="product-detail-modal" onclick="closeProductModal(event)">
         <div class="product-modal-content" onclick="event.stopPropagation()">
             <button class="close-modal-btn" onclick="closeProductModal()">✕</button>
