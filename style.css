@@ -361,6 +361,17 @@ a { text-decoration: none; color: inherit; }
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    /* Tıklanabilirlik ve Animasyon Eklentileri */
+    text-decoration: none; /* Link altı çizgisini kapatır */
+    cursor: pointer; /* Fareyi el işaretine çevirir */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Yumuşak geçiş */
+}
+
+/* Karta fare ile gelindiğinde hafifçe yukarı kalkma efekti */
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
 
 .review-stars {
@@ -370,7 +381,6 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 15px;
 }
 
-/* ===== İŞTE DÜZENLENEN KISIM BURASI ===== */
 .review-card p {
     font-size: 1.05rem;
     font-style: italic;
@@ -388,7 +398,6 @@ a { text-decoration: none; color: inherit; }
     /* Yorum kısa bile olsa kart boyunun çökmesini engeller */
     min-height: 105px; 
 }
-/* ======================================== */
 
 .review-author h4 {
     font-family: var(--font-heading);
@@ -416,6 +425,6 @@ a { text-decoration: none; color: inherit; }
     .review-card {
         flex: 0 0 280px;
         padding: 20px;
-        height: 280px; /* Eklenen Kısım: Mobilde kartların hepsini eşit kare/dikdörtgen formunda kilitler */
+        height: 280px; /* Mobilde kartların hepsini eşit kare/dikdörtgen formunda kilitler */
     }
 }
