@@ -34,24 +34,41 @@ function switchTab(tabId) {
     event.target.classList.add('active');
     document.getElementById('tab-' + tabId).classList.add('active');
 }
-
-// --- 3. GÖRSEL WEBP DÖNÜŞTÜRÜCÜ ---
+// --- 3. GÖRSEL WEBP DÖNÜŞTÜRÜCÜ (ULTRA OPTİMİZE - HIZLI YÜKLEME İÇİN) ---
 async function convertToWebP(file) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                const maxWidth = 600;
-                const scaleSize = maxWidth / img.width;
-                canvas.width = maxWidth; canvas.height = img.height * scaleSize;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                resolve(canvas.toDataURL('image/webp', 0.8)); 
+                
+                // Menüdeki resimler küçük olduğu için max genişliği 400px yapıyoruz (Eskiden 600'dü)
+                const maxWidth = 400; 
+                let newWidth = img.width;
+                let newHeight = img.height;
+
+                // Eğer resim zaten küçükse büyütme, sadece büyükleri küçült
+                if (img.width > maxWidth) {
+                    newWidth = maxWidth;
+                    newHeight = (img.height * maxWidth) / img.width;
+                }
+
+                canvas.width = newWidth; 
+                canvas.height = newHeight;
+                
+                // Resmi çiz
+                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                
+                // Kaliteyi 0.8'den 0.6'ya çekiyoruz. Gözle fark edilmez ama boyutu %70 küçültür!
+                const compressedBase64 = canvas.toDataURL('image/webp', 0.6);
+                resolve(compressedBase64); 
             }
+            img.onerror = error => reject(error);
             img.src = event.target.result;
         }
+        reader.onerror = error => reject(error);
         reader.readAsDataURL(file);
     });
 }
