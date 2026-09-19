@@ -1,5 +1,5 @@
 /* =========================================
-   MENÜ SAYFASI DÜZELTİLMİŞ & EKLENTİLİ TASARIM
+   MENÜ SAYFASI AYDINLIK & EKLENTİLİ TASARIM
    ========================================= */
 
 /* 1. Sayfa Genel ve Sabit Arka Plan Görseli */
@@ -9,9 +9,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(rgba(10, 10, 10, 0.88), rgba(10, 10, 10, 0.94)),
+    background: linear-gradient(rgba(253, 251, 247, 0.92), rgba(253, 251, 247, 0.97)),
                 url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1920&auto=format&fit=crop') center/cover fixed no-repeat;
-    background-color: #0d0d0d;
+    background-color: var(--light-bg);
 }
 
 /* Footer'ın yukarı fırlamasını engelleyen ana gövde */
@@ -34,15 +34,15 @@
 .banner-content h1 {
     font-family: var(--font-heading);
     font-size: 2.3rem;
-    color: var(--gold);
+    color: var(--text-dark); /* Altın yerine koyu başlık, ferah görünüm */
     margin-bottom: 8px;
     letter-spacing: 0.5px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
 .banner-content p {
     color: var(--text-muted);
     font-size: 0.95rem;
+    font-weight: 500;
 }
 
 /* 3. Dikey Kategori Listesi (İlk Açılış Görünümü) */
@@ -57,14 +57,14 @@
 
 .vertical-cat-btn {
     width: 100%;
-    background: rgba(22, 22, 22, 0.85);
+    background: var(--white-bg);
     backdrop-filter: blur(8px);
-    color: var(--gold);
+    color: var(--text-dark);
     padding: 20px 25px;
     font-size: 1.05rem;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
-    border: 1px solid rgba(212, 175, 55, 0.25);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -74,7 +74,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
 }
 
 .vertical-cat-btn::after {
@@ -82,20 +82,20 @@
     position: absolute;
     right: 22px;
     font-size: 1.1rem;
-    color: var(--text-muted);
+    color: var(--gold);
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
 .vertical-cat-btn:hover {
     background: var(--gold);
-    color: #111;
+    color: #fff;
     border-color: var(--gold);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 20px rgba(176, 130, 24, 0.2);
 }
 
 .vertical-cat-btn:hover::after {
-    color: #111;
+    color: #fff;
     transform: translateX(4px);
 }
 
@@ -104,10 +104,10 @@
     position: sticky;
     top: 75px;
     z-index: 90;
-    background: rgba(15, 15, 15, 0.96);
+    background: rgba(253, 251, 247, 0.96);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid #2a2a2a;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
 .sticky-header-top {
@@ -121,7 +121,7 @@
     border: none;
     color: var(--gold);
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -131,7 +131,7 @@
 }
 
 .back-to-cats-btn:hover {
-    color: #fff;
+    color: var(--text-dark);
 }
 
 .category-scroll-wrapper {
@@ -151,8 +151,8 @@
 }
 
 .cat-tab {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid #333;
+    background: var(--white-bg);
+    border: 1px solid var(--border-color);
     color: var(--text-muted);
     padding: 8px 20px;
     border-radius: 25px;
@@ -165,18 +165,18 @@
 
 .cat-tab.active, .cat-tab:hover {
     background: var(--gold);
-    color: #111;
+    color: #fff;
     border-color: var(--gold);
-    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 4px 12px rgba(176, 130, 24, 0.2);
 }
 
 /* 5. Ürün Listesi ve Animasyon */
 .menu-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 25px 20px;
-    max-width: 1000px;
+    gap: 20px;
+    padding: 25px 20px 40px 20px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -197,21 +197,12 @@
 }
 
 /* =========================================
-   6. PREMIUM ÜRÜN KARTLARI (MOBİL ODAKLI LÜKS TASARIM)
+   6. PREMIUM ÜRÜN KARTLARI (AYDINLIK TASARIM)
    ========================================= */
-.menu-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 25px 20px 40px 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .menu-item-card {
-    background: linear-gradient(145deg, rgba(15, 15, 15, 0.95), rgba(5, 5, 5, 0.95));
-    border: 1px solid rgba(212, 175, 55, 0.15); 
-    border-radius: 8px; 
+    background: var(--white-bg);
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
     padding: 16px;
     display: flex;
     align-items: center;
@@ -220,57 +211,66 @@
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+}
+
+.menu-item-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
 .menu-item-card:active {
     transform: scale(0.97); 
 }
 
+/* Karta hafif derinlik katan sol altın çizgi (Aydınlık temada çok şık durur) */
 .menu-item-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 2px; height: 100%;
+    top: 0; left: 0; width: 4px; height: 100%;
     background: var(--gold);
-    opacity: 0.7;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
 }
 
 .item-image {
     width: 90px;
     height: 90px;
-    border-radius: 4px;
+    border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: #000;
+    border: 1px solid var(--border-color);
+    background: var(--light-bg);
 }
-/* Resimleri kutuya orantılı bir şekilde tam sığdırma kodu */
+
 .item-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Resmi ezmeden, en güzel kısmını merkeze alarak sığdırır */
-    object-position: center; /* Fotoğrafın tam ortasına odaklanmasını sağlar */
+    object-fit: cover; 
+    object-position: center; 
 }
 
 .item-info h3 {
-    color: var(--gold); 
+    color: var(--text-dark); 
     font-family: var(--font-heading);
     font-size: 1.15rem;
+    font-weight: 700;
     margin-bottom: 6px;
     letter-spacing: 0.5px;
 }
 
 .item-info p {
-    color: #a0a0a0; 
+    color: var(--text-muted); 
     font-size: 0.85rem;
     line-height: 1.5;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .item-price {
     background: transparent;
-    color: #fff;
+    color: var(--gold);
     font-family: var(--font-heading);
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+    font-weight: 700;
     padding: 0;
     border: none;
     letter-spacing: 1px;
@@ -286,7 +286,7 @@
     align-items: flex-start;
     padding: 30px 10px 40px;
     margin-top: 20px;
-    border-top: 1px dashed rgba(212, 175, 55, 0.3);
+    border-top: 1px dashed var(--border-color);
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -308,119 +308,9 @@
 
 .badge-text {
     color: var(--text-muted);
+    font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     line-height: 1.4;
-}
-
-/* =========================================
-   8. ÜRÜN DETAY MODALI (KESİN ÇÖZÜM)
-   ========================================= */
-
-/* 1. ARKA PLAN - Yüksek öncelikli ve tam ekran */
-.modal-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background-color: rgba(0, 0, 0, 0.9) !important;
-    z-index: 999999 !important;
-    display: flex !important; /* Her zaman flex, JS ile .hidden eklendiğinde display:none olacak */
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
-}
-
-/* 2. GİZLEME KURALI - Flex'i ezip geçer */
-.modal-overlay.hidden {
-    display: none !important;
-}
-
-/* 3. İÇ KUTU VE MERKEZLEME */
-.product-modal-content {
-    background: #0a0a0a;
-    width: 90%;
-    max-width: 420px;
-    border-radius: 16px;
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    box-shadow: 0 20px 50px rgba(0,0,0,1);
-    position: relative;
-    margin: 0 auto; 
-    overflow: hidden;
-    animation: modalFadeIn 0.3s ease-out forwards;
-}
-
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Çarpı Kapatma Butonu */
-.close-modal-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 50%;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 100;
-    transition: background 0.3s;
-}
-.close-modal-btn:hover { background: var(--gold); color: #000; }
-
-/* Büyük Fotoğraf Alanı */
-.product-modal-image {
-    width: 100%;
-    height: 260px;
-    background: #111;
-    position: relative;
-}
-.product-modal-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Altın Metin ve Açıklamalar */
-.product-modal-details {
-    padding: 25px 20px;
-    text-align: center;
-}
-.product-modal-details h2 {
-    color: var(--gold);
-    font-family: var(--font-heading);
-    font-size: 1.7rem;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-}
-.modal-price {
-    color: #fff;
-    font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-}
-.modal-divider {
-    width: 60px;
-    height: 2px;
-    background: var(--gold);
-    margin: 0 auto 15px;
-    opacity: 0.6;
-}
-.modal-description {
-    color: #b0b0b0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    font-weight: 300;
 }
