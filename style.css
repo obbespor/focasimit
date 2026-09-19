@@ -86,7 +86,7 @@ a { text-decoration: none; color: inherit; }
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(253, 251, 247, 0.45); 
+    background: transparent; /* Hiçbir filtre ve karartma yok, görsel tamamen net */
     z-index: 1;
 }
 .hero-content {
