@@ -370,13 +370,25 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 15px;
 }
 
+/* ===== İŞTE DÜZENLENEN KISIM BURASI ===== */
 .review-card p {
     font-size: 1.05rem;
     font-style: italic;
     color: var(--text-dark);
     line-height: 1.6;
     margin-bottom: 25px;
+    
+    /* Metni 4 satırla sınırla ve sonuna ... koy */
+    display: -webkit-box;
+    -webkit-line-clamp: 4; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* Yorum kısa bile olsa kart boyunun çökmesini engeller */
+    min-height: 105px; 
 }
+/* ======================================== */
 
 .review-author h4 {
     font-family: var(--font-heading);
@@ -399,10 +411,11 @@ a { text-decoration: none; color: inherit; }
     height: 16px;
 }
 
-/* Mobilde kartları biraz küçültelim */
+/* Mobilde kartları biraz küçültelim ve boylarını tam eşitleyelim */
 @media (max-width: 768px) {
     .review-card {
         flex: 0 0 280px;
         padding: 20px;
+        height: 280px; /* Eklenen Kısım: Mobilde kartların hepsini eşit kare/dikdörtgen formunda kilitler */
     }
 }
