@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menü | Tarihi Foça Simit Fırını</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="menu.css">
 
@@ -20,7 +20,7 @@
         }
         .item-info {
             flex: 1 1 0% !important; 
-            min-width: 0 !important; /* Taşmayı önleyen ve 3 noktayı tetikleyen sihir */
+            min-width: 0 !important; 
             padding-right: 15px !important;
         }
         .item-info h3 {
@@ -42,8 +42,8 @@
             margin: 0 !important;
         }
         .item-price {
-            flex-shrink: 0 !important; /* Fiyat alanı ASLA esnemez ve ezilmez */
-            white-space: nowrap !important; /* TL yazısı ASLA alt satıra düşmez */
+            flex-shrink: 0 !important;
+            white-space: nowrap !important;
             min-width: max-content !important;
             text-align: right !important;
         }
@@ -87,7 +87,6 @@
                 </div>
             </div>
             
-            <!-- HATA DÜZELTİLDİ: Rozetler product-list'in dışına çıkarıldı -->
             <div class="menu-grid" id="product-list">
                 <!-- JS ile ürün kartları buraya gelecek -->
             </div>
@@ -114,30 +113,29 @@
     <div id="footer-placeholder"></div>
 
     <!-- ========================================== -->
-    <!-- ÜRÜN DETAY PENCERESİ (KURŞUN GEÇİRMEZ CSS) -->
+    <!-- ÜRÜN DETAY PENCERESİ (AYDINLIK & KURŞUN GEÇİRMEZ) -->
     <!-- ========================================== -->
     <style>
-        /* Bu kodlar menu.css'teki her türlü hatayı ezip geçecek şekilde tasarlandı */
         #product-detail-modal {
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
-            background-color: rgba(0, 0, 0, 0.85) !important;
+            background-color: rgba(0, 0, 0, 0.6) !important; /* Arka planı hafiflettim */
             z-index: 9999999 !important;
-            display: none; /* JS tarafından flex yapılacak */
+            display: none; 
             align-items: center !important;
             justify-content: center !important;
-            backdrop-filter: blur(8px) !important;
+            backdrop-filter: blur(5px) !important;
             margin: 0 !important; padding: 0 !important;
         }
         .product-modal-content {
-            background: linear-gradient(145deg, #151515, #0a0a0a) !important;
+            background: var(--white-bg) !important; /* Beyaz modal arka planı */
             width: 90% !important; max-width: 400px !important;
             border-radius: 16px !important;
-            border: 1px solid rgba(212, 175, 55, 0.4) !important;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
             position: relative !important;
             overflow: hidden !important;
             animation: popIn 0.3s ease-out forwards !important;
@@ -149,19 +147,21 @@
         .close-modal-btn {
             position: absolute !important; top: 12px !important; right: 12px !important;
             width: 32px !important; height: 32px !important;
-            background: rgba(0, 0, 0, 0.6) !important; color: #fff !important;
-            border: 1px solid rgba(255,255,255,0.2) !important; border-radius: 50% !important;
+            background: var(--light-bg) !important; color: var(--text-dark) !important;
+            border: 1px solid var(--border-color) !important; border-radius: 50% !important;
             font-size: 1rem !important; cursor: pointer !important; z-index: 100 !important;
             display: flex !important; align-items: center !important; justify-content: center !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
         }
-        .close-modal-btn:hover { background: #d4af37 !important; color: #000 !important; }
-        .product-modal-image { width: 100% !important; height: 240px !important; background: #000 !important; }
+        .close-modal-btn:hover { background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
+        .product-modal-image { width: 100% !important; height: 240px !important; background: var(--light-bg) !important; }
         .product-modal-image img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center !important; }
         .product-modal-details { padding: 25px 20px !important; text-align: center !important; }
-        .product-modal-details h2 { color: #d4af37 !important; font-size: 1.6rem !important; margin: 0 0 10px 0 !important; font-family: 'Playfair Display', serif !important; }
-        .product-modal-details .modal-price { color: #fff !important; font-size: 1.4rem !important; font-weight: 700 !important; margin: 0 0 15px 0 !important; }
-        .product-modal-details .modal-divider { width: 50px !important; height: 2px !important; background: #d4af37 !important; margin: 0 auto 15px !important; opacity: 0.6 !important; }
-        .product-modal-details p { color: #aaa !important; font-size: 0.95rem !important; line-height: 1.5 !important; margin: 0 !important; }
+        
+        .product-modal-details h2 { color: var(--text-dark) !important; font-size: 1.6rem !important; margin: 0 0 10px 0 !important; font-family: 'Playfair Display', serif !important; font-weight: 800 !important; }
+        .product-modal-details .modal-price { color: var(--gold) !important; font-size: 1.4rem !important; font-weight: 700 !important; margin: 0 0 15px 0 !important; }
+        .product-modal-details .modal-divider { width: 50px !important; height: 3px !important; background: var(--gold) !important; margin: 0 auto 15px !important; opacity: 1 !important; border-radius: 2px !important;}
+        .product-modal-details p { color: var(--text-muted) !important; font-weight: 500 !important; font-size: 0.95rem !important; line-height: 1.6 !important; margin: 0 !important; }
     </style>
 
     <div id="product-detail-modal" onclick="closeProductModal(event)">
