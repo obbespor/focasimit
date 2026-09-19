@@ -64,15 +64,10 @@ a { text-decoration: none; color: inherit; }
 .desktop-nav { display: flex; gap: 30px; }
 .desktop-nav a:hover, .desktop-nav a.active { color: var(--gold); }
 .btn-gold {
-    background: rgba(255, 255, 255, 0.15) !important; /* Hafif cam efekti */
-    color: #ffffff !important; /* Yazı rengi saf beyaz */
-    border: 2px solid #ffffff !important; /* Çerçeve bembeyaz */
-    padding: 12px 30px;
-    font-weight: 600;
-    border-radius: 30px;
-    backdrop-filter: blur(5px); /* Arkasını hafifçe buğulandıran modern efekt */
-    transition: all 0.3s ease;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--gold); color: var(--gold);
+    background: transparent;
+    padding: 10px 22px; border-radius: 30px; font-weight: 700; font-size: 0.95rem;
+    transition: all 0.3s;
 }
 .btn-gold:hover { background: var(--gold); color: #fff; }
 
