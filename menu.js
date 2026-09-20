@@ -37,27 +37,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-async function veritabanindanCek(subeKodu) {
-    try {
-        const titleEl = document.getElementById("branch-title");
-        if(titleEl) titleEl.innerText = "Menü Yükleniyor...";
+// ==========================================
+// 3. SİSTEMİN BAŞLAMASI VE VERİ ÇEKME MANTIĞI (ÖNBELLEK DESTEKLİ)
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const subeKodu = urlParams.get('sube');
 
- 
+    if (subeKodu && (subeKodu === 'foca' || subeKodu === 'bagarasi')) {
+        veritabanindanCek(subeKodu);
+    } else {
+        window.location.href = "index.html"; 
+    }
+});
+
+async function veritabanindanCek(subeKodu) {
+    const lang = typeof currentLang !== 'undefined' ? currentLang : 'tr';
+    const cacheKey = `foca_menu_cache_${subeKodu}`; // Şubeye özel hafıza anahtarı
+    const cachedData = localStorage.getItem(cacheKey); // Cihazın hafızasındaki menüyü ara
+    const titleEl = document.getElementById("branch-title");
+
+    // 1. ADIM: EĞER DAHA ÖNCE GİRMİŞSE HİÇ BEKLETME, ANINDA EKRANA BAS!
+    if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        veriyiSistemimizeUyarla(parsedData, subeKodu);
+    } else {
+        // İlk defa giriyorsa ufak bir yükleniyor yazısı göster
+        if(titleEl) titleEl.innerText = lang === 'tr' ? "Menü Yükleniyor..." : "Loading Menu...";
+    }
+
+    // 2. ADIM: ARKA PLANDA SESSİZCE SUPABASE'E BAĞLAN VE GÜNCEL MENÜYÜ ÇEK
+    try {
         const { data, error } = await supabaseClient
             .from('urunler')
             .select('*')
             .eq('sube', subeKodu)
             .eq('aktif_mi', true)
             .order('kategori', { ascending: true })
-            .order('sira', { ascending: true }); // YENİ EKLENEN KISIM: Kendi belirlediğimiz sıraya göre diz
+            .order('sira', { ascending: true }); // Kendi belirlediğin sıra
 
         if (error) throw error;
 
-        veriyiSistemimizeUyarla(data, subeKodu);
+        // 3. ADIM: YENİ VERİYİ HAFIZADAKİYLE KARŞILAŞTIR
+        const newDataString = JSON.stringify(data);
+        if (newDataString !== cachedData) {
+            // Eğer fiyatlar değişmişse veya yeni ürün eklenmişse hafızayı güncelle
+            localStorage.setItem(cacheKey, newDataString);
+            
+            // Ekranı yeni verilerle sessizce tazele
+            veriyiSistemimizeUyarla(data, subeKodu);
+        }
 
     } catch (hata) {
         console.error("Veritabanı Hatası:", hata);
-        document.getElementById("branch-title").innerText = "Bağlantı Hatası!";
+        // Eğer cihazda kayıtlı menü yoksa ve internet çekmiyorsa uyarı ver
+        if (!cachedData && titleEl) {
+            titleEl.innerText = lang === 'tr' ? "Bağlantı Hatası!" : "Connection Error!";
+        }
     }
 }
 
