@@ -35,8 +35,9 @@ function switchTab(tabId) {
     document.getElementById('tab-' + tabId).classList.add('active');
 }
 // --- 3. GÖRSEL WEBP DÖNÜŞTÜRÜCÜ (ULTRA OPTİMİZE - HIZLI YÜKLEME İÇİN) ---
+// --- 3. GÖRSEL WEBP DÖNÜŞTÜRÜCÜ (CAM GİBİ HD KALİTE) ---
 async function convertToWebP(file) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = function(event) {
             const img = new Image();
@@ -44,36 +45,26 @@ async function convertToWebP(file) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Menüdeki resimler küçük olduğu için max genişliği 400px yapıyoruz (Eskiden 600'dü)
-                const maxWidth = 400; 
-                let newWidth = img.width;
-                let newHeight = img.height;
-
-                // Eğer resim zaten küçükse büyütme, sadece büyükleri küçült
+                // Genişliği 600'den 1000'e çıkararak çamurlaşmayı bitiriyoruz
+                const maxWidth = 1000; 
+                let scaleSize = 1;
+                
                 if (img.width > maxWidth) {
-                    newWidth = maxWidth;
-                    newHeight = (img.height * maxWidth) / img.width;
+                    scaleSize = maxWidth / img.width;
                 }
-
-                canvas.width = newWidth; 
-                canvas.height = newHeight;
                 
-                // Resmi çiz
-                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                canvas.width = img.width * scaleSize; 
+                canvas.height = img.height * scaleSize;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 
-                // Kaliteyi 0.8'den 0.6'ya çekiyoruz. Gözle fark edilmez ama boyutu %70 küçültür!
-                const compressedBase64 = canvas.toDataURL('image/webp', 0.6);
-                resolve(compressedBase64); 
+                // Kalite oranını %80'den %92'ye çekiyoruz. (0.92 Altın orandır)
+                resolve(canvas.toDataURL('image/webp', 0.92)); 
             }
-            img.onerror = error => reject(error);
             img.src = event.target.result;
         }
-        reader.onerror = error => reject(error);
         reader.readAsDataURL(file);
     });
 }
-
-// --- 4. YENİ ÜRÜN EKLEME ---
 async function addProduct(event) {
     event.preventDefault();
     const statusMsg = document.getElementById("add-status");
