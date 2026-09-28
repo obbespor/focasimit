@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- TARAYICI ÖNBELLEĞİNİ (CACHE) ZORLA TEMİZLETEN KODLAR -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <title>Yönetim Paneli | Tarihi Foça Simit Fırını</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="admin.css">
+    
+    <!-- VERSİYONLAMA EKLENDİ (?v=1.2) - DOSYALAR ANINDA GÜNCELLENECEK -->
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="admin.css?v=1.2">
 </head>
 <body class="admin-body">
 
@@ -170,6 +178,7 @@
 
     <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="admin.js"></script>
+    <!-- VERSİYONLAMA EKLENDİ (?v=1.2) -->
+    <script src="admin.js?v=1.2"></script>
 </body>
 </html>
