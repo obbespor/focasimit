@@ -1,8 +1,8 @@
 // ==========================================
 // 1. SUPABASE BAĞLANTISI (Kendi bilgilerini gir)
 // ==========================================
-const supabaseUrl = 'https://hkjsflzfahugubbvohvt.supabase.co'; // Kendi URL'ni kontrol et
-const supabaseKey = 'sb_publishable_bpWCQrmTJBcU6SPADDRoyw_1ZHjoAlX'; // Kendi Key'ini kontrol et
+const supabaseUrl = 'https://hkjsflzfahugubbvohvt.supabase.co'; 
+const supabaseKey = 'sb_publishable_bpWCQrmTJBcU6SPADDRoyw_1ZHjoAlX'; 
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // ==========================================
@@ -24,22 +24,9 @@ let gecerliSubeVerisi = { subeAdi: {}, urunler: [] };
 let aktifKategori = "";
 
 // ==========================================
-// 3. SİSTEMİN BAŞLAMASI VE VERİ ÇEKME MANTIĞI
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const subeKodu = urlParams.get('sube');
-
-    if (subeKodu && (subeKodu === 'foca' || subeKodu === 'bagarasi')) {
-        veritabanindanCek(subeKodu);
-    } else {
-        window.location.href = "index.html"; 
-    }
-});
-
-// ==========================================
 // 3. SİSTEMİN BAŞLAMASI VE VERİ ÇEKME MANTIĞI (ÖNBELLEK DESTEKLİ)
 // ==========================================
+// DÜZELTME: Çift yazılan (çakışan) başlatma kodu silinip teke düşürüldü.
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const subeKodu = urlParams.get('sube');
@@ -53,20 +40,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function veritabanindanCek(subeKodu) {
     const lang = typeof currentLang !== 'undefined' ? currentLang : 'tr';
-    const cacheKey = `foca_menu_cache_${subeKodu}`; // Şubeye özel hafıza anahtarı
-    const cachedData = localStorage.getItem(cacheKey); // Cihazın hafızasındaki menüyü ara
+    const cacheKey = `foca_menu_cache_${subeKodu}`; 
+    const cachedData = localStorage.getItem(cacheKey); 
     const titleEl = document.getElementById("branch-title");
 
-    // 1. ADIM: EĞER DAHA ÖNCE GİRMİŞSE HİÇ BEKLETME, ANINDA EKRANA BAS!
     if (cachedData) {
         const parsedData = JSON.parse(cachedData);
         veriyiSistemimizeUyarla(parsedData, subeKodu);
     } else {
-        // İlk defa giriyorsa ufak bir yükleniyor yazısı göster
         if(titleEl) titleEl.innerText = lang === 'tr' ? "Menü Yükleniyor..." : "Loading Menu...";
     }
 
-    // 2. ADIM: ARKA PLANDA SESSİZCE SUPABASE'E BAĞLAN VE GÜNCEL MENÜYÜ ÇEK
     try {
         const { data, error } = await supabaseClient
             .from('urunler')
@@ -74,23 +58,18 @@ async function veritabanindanCek(subeKodu) {
             .eq('sube', subeKodu)
             .eq('aktif_mi', true)
             .order('kategori', { ascending: true })
-            .order('sira', { ascending: true }); // Kendi belirlediğin sıra
+            .order('sira', { ascending: true }); 
 
         if (error) throw error;
 
-        // 3. ADIM: YENİ VERİYİ HAFIZADAKİYLE KARŞILAŞTIR
         const newDataString = JSON.stringify(data);
         if (newDataString !== cachedData) {
-            // Eğer fiyatlar değişmişse veya yeni ürün eklenmişse hafızayı güncelle
             localStorage.setItem(cacheKey, newDataString);
-            
-            // Ekranı yeni verilerle sessizce tazele
             veriyiSistemimizeUyarla(data, subeKodu);
         }
 
     } catch (hata) {
         console.error("Veritabanı Hatası:", hata);
-        // Eğer cihazda kayıtlı menü yoksa ve internet çekmiyorsa uyarı ver
         if (!cachedData && titleEl) {
             titleEl.innerText = lang === 'tr' ? "Bağlantı Hatası!" : "Connection Error!";
         }
@@ -103,14 +82,13 @@ function veriyiSistemimizeUyarla(dbVerisi, subeKodu) {
         en: subeKodu === 'foca' ? "Foça Branch Menu" : "Bağarası Branch Menu" 
     };
 
-    // Veritabanından gelen veriyi menü arayüzümüzün formatına dönüştürüyoruz
     gecerliSubeVerisi.urunler = dbVerisi.map(satir => {
         return {
             ad: { tr: satir.ad_tr, en: satir.ad_en },
             aciklama: { tr: satir.aciklama_tr || "", en: satir.aciklama_en || "" },
             fiyat: satir.fiyat,
             kategori: satir.kategori,
-            img: satir.img_url || "" // WebP linki buraya geliyor
+            img: satir.img_url || "" 
         };
     });
 
@@ -187,12 +165,12 @@ function urunleriCiz(lang) {
 
     const filtrelenmisUrunler = gecerliSubeVerisi.urunler.filter(urun => urun.kategori === aktifKategori);
 
-   filtrelenmisUrunler.forEach(urun => {
-        let resimAlani = urun.img ? `<img src="${urun.img}" alt="${urun.ad[lang]}">` : `<div class="no-img">🍞</div>`;
+    filtrelenmisUrunler.forEach(urun => {
+        // DÜZELTME: Resimlerin telefonu yormaması için "loading='lazy'" özelliği eklendi!
+        let resimAlani = urun.img ? `<img src="${urun.img}" alt="${urun.ad[lang]}" loading="lazy">` : `<div class="no-img">🍞</div>`;
         const urunKarti = document.createElement("div");
         urunKarti.className = "menu-item-card";
         
-        // YENİ EKLENEN KISIM: Karta tıklanma özelliği
         urunKarti.onclick = () => openProductModal(urun, lang);
         
         urunKarti.innerHTML = `
@@ -201,7 +179,7 @@ function urunleriCiz(lang) {
                 <h3>${urun.ad[lang]}</h3>
                 <p>${urun.aciklama[lang]}</p>
             </div>
-            <div class="item-price">${urun.fiyat}</div>
+            <div class="item-price">${urun.fiyat} ₺</div>
         `;
         listContainer.appendChild(urunKarti);
     });
@@ -220,14 +198,14 @@ function showCategoryView() {
     document.getElementById("view-categories").classList.remove("hidden");
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 // ==========================================
-// 5. ÜRÜN DETAY MODALI FONKSİYONLARI (TEMİZ & GARANTİLİ)
+// 5. ÜRÜN DETAY MODALI FONKSİYONLARI (KUVVETLİ & GARANTİLİ ÇÖZÜM)
 // ==========================================
 function openProductModal(urun, lang) {
     const modal = document.getElementById("product-detail-modal");
     if (!modal) return;
 
-    // Resim ayarlaması
     const imgContainer = document.getElementById("modal-img-container");
     if (urun.img) {
         document.getElementById("modal-img").src = urun.img;
@@ -236,24 +214,28 @@ function openProductModal(urun, lang) {
         imgContainer.style.display = "none";
     }
 
-    // Metin ayarlaması
     document.getElementById("modal-title").innerText = urun.ad[lang];
-    document.getElementById("modal-price").innerText = urun.fiyat + " ₺";
+    
+    // Eğer fiyatın sonunda ₺ yoksa otomatik ekler, varsa eklemez.
+    const priceText = urun.fiyat.toString().includes('₺') ? urun.fiyat : urun.fiyat + " ₺";
+    document.getElementById("modal-price").innerText = priceText;
     
     const varsayilanAciklama = lang === 'tr' ? 'Bu ürün için detaylı içerik bilgisi girilmemiştir.' : 'Detailed info is not available for this product.';
     document.getElementById("modal-desc").innerText = urun.aciklama[lang] || varsayilanAciklama;
 
-    // Modalı aç ve arkaplanı kilitle
-    modal.style.setProperty("display", "flex", "important");
+    // DÜZELTME: CSS'in engellemesini aşmak için en kuvvetli Javascript komutu (Tüm kuralları ezer geçer)
+    modal.classList.remove("hidden");
+    modal.style.cssText = "display: flex !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(0,0,0,0.9) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important;";
     document.body.style.overflow = "hidden"; 
 }
 
 function closeProductModal(event) {
     const modal = document.getElementById("product-detail-modal");
     
-    // Çarpıya basıldıysa (event yoksa) veya karanlık arkaplana tıklandıysa çalışır
+    // Çarpıya veya siyah boşluğa tıklandığında tamamen gizle
     if (!event || event.target.id === 'product-detail-modal' || event.target.closest('.close-modal-btn')) {
-        modal.style.setProperty("display", "none", "important");
+        modal.classList.add("hidden");
+        modal.style.cssText = "display: none !important;";
         document.body.style.overflow = "auto"; 
     }
 }
