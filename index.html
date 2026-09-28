@@ -179,5 +179,41 @@
     </div>
 
     <script src="app.js"></script>
+    <!-- ========================================== -->
+    <!-- ARKA PLANDA SESSİZ MENÜ İNDİRME SİSTEMİ    -->
+    <!-- ========================================== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        window.addEventListener('load', () => {
+            // Anasayfa tamamen yüklendikten 3 saniye sonra başla ki sitenin açılış hızını etkilemesin
+            setTimeout(async () => {
+                try {
+                    const supabaseUrl = 'https://hkjsflzfahugubbvohvt.supabase.co';
+                    const supabaseKey = 'sb_publishable_bpWCQrmTJBcU6SPADDRoyw_1ZHjoAlX';
+                    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+                    // Sadece aktif olan tüm ürünleri tek seferde çek
+                    const { data, error } = await supabaseClient
+                        .from('urunler')
+                        .select('*')
+                        .eq('aktif_mi', true)
+                        .order('sira', { ascending: true });
+
+                    if (data && !error) {
+                        // Gelen veriyi şubelere ayır
+                        const focaUrunleri = data.filter(u => u.sube === 'foca');
+                        const bagarasiUrunleri = data.filter(u => u.sube === 'bagarasi');
+
+                        // Telefonun hafızasına (Cache) kaydet
+                        localStorage.setItem('foca_menu_cache_foca', JSON.stringify(focaUrunleri));
+                        localStorage.setItem('foca_menu_cache_bagarasi', JSON.stringify(bagarasiUrunleri));
+                        console.log("Menü verileri arka planda başarıyla önbelleğe alındı!");
+                    }
+                } catch (err) {
+                    console.log("Arka plan indirmesi atlandı.");
+                }
+            }, 3000); 
+        });
+    </script>
 </body>
 </html>
