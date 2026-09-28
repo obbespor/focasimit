@@ -39,40 +39,38 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function veritabanindanCek(subeKodu) {
-    const lang = typeof currentLang !== 'undefined' ? currentLang : 'tr';
-    const cacheKey = `foca_menu_cache_${subeKodu}`; 
-    const cachedData = localStorage.getItem(cacheKey); 
-    const titleEl = document.getElementById("branch-title");
-
-    if (cachedData) {
-        const parsedData = JSON.parse(cachedData);
-        veriyiSistemimizeUyarla(parsedData, subeKodu);
-    } else {
-        if(titleEl) titleEl.innerText = lang === 'tr' ? "Menü Yükleniyor..." : "Loading Menu...";
-    }
-
     try {
+        const titleEl = document.getElementById("branch-title");
+        if(titleEl) titleEl.innerText = "Menü Yükleniyor...";
+
+        // Supabase Sorgusu
         const { data, error } = await supabaseClient
             .from('urunler')
             .select('*')
             .eq('sube', subeKodu)
             .eq('aktif_mi', true)
             .order('kategori', { ascending: true })
-            .order('sira', { ascending: true }); 
+            .order('sira', { ascending: true });
 
         if (error) throw error;
 
-        const newDataString = JSON.stringify(data);
-        if (newDataString !== cachedData) {
-            localStorage.setItem(cacheKey, newDataString);
-            veriyiSistemimizeUyarla(data, subeKodu);
-        }
+        veriyiSistemimizeUyarla(data, subeKodu);
 
     } catch (hata) {
         console.error("Veritabanı Hatası:", hata);
-        if (!cachedData && titleEl) {
-            titleEl.innerText = lang === 'tr' ? "Bağlantı Hatası!" : "Connection Error!";
-        }
+        
+        // GİZLİ HATAYI EKRANA BASAN KOD (DEDEKTİF)
+        document.getElementById("branch-title").innerText = "SİSTEM HATASI!";
+        let hataMesaji = hata.message || JSON.stringify(hata);
+        
+        const errorDiv = document.createElement("div");
+        errorDiv.innerHTML = `
+            <div style="background: rgba(255,0,0,0.9); color: white; padding: 25px; margin: 20px; border-radius: 12px; text-align: center; font-weight: bold; font-size: 1.1rem; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <span style="color: #ffd700; font-size: 1.3rem;">⚠️ LÜTFEN BANA BU MESAJI AT:</span><br><br>
+                ${hataMesaji}
+            </div>
+        `;
+        document.getElementById("view-categories").appendChild(errorDiv);
     }
 }
 
