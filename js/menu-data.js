@@ -3,7 +3,7 @@
  */
 
 window.FOCA_MENU_DATA = {
-  updatedAt: "2026-11-09T09:50:00+03:00",
+  updatedAt: "2026-11-09T11:25:00+03:00",
   siteContent: {
     brandSub: "Yarım Asırlık Gelenek",
     brandName: "Tarihi Foça Simit Fırını",
@@ -17,7 +17,7 @@ window.FOCA_MENU_DATA = {
     stat2Val: "2 Şube",
     stat2Label: "Foça & Bağarası",
     stat3Val: "4.8 ★",
-    stat3Label: "Müşteri Memnuniyeti",
+    stat3Label: "Müşteri Puanı",
     aboutBadge: "Tarihe Tanıklık Eden Lezzetler",
     aboutTitle: "Usta Ellerden Çıkan Geleneksel Tarifler",
     aboutText1: "Yılların verdiği tecrübe ve geleneksel tariflerimizle hazırladığımız unlu mamullerimiz, Foça'nın ve Bağarası'nın vazgeçilmezi olmaya devam ediyor.",
@@ -102,7 +102,7 @@ window.FOCA_MENU_DATA = {
     { id: "p16", name: "Üç Peynirli Sıcak Su Böreği", nameEn: "Warm Cheese Su Boregi", cat: "kahvalti", price: 95, foca: true, bagarasi: true, hot: true, signature: false, img: "assets/images/pogaca.jpg", desc: "El açması yufkalarla hazırlanan bol tereyağlı ve peynirli sıcak su böreği." },
     { id: "p17", name: "Bağarası Karışık Köy Tostu", nameEn: "Bagarasi Special Mixed Toast", cat: "kahvalti", price: 120, foca: false, bagarasi: true, hot: true, signature: false, img: "assets/images/kahvalti.jpg", desc: "Ekşi mayalı köy ekmeğinde çift kaşarlı ve sucuklu sıcak tost." },
 
-    { id: "p18", name: "Tatlı Kuru Pasta Пorsiyon", nameEn: "Sweet Petit Fours Assortment", cat: "kurupasta", price: 135, foca: true, bagarasi: true, hot: false, signature: true, img: "assets/images/kurupasta.jpg", desc: "Belçika çikolata kaplı, fıstıklı, bademli ve marmelatlı günlük taze kurabiyeler." },
+    { id: "p18", name: "Tatlı Kuru Pasta Porsiyon", nameEn: "Sweet Petit Fours Assortment", cat: "kurupasta", price: 135, foca: true, bagarasi: true, hot: false, signature: true, img: "assets/images/kurupasta.jpg", desc: "Belçika çikolata kaplı, fıstıklı, bademli ve marmelatlı günlük taze kurabiyeler." },
     { id: "p19", name: "Tuzlu Kuru Pasta Porsiyon", nameEn: "Savory Petit Fours Assortment", cat: "kurupasta", price: 130, foca: true, bagarasi: true, hot: false, signature: false, img: "assets/images/kurupasta.jpg", desc: "Çörek otlu, susamlı kandil simidi, peynirli ve baharatlı kıyır tuzlu kurabiyeler." },
     { id: "p20", name: "Tahinli & Cevizli Foça Kurabiyesi", nameEn: "Tahini & Walnut Foça Cookie", cat: "kurupasta", price: 35, foca: true, bagarasi: true, hot: false, signature: true, img: "assets/images/kurupasta.jpg", desc: "Ağızda helva gibi dağılan bol tahinli ve kavrulmuş cevizli kurabiye." },
     { id: "p21", name: "Antep Fıstıklı & Damla Sakızlı Kurabiye", nameEn: "Pistachio & Mastic Gum Cookie", cat: "kurupasta", price: 45, foca: true, bagarasi: true, hot: false, signature: false, img: "assets/images/kurupasta.jpg", desc: "Boz fıstık ve Çeşme damla sakızı aromalı özel pastane kurabiyesi." },
