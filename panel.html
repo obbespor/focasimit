@@ -11,15 +11,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="min-h-screen bg-[#fdf8f3] text-[#2c1810] flex flex-col">
+<body class="min-h-screen bg-[#faf6f0] text-[#1e120b] flex flex-col">
 
   <!-- 1. GİRİŞ EKRANI -->
   <main id="loginScreen" class="flex-1 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-amber-200">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-7 shadow-2xl border border-[#e6dac8]">
       <div class="text-center">
-        <div class="w-12 h-12 rounded-2xl bg-[#2c1810] text-amber-400 mx-auto flex items-center justify-center text-xl shadow-md">🔒</div>
-        <span class="block text-[11px] uppercase tracking-widest text-amber-800 font-bold mt-3">Tarihi Foça Simit Fırını</span>
-        <h1 class="font-serif-title text-2xl font-bold text-[#2c1810] mt-0.5">Yönetici Girişi</h1>
+        <div class="w-12 h-12 rounded-2xl bg-[#1e120b] text-[#f3c677] mx-auto flex items-center justify-center text-xl shadow-md">🔒</div>
+        <span class="block text-[11px] uppercase tracking-widest text-[#9a5818] font-bold mt-3">Tarihi Foça Simit Fırını</span>
+        <h1 class="font-serif-title text-2xl font-bold text-[#1e120b] mt-0.5">Yönetici Girişi</h1>
       </div>
 
       <div class="mt-6 space-y-3">
@@ -28,36 +28,39 @@
           type="password"
           onkeydown="if(event.key==='Enter') verifyPanelLogin();"
           placeholder="Şifre"
-          class="w-full px-4 py-3 rounded-xl border-2 border-stone-300 text-sm font-semibold focus:outline-none focus:border-amber-700 text-center"
+          class="w-full px-4 py-3 rounded-xl border-2 border-stone-300 text-sm font-semibold focus:outline-none focus:border-[#1e120b] text-center"
         />
         <div id="loginErrorMsg" class="hidden text-xs font-bold text-red-600 text-center">
           Hatalı şifre.
         </div>
-        <button onclick="verifyPanelLogin()" class="w-full py-3.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-sm shadow-lg transition">
+        <button onclick="verifyPanelLogin()" class="w-full py-3.5 rounded-xl bg-[#1e120b] hover:bg-[#311d12] text-[#f3c677] font-bold text-sm shadow-lg transition">
           Giriş Yap
         </button>
         <div class="pt-2 text-center">
-          <a href="index.html" class="text-xs font-semibold text-stone-500 hover:text-amber-800">← Ana Sayfaya Dön</a>
+          <a href="index.html" class="text-xs font-semibold text-stone-500 hover:text-[#1e120b]">← Ana Sayfaya Dön</a>
         </div>
       </div>
     </div>
   </main>
 
   <!-- 2. YÖNETİM PANELİ -->
-  <div id="panelDashboard" class="hidden flex-1 py-5 sm:py-8 max-w-7xl mx-auto px-3.5 sm:px-6 w-full">
-    <div class="bg-white rounded-3xl border border-stone-200 shadow-xl p-4 sm:p-7">
+  <div id="panelDashboard" class="hidden flex-1 py-6 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+    <div class="bg-white rounded-3xl border border-[#e6dac8] shadow-xl p-5 sm:p-7">
       <!-- Üst Çubuk -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-stone-200">
         <div>
-          <h1 class="font-serif-title text-xl sm:text-2xl font-bold text-[#2c1810]">
+          <h1 class="font-serif-title text-xl sm:text-2xl font-bold text-[#1e120b]">
             Tarihi Foça Simit Fırını — Yönetim Paneli
           </h1>
           <div class="flex flex-wrap items-center gap-2 mt-3">
-            <button id="tabBtnMenu" onclick="switchPanelTab('menu')" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-amber-700 text-white shadow-sm transition">
-              🥐 Menü, Fiyat & Ürünler
+            <button id="tabBtnMenu" onclick="switchPanelTab('menu')" class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-[#1e120b] text-[#f3c677] shadow-sm transition">
+              🥐 Ürünler & Fiyatlar
             </button>
-            <button id="tabBtnSite" onclick="switchPanelTab('site')" class="px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
-              🎨 Site Yazıları, Şubeler & Görseller
+            <button id="tabBtnCategories" onclick="switchPanelTab('categories')" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
+              🗂️ Kategoriler & Kategori Görselleri
+            </button>
+            <button id="tabBtnSite" onclick="switchPanelTab('site')" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
+              🎨 Site Yazıları & Şubeler
             </button>
           </div>
         </div>
@@ -66,7 +69,7 @@
           <button onclick="downloadMenuDataJsFile()" class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition">
             📦 menu-data.js İndir
           </button>
-          <a href="index.html" class="px-3.5 py-2.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs transition">
+          <a href="index.html" class="px-3.5 py-2.5 rounded-xl bg-[#efe6d8] hover:bg-[#e3d5bf] text-[#1e120b] font-bold text-xs transition">
             👁️ Siteyi Gör
           </a>
           <button onclick="lockPanel()" class="px-3.5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition">
@@ -76,40 +79,31 @@
       </div>
 
       <!-- =================================================================== -->
-      <!-- SEKME 1: MENÜ, FİYAT VE ÜRÜN GÖRSELLERİ                             -->
+      <!-- SEKME 1: ÜRÜNLER, FİYATLAR VE ÜRÜN GÖRSELLERİ                       -->
       <!-- =================================================================== -->
       <div id="tabSectionMenu" class="pt-5">
-        <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-200 flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5">
+        <div class="p-4 rounded-2xl bg-[#faf6f0] border border-[#e6dac8] flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5">
           <div class="flex flex-wrap items-center gap-2">
-            <select id="bulkCategoryTarget" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-semibold">
-              <option value="all">Tüm Kategoriler</option>
-              <option value="gevrek">Gevrek & Boyoz</option>
-              <option value="pogaca">Poğaça & Açma</option>
-              <option value="kahvalti">Kahvaltı & Sıcaklar</option>
-              <option value="kurupasta">Kuru Pasta</option>
-              <option value="pasta">Yaş Pasta & Tatlı</option>
-              <option value="dondurma">Dondurma</option>
-              <option value="icecek">Çay & İçecekler</option>
-            </select>
+            <select id="bulkCategoryTarget" class="px-3 py-2 rounded-xl bg-white border border-stone-300 text-xs font-semibold"></select>
 
-            <select id="bulkRoundMode" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-semibold">
+            <select id="bulkRoundMode" class="px-3 py-2 rounded-xl bg-white border border-stone-300 text-xs font-semibold">
               <option value="1">1 ₺ Yuvarla</option>
               <option value="5" selected>5 ₺ Yuvarla</option>
               <option value="10">10 ₺ Yuvarla</option>
             </select>
 
-            <button onclick="applyBulkPercentChange(10)" class="px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold">+%10</button>
-            <button onclick="applyBulkPercentChange(15)" class="px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold">+%15</button>
-            <button onclick="applyBulkPercentChange(20)" class="px-3 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold">+%20</button>
-            <button onclick="applyBulkFixedChange(5)" class="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-900 text-white text-xs font-bold">+5 ₺</button>
-            <button onclick="applyBulkFixedChange(10)" class="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-900 text-white text-xs font-bold">+10 ₺</button>
+            <button onclick="applyBulkPercentChange(10)" class="px-3 py-2 rounded-xl bg-[#9a5818] hover:bg-[#7c4510] text-white text-xs font-bold">+%10</button>
+            <button onclick="applyBulkPercentChange(15)" class="px-3 py-2 rounded-xl bg-[#9a5818] hover:bg-[#7c4510] text-white text-xs font-bold">+%15</button>
+            <button onclick="applyBulkPercentChange(20)" class="px-3 py-2 rounded-xl bg-[#9a5818] hover:bg-[#7c4510] text-white text-xs font-bold">+%20</button>
+            <button onclick="applyBulkFixedChange(5)" class="px-3 py-2 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">+5 ₺</button>
+            <button onclick="applyBulkFixedChange(10)" class="px-3 py-2 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">+10 ₺</button>
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="openBulkPasteModal()" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs">
+            <button onclick="openBulkPasteModal()" class="px-3.5 py-2 rounded-xl bg-[#9a5818] hover:bg-[#7c4510] text-white font-bold text-xs">
               📋 Toplu Liste Yapıştır
             </button>
-            <button onclick="openAddSingleProductModal()" class="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-black text-white font-bold text-xs">
+            <button onclick="openAddSingleProductModal()" class="px-3.5 py-2 rounded-xl bg-[#1e120b] hover:bg-black text-[#f3c677] font-bold text-xs">
               ＋ Yeni Ürün Ekle
             </button>
           </div>
@@ -123,19 +117,13 @@
               type="text"
               oninput="renderAdminTable()"
               placeholder="Ürün ara..."
-              class="px-3.5 py-2 rounded-xl border border-stone-300 text-xs sm:text-sm w-full sm:w-64 focus:outline-none focus:border-amber-600"
+              class="px-3.5 py-2 rounded-xl border border-stone-300 text-xs sm:text-sm w-full sm:w-64 focus:outline-none focus:border-[#1e120b]"
             />
-            <select id="adminCategoryFilter" onchange="renderAdminTable()" class="px-3 py-2 rounded-xl border border-stone-300 text-xs sm:text-sm bg-white font-medium">
-              <option value="all">Tüm Kategoriler</option>
-              <option value="gevrek">Gevrek & Boyoz</option>
-              <option value="pogaca">Poğaça & Açma</option>
-              <option value="kahvalti">Kahvaltı & Sıcaklar</option>
-              <option value="kurupasta">Kuru Pasta</option>
-              <option value="pasta">Yaş Pasta & Tatlı</option>
-              <option value="dondurma">Dondurma</option>
-              <option value="icecek">Çay & İçecekler</option>
-            </select>
+            <select id="adminCategoryFilter" onchange="renderAdminTable()" class="px-3 py-2 rounded-xl border border-stone-300 text-xs sm:text-sm bg-white font-medium"></select>
           </div>
+          <button onclick="switchPanelTab('categories')" class="text-xs font-bold text-[#9a5818] hover:underline">
+            🗂️ Kategori Ekle / Kategori Görsellerini Düzenle →
+          </button>
         </div>
 
         <!-- Ürün Tablosu -->
@@ -159,12 +147,28 @@
       </div>
 
       <!-- =================================================================== -->
-      <!-- SEKME 2: SİTE YAZILARI, ŞUBELER VE GÖRSELLER EDİTÖRÜ                -->
+      <!-- SEKME 2: KATEGORİLER VE KATEGORİ GÖRSELLERİ YÖNETİMİ                -->
+      <!-- =================================================================== -->
+      <div id="tabSectionCategories" class="hidden pt-5 space-y-5">
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#faf6f0] border border-[#e6dac8] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="font-serif-title text-xl font-bold text-[#1e120b]">Kategoriler & Kategori Görselleri</h2>
+            <p class="text-xs text-stone-600 mt-0.5">Yeni kategori ekleyebilir, mevcut kategorilerin adını, ikonunu, sıralamasını ve kapak fotoğrafını değiştirebilirsiniz.</p>
+          </div>
+          <button onclick="openAddCategoryModal()" class="px-4 py-2.5 rounded-xl bg-[#1e120b] hover:bg-black text-[#f3c677] font-bold text-xs sm:text-sm shadow-sm shrink-0">
+            ＋ Yeni Kategori Ekle
+          </button>
+        </div>
+
+        <div id="adminCategoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- SEKME 3: SİTE YAZILARI, ŞUBELER VE GÖRSELLER EDİTÖRÜ                -->
       <!-- =================================================================== -->
       <div id="tabSectionSite" class="hidden pt-5 space-y-6">
-        <!-- 1. Ana Kapak (Hero) & Marka Metinleri -->
         <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-          <h2 class="font-serif-title text-lg font-bold text-[#2c1810]">1. Ana Kapak & Marka Yazıları</h2>
+          <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">1. Ana Kapak & Marka Yazıları</h2>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             <div>
               <label class="block text-xs font-bold text-stone-600 mb-1">Marka Üst Başlık</label>
@@ -179,18 +183,18 @@
               <input id="editHeroBadge" type="text" onchange="updateSiteContentField('heroBadge', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">Kapak Büyük Başlık 1. Satır</label>
+              <label class="block text-xs font-bold text-stone-600 mb-1">Kapak Başlık 1. Satır</label>
               <input id="editHeroTitle1" type="text" onchange="updateSiteContentField('heroTitle1', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">Kapak Vurgulu Başlık 2. Satır</label>
+              <label class="block text-xs font-bold text-stone-600 mb-1">Kapak Başlık 2. Satır</label>
               <input id="editHeroTitle2" type="text" onchange="updateSiteContentField('heroTitle2', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
             </div>
             <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-stone-200">
-              <img id="previewHeroImg" src="assets/images/hero.jpg" alt="Kapak" class="w-14 h-14 rounded-lg object-cover border border-amber-300 shrink-0" />
+              <img id="previewHeroImg" src="assets/images/hero.jpg" alt="Kapak" onerror="this.classList.add('img-fallback-hidden')" class="w-14 h-14 rounded-lg object-cover border border-stone-300 shrink-0" />
               <div>
                 <div class="text-xs font-bold">Kapak Arka Plan Görseli</div>
-                <button onclick="openImageEditorModal('site_hero')" class="mt-1 px-2.5 py-1 rounded-lg bg-amber-700 text-white text-xs font-bold">📷 Görseli Değiştir</button>
+                <button onclick="openImageEditorModal('site_hero')" class="mt-1 px-2.5 py-1 rounded-lg bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Görseli Değiştir</button>
               </div>
             </div>
           </div>
@@ -200,7 +204,6 @@
             <textarea id="editHeroDesc" rows="2" onchange="updateSiteContentField('heroDesc', this.value)" class="w-full p-3 rounded-xl border border-stone-300 text-xs bg-white"></textarea>
           </div>
 
-          <!-- 3 İstatistik Kutusu -->
           <div class="grid sm:grid-cols-3 gap-3 pt-2">
             <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-xl border border-stone-200">
               <input id="editStat1Val" type="text" onchange="updateSiteContentField('stat1Val', this.value)" class="px-2 py-1 rounded border border-stone-300 text-xs font-bold" />
@@ -217,15 +220,16 @@
           </div>
         </div>
 
-        <!-- 2. Şube Kartları, Adres, Saat ve Fotoğraflar -->
+        <!-- 2. Şube Kartları -->
         <div class="grid md:grid-cols-2 gap-4">
-          <!-- Foça Şube -->
           <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
             <div class="flex items-center justify-between gap-3">
-              <h2 class="font-serif-title text-lg font-bold text-[#2c1810]">⚓ Foça Şube Bilgileri & Fotoğrafı</h2>
-              <button onclick="openImageEditorModal('branch_foca')" class="px-3 py-1.5 rounded-xl bg-amber-700 text-white text-xs font-bold">📷 Fotoğrafı Değiştir</button>
+              <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">⚓ Foça Şube Bilgileri & Fotoğrafı</h2>
+              <button onclick="openImageEditorModal('branch_foca')" class="px-3 py-1.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Fotoğrafı Değiştir</button>
             </div>
-            <img id="adminPreviewBranchFoca" src="assets/images/foca-sube.jpg" alt="Foça Şube" class="w-full h-36 rounded-xl object-cover border border-amber-300" />
+            <div class="relative h-36 rounded-xl overflow-hidden hero-surface border border-stone-300">
+              <img id="adminPreviewBranchFoca" src="assets/images/foca-sube.jpg" alt="Foça Şube" onerror="this.classList.add('img-fallback-hidden')" class="w-full h-full object-cover" />
+            </div>
             <div class="grid sm:grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Şube Adı</label>
@@ -254,13 +258,14 @@
             </div>
           </div>
 
-          <!-- Bağarası Şube -->
           <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
             <div class="flex items-center justify-between gap-3">
-              <h2 class="font-serif-title text-lg font-bold text-[#2c1810]">🌿 Bağarası Şube Bilgileri & Fotoğrafı</h2>
-              <button onclick="openImageEditorModal('branch_bagarasi')" class="px-3 py-1.5 rounded-xl bg-amber-700 text-white text-xs font-bold">📷 Fotoğrafı Değiştir</button>
+              <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">🌿 Bağarası Şube Bilgileri & Fotoğrafı</h2>
+              <button onclick="openImageEditorModal('branch_bagarasi')" class="px-3 py-1.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Fotoğrafı Değiştir</button>
             </div>
-            <img id="adminPreviewBranchBagarasi" src="assets/images/bagarasi-sube.jpg" alt="Bağarası Şube" class="w-full h-36 rounded-xl object-cover border border-amber-300" />
+            <div class="relative h-36 rounded-xl overflow-hidden hero-surface border border-stone-300">
+              <img id="adminPreviewBranchBagarasi" src="assets/images/bagarasi-sube.jpg" alt="Bağarası Şube" onerror="this.classList.add('img-fallback-hidden')" class="w-full h-full object-cover" />
+            </div>
             <div class="grid sm:grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Şube Adı</label>
@@ -290,9 +295,9 @@
           </div>
         </div>
 
-        <!-- 3. Hakkımızda & Galeri Fotoğrafları -->
+        <!-- 3. Hakkımızda & Galeri -->
         <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-          <h2 class="font-serif-title text-lg font-bold text-[#2c1810]">3. Hakkımızda Yazıları & Galeri Görselleri</h2>
+          <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">3. Hakkımızda Yazıları & Galeri Görselleri</h2>
           <div class="grid sm:grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-bold text-stone-600 mb-1">Üst Etiket</label>
@@ -318,12 +323,12 @@
           </div>
         </div>
 
-        <!-- 4. Özel Gün Pasta Banner, İletişim & Şifre Ayarları -->
+        <!-- 4. Özel Gün Pasta, İletişim & Ayarlar -->
         <div class="grid lg:grid-cols-3 gap-4">
           <div class="lg:col-span-2 p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
             <div class="flex items-center justify-between">
-              <h2 class="font-serif-title text-lg font-bold text-[#2c1810]">4. Özel Gün Pasta & Alt Bilgi</h2>
-              <button onclick="openImageEditorModal('site_cake')" class="px-3 py-1.5 rounded-xl bg-amber-700 text-white text-xs font-bold">📷 Pasta Görselini Değiştir</button>
+              <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">4. Özel Gün Pasta & Alt Bilgi</h2>
+              <button onclick="openImageEditorModal('site_cake')" class="px-3 py-1.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Pasta Görselini Değiştir</button>
             </div>
             <div class="grid sm:grid-cols-2 gap-3">
               <div>
@@ -353,19 +358,18 @@
             </div>
           </div>
 
-          <!-- Sağ Sütun: Şifre, GitHub Yayın ve Sıfırlama -->
           <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4 flex flex-col justify-between">
             <div class="space-y-4">
               <div>
-                <h3 class="text-sm font-bold text-[#2c1810]">🔑 Panel Şifresi</h3>
+                <h3 class="text-sm font-bold text-[#1e120b]">🔑 Panel Şifresi</h3>
                 <div class="mt-2 flex items-center gap-2">
                   <input id="adminNewPasswordInput" type="password" placeholder="Yeni şifre" class="flex-1 px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-                  <button onclick="updateAdminPassword()" class="px-3.5 py-2 rounded-xl bg-stone-900 text-white text-xs font-bold">Kaydet</button>
+                  <button onclick="updateAdminPassword()" class="px-3.5 py-2 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">Kaydet</button>
                 </div>
               </div>
 
               <div class="pt-3 border-t border-stone-200 space-y-2">
-                <h3 class="text-sm font-bold text-[#2c1810]">☁️ GitHub Canlı Yayın</h3>
+                <h3 class="text-sm font-bold text-[#1e120b]">☁️ GitHub Canlı Yayın</h3>
                 <input id="ghRepoInput" type="text" placeholder="kullanici/repo" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs" />
                 <input id="ghTokenInput" type="password" placeholder="GitHub Token" class="w-full px-3 py-2 rounded-xl border border-stone-300 bg-white text-xs" />
                 <button onclick="publishToGitHubDirectly()" class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs shadow transition">
@@ -386,13 +390,61 @@
     </div>
   </div>
 
+  <!-- YENİ KATEGORİ EKLEME MODALI -->
+  <div id="modalAddCategory" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 relative">
+      <button onclick="closeAddCategoryModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
+      <h2 class="font-serif-title text-xl font-bold text-[#1e120b]">＋ Yeni Kategori Ekle</h2>
+
+      <div class="space-y-3 mt-4">
+        <div class="grid grid-cols-4 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-stone-600 mb-1">İkon</label>
+            <input id="newCatIcon" type="text" value="🥖" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-center text-base" />
+          </div>
+          <div class="col-span-3">
+            <label class="block text-xs font-bold text-stone-600 mb-1">Kategori Adı (TR)</label>
+            <input id="newCatName" type="text" placeholder="Örn: Taş Fırın Ekmekleri" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm font-semibold" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-stone-600 mb-1">Kategori Adı (EN)</label>
+          <input id="newCatNameEn" type="text" placeholder="Örn: Artisan Breads" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm" />
+        </div>
+
+        <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200 space-y-2.5">
+          <label class="block text-xs font-bold text-stone-700">Kategori Kapak Görseli</label>
+          <div class="flex items-center gap-3">
+            <img id="newCatImgPreview" src="assets/images/gevrek.jpg" alt="Önizleme" onerror="this.classList.add('img-fallback-hidden')" class="w-16 h-16 rounded-xl object-cover border border-stone-300 shrink-0" />
+            <div class="space-y-1.5 flex-1">
+              <label class="inline-block px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold cursor-pointer">
+                <span>📁 Cihazdan Fotoğraf Seç</span>
+                <input type="file" accept="image/*" onchange="handleNewCatFileUpload(this)" class="hidden" />
+              </label>
+              <div class="flex gap-1.5">
+                <input id="newCatImgUrl" type="text" placeholder="veya görsel yolu / URL" class="flex-1 px-2.5 py-1 rounded-lg border border-stone-300 text-xs bg-white" />
+                <button type="button" onclick="applyNewCatImageUrl()" class="px-2.5 py-1 rounded-lg bg-stone-800 text-white text-xs font-bold">Seç</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 flex justify-end gap-2">
+          <button onclick="closeAddCategoryModal()" class="px-4 py-2 rounded-xl bg-stone-100 text-xs font-bold">İptal</button>
+          <button onclick="saveNewCategory()" class="px-5 py-2.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">Kategoriyi Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- GÖRSEL DÜZENLEME MODALI -->
   <div id="modalImageEditor" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto">
       <button onclick="closeImageEditorModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-sm">✕</button>
-      <h2 class="font-serif-title text-xl font-bold text-[#2c1810]" id="imageEditorTitle">Görsel Düzenle</h2>
+      <h2 class="font-serif-title text-xl font-bold text-[#1e120b]" id="imageEditorTitle">Görsel Düzenle</h2>
       <div class="mt-4 p-3 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-4">
-        <div id="imageEditorCurrentPreviewWrap" class="w-24 h-24 rounded-xl bg-amber-100 overflow-hidden border border-amber-300 flex items-center justify-center shrink-0"></div>
+        <div id="imageEditorCurrentPreviewWrap" class="w-24 h-24 rounded-xl bg-amber-100 overflow-hidden border border-stone-300 flex items-center justify-center shrink-0"></div>
         <div class="flex-1 min-w-0 space-y-2">
           <div class="text-xs font-bold text-stone-800" id="imageEditorTargetName"></div>
           <div class="flex flex-wrap gap-2">
@@ -422,7 +474,7 @@
 
       <div class="mt-6 pt-4 border-t border-stone-200 flex justify-end gap-2">
         <button onclick="closeImageEditorModal()" class="px-4 py-2 rounded-xl bg-stone-100 text-stone-700 text-xs font-bold">İptal</button>
-        <button onclick="saveImageEditorChanges()" class="px-5 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold">Kaydet</button>
+        <button onclick="saveImageEditorChanges()" class="px-5 py-2.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">Kaydet</button>
       </div>
     </div>
   </div>
@@ -431,17 +483,9 @@
   <div id="modalBulkPaste" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-stone-200 relative">
       <button onclick="closeBulkPasteModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
-      <h2 class="font-serif-title text-xl font-bold text-[#2c1810]">📋 Toplu Ürün & Fiyat Yapıştır</h2>
+      <h2 class="font-serif-title text-xl font-bold text-[#1e120b]">📋 Toplu Ürün & Fiyat Yapıştır</h2>
       <div class="mt-3 grid sm:grid-cols-2 gap-3">
-        <select id="bulkPasteCategory" class="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold">
-          <option value="gevrek">Gevrek & Boyoz</option>
-          <option value="pogaca">Poğaça & Açma</option>
-          <option value="kahvalti">Kahvaltı & Sıcaklar</option>
-          <option value="kurupasta">Kuru Pasta</option>
-          <option value="pasta">Yaş Pasta & Tatlı</option>
-          <option value="dondurma">Dondurma</option>
-          <option value="icecek">Çay & İçecekler</option>
-        </select>
+        <select id="bulkPasteCategory" class="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold"></select>
         <select id="bulkPasteBranchScope" class="px-3 py-2 rounded-xl border border-stone-300 text-xs font-semibold">
           <option value="both">Foça + Bağarası</option>
           <option value="foca">Sadece Foça Şube</option>
@@ -450,7 +494,7 @@
       </div>
       <textarea id="bulkPasteTextarea" rows="6" placeholder="Taş Fırın Çıtır İzmir Gevreği - 25&#10;Geleneksel İzmir Boyozu - 30" class="w-full mt-3 p-3 rounded-2xl border border-stone-300 text-xs font-mono"></textarea>
       <div class="mt-4 flex justify-between">
-        <button onclick="fillSampleBulkText()" class="text-xs font-semibold text-amber-700 underline">Örnek Liste</button>
+        <button onclick="fillSampleBulkText()" class="text-xs font-semibold text-[#9a5818] underline">Örnek Liste</button>
         <button onclick="processBulkPaste()" class="px-5 py-2.5 rounded-xl bg-emerald-700 text-white text-xs font-bold">İçe Aktar</button>
       </div>
     </div>
@@ -460,24 +504,16 @@
   <div id="modalAddProduct" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 relative">
       <button onclick="closeAddSingleProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
-      <h2 class="font-serif-title text-xl font-bold text-[#2c1810]">＋ Yeni Ürün Ekle</h2>
+      <h2 class="font-serif-title text-xl font-bold text-[#1e120b]">＋ Yeni Ürün Ekle</h2>
       <div class="space-y-3 mt-4">
         <input id="newProdName" type="text" placeholder="Ürün Adı" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm" />
         <div class="grid grid-cols-2 gap-3">
           <input id="newProdPrice" type="number" value="35" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm" />
-          <select id="newProdCat" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm bg-white">
-            <option value="gevrek">Gevrek & Boyoz</option>
-            <option value="pogaca">Poğaça & Açma</option>
-            <option value="kahvalti">Kahvaltı & Sıcaklar</option>
-            <option value="kurupasta">Kuru Pasta</option>
-            <option value="pasta">Yaş Pasta & Tatlı</option>
-            <option value="dondurma">Dondurma</option>
-            <option value="icecek">Çay & İçecekler</option>
-          </select>
+          <select id="newProdCat" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm bg-white"></select>
         </div>
         <input id="newProdDesc" type="text" placeholder="Açıklama" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm" />
         <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200 flex items-center gap-3">
-          <img id="newProdImgPreview" src="assets/images/gevrek.jpg" alt="Önizleme" class="w-12 h-12 rounded-xl object-cover border border-amber-300 shrink-0" />
+          <img id="newProdImgPreview" src="assets/images/gevrek.jpg" alt="Önizleme" onerror="this.classList.add('img-fallback-hidden')" class="w-12 h-12 rounded-xl object-cover border border-stone-300 shrink-0" />
           <label class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white text-xs font-bold cursor-pointer">
             <span>📁 Fotoğraf Seç</span>
             <input type="file" accept="image/*" onchange="handleNewProdFileUpload(this)" class="hidden" />
@@ -490,14 +526,14 @@
         </div>
         <div class="pt-2 flex justify-end gap-2">
           <button onclick="closeAddSingleProductModal()" class="px-4 py-2 rounded-xl bg-stone-100 text-xs font-bold">İptal</button>
-          <button onclick="saveNewSingleProduct()" class="px-5 py-2 rounded-xl bg-amber-700 text-white text-xs font-bold">Ekle</button>
+          <button onclick="saveNewSingleProduct()" class="px-5 py-2 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">Ekle</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- BİLDİRİM -->
-  <div id="toastNotification" class="hidden fixed top-6 right-4 z-50 bg-[#2c1810] text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-amber-500/40 text-xs font-semibold flex items-center gap-2">
+  <div id="toastNotification" class="hidden fixed top-6 right-4 z-50 bg-[#1e120b] text-[#f3c677] px-4 py-2.5 rounded-2xl shadow-2xl border border-[#f3c677]/30 text-xs font-semibold flex items-center gap-2">
     <span>✓</span>
     <span id="toastText"></span>
   </div>
