@@ -10,13 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
+<body class="has-bottom-nav min-h-screen flex flex-col selection:bg-amber-800 selection:text-white">
 
-  <!-- ÜST GEZİNME BAŞLIĞI -->
-  <header class="sticky top-0 z-40 glass-nav border-b border-amber-900/10 shadow-sm">
-    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-2">
-      <a href="#vitrin" onclick="switchMainView('vitrin'); return false;" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
-        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-md shadow-amber-900/20 shrink-0 group-hover:scale-105 transition">
+  <!-- ÜST GEZİNME BAŞLIĞI (Mobilde ferah, marka adı tam görünür) -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-[#e6dac8]">
+    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+      <a href="#vitrin" onclick="switchMainView('vitrin'); return false;" class="flex items-center gap-2.5 min-w-0 flex-1">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-[#1e120b] flex items-center justify-center text-[#f3c677] shadow-sm shrink-0">
           <svg class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="8" />
             <circle cx="12" cy="12" r="3.5" />
@@ -24,39 +24,39 @@
           </svg>
         </div>
         <div class="min-w-0">
-          <span id="scBrandSub" class="block text-[10px] sm:text-[11px] uppercase tracking-widest text-amber-800 font-bold truncate">Yarım Asırlık Gelenek</span>
-          <span id="scBrandName" class="font-serif-title text-base sm:text-xl font-bold text-[#2c1810] tracking-tight block truncate">Tarihi Foça Simit Fırını</span>
+          <span id="scBrandSub" class="block text-[9px] sm:text-[11px] uppercase tracking-widest text-[#9a5818] font-bold truncate">Yarım Asırlık Gelenek</span>
+          <span id="scBrandName" class="font-serif-title text-[15px] sm:text-xl font-bold text-[#1e120b] tracking-tight block truncate">Tarihi Foça Simit Fırını</span>
         </div>
       </a>
 
       <!-- Masaüstü Şube Seçici -->
-      <div class="hidden md:flex items-center bg-amber-100/90 p-1 rounded-xl border border-amber-300/70">
-        <button id="pillBranchFoca" onclick="selectBranch('foca')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-amber-700 text-white shadow-sm">
+      <div class="hidden md:flex items-center bg-[#efe6d8] p-1 rounded-xl border border-[#e0d2be]">
+        <button id="pillBranchFoca" onclick="selectBranch('foca')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-[#1e120b] text-[#f3c677] shadow-sm">
           <span>⚓</span>
           <span>Foça Şube</span>
         </button>
-        <button id="pillBranchBagarasi" onclick="selectBranch('bagarasi')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-amber-900 hover:bg-amber-200/60">
+        <button id="pillBranchBagarasi" onclick="selectBranch('bagarasi')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-stone-700 hover:bg-stone-200/70">
           <span>🌿</span>
           <span>Bağarası Şube</span>
         </button>
       </div>
 
-      <!-- Üst Menü Bağlantıları -->
+      <!-- Sağ Kontroller -->
       <nav class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <button id="navBtnVitrin" onclick="switchMainView('vitrin')" class="px-2.5 sm:px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-amber-900 text-white shadow-sm">
+        <button id="navBtnVitrin" onclick="switchMainView('vitrin')" class="hidden md:inline-flex px-3.5 py-2 rounded-xl text-sm font-bold transition bg-[#1e120b] text-white shadow-sm">
           <span data-i18n="navHome">Ana Sayfa</span>
         </button>
-        <a href="#hakkimizda" onclick="switchMainView('vitrin');" class="hidden lg:inline-flex px-3 py-2 rounded-xl text-sm font-semibold text-amber-950 hover:bg-amber-900/10 transition">
+        <a href="#hakkimizda" onclick="switchMainView('vitrin');" class="hidden lg:inline-flex px-3 py-2 rounded-xl text-sm font-semibold text-stone-800 hover:bg-stone-200/60 transition">
           <span data-i18n="navAbout">Hakkımızda</span>
         </a>
-        <a href="#subeler" onclick="switchMainView('vitrin');" class="hidden lg:inline-flex px-3 py-2 rounded-xl text-sm font-semibold text-amber-950 hover:bg-amber-900/10 transition">
+        <a href="#subeler" onclick="switchMainView('vitrin');" class="hidden lg:inline-flex px-3 py-2 rounded-xl text-sm font-semibold text-stone-800 hover:bg-stone-200/60 transition">
           <span data-i18n="navBranches">Şubelerimiz</span>
         </a>
-        <button id="navBtnQrMenu" onclick="switchMainView('qrmenu')" class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-amber-700 text-white shadow-sm hover:bg-amber-800 flex items-center gap-1.5">
-          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+        <button id="navBtnQrMenu" onclick="switchMainView('qrmenu')" class="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#9a5818] text-white shadow-sm hover:bg-[#7c4510] flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
           <span data-i18n="navQrMenu">QR Menü</span>
         </button>
-        <button id="btnLangToggle" onclick="toggleLanguage()" class="px-2.5 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold transition text-xs border border-amber-300/80">
+        <button id="btnLangToggle" onclick="toggleLanguage()" class="px-2.5 py-2 rounded-xl bg-[#efe6d8] hover:bg-[#e4d6c0] text-[#1e120b] font-bold transition text-xs border border-[#dcd0be]">
           EN
         </button>
       </nav>
@@ -66,79 +66,83 @@
   <!-- ===================================================================== -->
   <!-- GÖRÜNÜM 1: ANA SAYFA VİTRİN                                           -->
   <!-- ===================================================================== -->
-  <main id="viewVitrin" class="flex-1">
+  <main id="viewVitrin" class="flex-1 w-full overflow-x-hidden">
     <!-- KAPAK ALANI -->
-    <section id="vitrin" class="relative min-h-[460px] lg:min-h-[590px] flex items-center overflow-hidden">
+    <section id="vitrin" class="relative hero-surface overflow-hidden">
       <img
         id="scHeroImg"
         src="assets/images/hero.jpg"
         alt="Tarihi Foça Simit Fırını"
+        onerror="this.classList.add('img-fallback-hidden')"
         class="absolute inset-0 w-full h-full object-cover max-w-full"
       />
       <div class="absolute inset-0 hero-gradient"></div>
 
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 lg:py-22 w-full grid lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-7 text-white space-y-4 sm:space-y-6">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 backdrop-blur-md text-amber-200 text-xs sm:text-sm font-semibold">
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-14 lg:py-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+        <!-- Sol Kapak Sütunu (min-w-0 ile mobilde taşma sıfırlandı) -->
+        <div class="lg:col-span-7 text-white space-y-4 sm:space-y-5 min-w-0 w-full">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-[#f3c677]/35 backdrop-blur-md text-[#f3c677] text-[11px] sm:text-xs font-semibold">
             <span>🔥</span>
             <span id="scHeroBadge">Taş Fırın & Pastane • Self Servis</span>
           </div>
 
-          <h1 class="font-serif-title text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+          <h1 class="font-serif-title text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.12] tracking-tight break-words">
             <span id="scHeroTitle1">Yarım Asırlık</span>
-            <span id="scHeroTitle2" class="block text-amber-400 italic">Gelenek.</span>
+            <span id="scHeroTitle2" class="block text-[#f3c677] italic mt-0.5">Gelenek.</span>
           </h1>
 
-          <p id="scHeroDesc" class="text-sm sm:text-lg text-amber-100/90 max-w-2xl leading-relaxed">
+          <p id="scHeroDesc" class="text-xs sm:text-base lg:text-lg text-stone-200/90 max-w-2xl leading-relaxed break-words">
             Foça'nın tarihi sokaklarında ve Bağarası şubemizde, usta ellerden çıkan sıcacık İzmir boyozu, çıtır susamlı gevrek, taptaze kuru pastalar ve doğal dondurma lezzetleriyle güne başlayın.
           </p>
 
-          <div class="pt-1 grid grid-cols-2 sm:flex sm:flex-wrap gap-2.5 sm:gap-3.5">
-            <button onclick="openBranchMenuDirectly('foca')" class="px-4 sm:px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-base shadow-lg shadow-amber-950/50 transition flex items-center justify-center gap-2 group">
-              <span>⚓</span>
-              <span data-i18n="btnFocaMenu">Foça Şube Menü</span>
+          <!-- Şube Menü Butonları -->
+          <div class="pt-1 grid grid-cols-2 sm:flex sm:flex-wrap gap-2.5 sm:gap-3.5 w-full">
+            <button onclick="openBranchMenuDirectly('foca')" class="px-3 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-[#d99b43] hover:bg-[#c58932] text-[#1e120b] font-bold text-xs sm:text-base shadow-lg transition flex items-center justify-center gap-1.5 min-w-0">
+              <span class="shrink-0">⚓</span>
+              <span class="truncate" data-i18n="btnFocaMenu">Foça Şube Menü</span>
             </button>
 
-            <button onclick="openBranchMenuDirectly('bagarasi')" class="px-4 sm:px-6 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/30 backdrop-blur-md text-white font-bold text-xs sm:text-base transition flex items-center justify-center gap-2 group">
-              <span>🌿</span>
-              <span data-i18n="btnBagarasiMenu">Bağarası Şube Menü</span>
+            <button onclick="openBranchMenuDirectly('bagarasi')" class="px-3 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl bg-white/10 hover:bg-white/20 border border-white/25 backdrop-blur-md text-white font-bold text-xs sm:text-base transition flex items-center justify-center gap-1.5 min-w-0">
+              <span class="shrink-0">🌿</span>
+              <span class="truncate" data-i18n="btnBagarasiMenu">Bağarası Şube Menü</span>
             </button>
           </div>
 
-          <div class="pt-4 grid grid-cols-3 gap-3 sm:gap-4 max-w-lg border-t border-white/15">
-            <div>
-              <div id="scStat1Val" class="font-serif-title text-xl sm:text-3xl font-bold text-amber-400">05:00</div>
-              <div id="scStat1Label" class="text-[11px] sm:text-xs text-amber-100/80">İlk Sıcak Pişirim</div>
+          <!-- İstatistikler -->
+          <div class="pt-4 grid grid-cols-3 gap-2 sm:gap-4 max-w-lg border-t border-white/15 w-full">
+            <div class="min-w-0">
+              <div id="scStat1Val" class="font-serif-title text-lg sm:text-3xl font-bold text-[#f3c677] truncate">05:00</div>
+              <div id="scStat1Label" class="text-[10px] sm:text-xs text-stone-300 truncate">İlk Sıcak Pişirim</div>
             </div>
-            <div>
-              <div id="scStat2Val" class="font-serif-title text-xl sm:text-3xl font-bold text-amber-400">2 Şube</div>
-              <div id="scStat2Label" class="text-[11px] sm:text-xs text-amber-100/80">Foça & Bağarası</div>
+            <div class="min-w-0">
+              <div id="scStat2Val" class="font-serif-title text-lg sm:text-3xl font-bold text-[#f3c677] truncate">2 Şube</div>
+              <div id="scStat2Label" class="text-[10px] sm:text-xs text-stone-300 truncate">Foça & Bağarası</div>
             </div>
-            <div>
-              <div id="scStat3Val" class="font-serif-title text-xl sm:text-3xl font-bold text-amber-400">4.8 ★</div>
-              <div id="scStat3Label" class="text-[11px] sm:text-xs text-amber-100/80">Müşteri Memnuniyeti</div>
+            <div class="min-w-0">
+              <div id="scStat3Val" class="font-serif-title text-lg sm:text-3xl font-bold text-[#f3c677] truncate">4.8 ★</div>
+              <div id="scStat3Label" class="text-[10px] sm:text-xs text-stone-300 truncate">Müşteri Puanı</div>
             </div>
           </div>
         </div>
 
-        <!-- Sağ İmza Lezzetler Kartı -->
-        <div class="lg:col-span-5">
-          <div class="bg-[#241209]/85 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-4 sm:p-6 text-white shadow-2xl">
-            <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b border-white/10">
-              <div>
-                <span class="text-xs uppercase tracking-wider text-amber-400 font-bold" data-i18n="liveOvenCardTag">Taş Fırından Taze</span>
-                <h2 class="font-serif-title text-lg sm:text-xl font-bold mt-0.5" data-i18n="liveOvenCardTitle">İmza Lezzetlerimiz</h2>
+        <!-- Sağ İmza Lezzetler Kartı (min-w-0 ile tam ekran uyumu) -->
+        <div class="lg:col-span-5 min-w-0 w-full">
+          <div class="bg-[#1b0f08]/90 backdrop-blur-xl border border-[#f3c677]/25 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-white shadow-2xl w-full overflow-hidden">
+            <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
+              <div class="min-w-0">
+                <span class="block text-[10px] sm:text-xs uppercase tracking-wider text-[#f3c677] font-bold truncate" data-i18n="liveOvenCardTag">Taş Fırından Taze</span>
+                <h2 class="font-serif-title text-base sm:text-xl font-bold mt-0.5 truncate" data-i18n="liveOvenCardTitle">İmza Lezzetlerimiz</h2>
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold">
+              <span class="px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] sm:text-xs font-bold whitespace-nowrap shrink-0">
                 ● Gün Boyu Taze
               </span>
             </div>
 
-            <div class="space-y-2.5" id="heroSignatureItemsList"></div>
+            <div class="space-y-2" id="heroSignatureItemsList"></div>
 
-            <div class="mt-4 pt-3.5 border-t border-white/10 flex items-center justify-between gap-2">
-              <span class="text-xs text-amber-200/85 font-medium">Self Servis Hizmet</span>
-              <button onclick="switchMainView('qrmenu')" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold text-xs transition shrink-0">
+            <div class="mt-3.5 pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+              <span class="text-xs text-stone-300 font-medium truncate">Self Servis Hizmet</span>
+              <button onclick="switchMainView('qrmenu')" class="px-3.5 py-2 rounded-xl bg-[#d99b43] hover:bg-[#c58932] text-[#1e120b] font-bold text-xs transition shrink-0">
                 Tüm Menü →
               </button>
             </div>
@@ -148,48 +152,48 @@
     </section>
 
     <!-- KATEGORİLER -->
-    <section class="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="flex items-end justify-between gap-3 mb-5 sm:mb-7">
+    <section class="py-8 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-end justify-between gap-3 mb-4 sm:mb-7">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-amber-700">Tarihi Foça Simit Fırını</span>
-          <h2 class="font-serif-title text-2xl sm:text-4xl font-bold text-[#2c1810] mt-0.5" data-i18n="catStripTitle">Kategoriler</h2>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-[#9a5818]">Tarihi Foça Simit Fırını</span>
+          <h2 class="font-serif-title text-2xl sm:text-4xl font-bold text-[#1e120b] mt-0.5" data-i18n="catStripTitle">Kategoriler</h2>
         </div>
-        <button onclick="switchMainView('qrmenu')" class="text-xs sm:text-sm font-bold text-amber-800 hover:text-amber-950">
+        <button onclick="switchMainView('qrmenu')" class="text-xs sm:text-sm font-bold text-[#9a5818] hover:text-[#1e120b] shrink-0">
           Tümünü Gör →
         </button>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3" id="homeCategoryVisualGrid"></div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" id="homeCategoryVisualGrid"></div>
     </section>
 
     <!-- MENÜ ÖNİZLEME VİTRİNİ -->
-    <section id="hizli-menu" class="py-10 sm:py-12 bg-amber-100/50 border-y border-amber-200/70">
+    <section id="hizli-menu" class="py-8 sm:py-12 bg-[#f3ece2] border-y border-[#e6dac8]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3.5 mb-5 sm:mb-6">
           <div>
-            <span id="vitrinMenuBranchBadge" class="inline-block px-2.5 py-0.5 rounded-lg bg-amber-700 text-white text-xs font-bold">Foça Şube</span>
-            <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#2c1810] mt-1.5">
+            <span id="vitrinMenuBranchBadge" class="inline-block px-2.5 py-0.5 rounded-lg bg-[#1e120b] text-[#f3c677] text-xs font-bold">Foça Şube</span>
+            <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#1e120b] mt-1.5">
               Öne Çıkan Lezzetlerimiz
             </h2>
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <button onclick="selectBranch('foca')" id="vitrinBtnFoca" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-amber-700 text-white shadow-sm">
+            <button onclick="selectBranch('foca')" id="vitrinBtnFoca" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm">
               ⚓ Foça Şube
             </button>
-            <button onclick="selectBranch('bagarasi')" id="vitrinBtnBagarasi" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-white text-amber-900 border border-amber-300 hover:bg-amber-50">
+            <button onclick="selectBranch('bagarasi')" id="vitrinBtnBagarasi" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-stone-800 border border-stone-300 hover:bg-stone-50">
               🌿 Bağarası Şube
             </button>
-            <button onclick="switchMainView('qrmenu')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#2c1810] text-amber-200 hover:bg-stone-800 transition">
+            <button onclick="switchMainView('qrmenu')" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-[#9a5818] text-white hover:bg-[#7c4510] transition">
               QR Menüyü Aç ↗
             </button>
           </div>
         </div>
 
-        <div id="vitrinMenuPreviewGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5"></div>
+        <div id="vitrinMenuPreviewGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5"></div>
 
-        <div class="mt-8 text-center">
-          <button onclick="switchMainView('qrmenu')" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-sm shadow-md transition">
+        <div class="mt-7 text-center">
+          <button onclick="switchMainView('qrmenu')" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#1e120b] hover:bg-[#311d12] text-[#f3c677] font-bold text-xs sm:text-sm shadow-md transition">
             <span>Tüm Menüyü İncele</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </button>
@@ -198,54 +202,55 @@
     </section>
 
     <!-- HAKKIMIZDA & GALERİ -->
-    <section id="hakkimizda" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="grid lg:grid-cols-12 gap-8 sm:gap-10 items-center">
-        <div class="lg:col-span-5 space-y-4 sm:space-y-5">
-          <span id="scAboutBadge" class="inline-block px-3 py-1 rounded-full bg-amber-200/70 text-amber-900 text-xs font-bold uppercase tracking-wider">
+    <section id="hakkimizda" class="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 sm:gap-10 items-center">
+        <div class="lg:col-span-5 space-y-3.5 sm:space-y-5 min-w-0">
+          <span id="scAboutBadge" class="inline-block px-3 py-1 rounded-full bg-[#efe6d8] text-[#9a5818] text-xs font-bold uppercase tracking-wider">
             Tarihe Tanıklık Eden Lezzetler
           </span>
-          <h2 id="scAboutTitle" class="font-serif-title text-2xl sm:text-4xl font-bold text-[#2c1810] leading-tight">
+          <h2 id="scAboutTitle" class="font-serif-title text-2xl sm:text-4xl font-bold text-[#1e120b] leading-tight">
             Usta Ellerden Çıkan Geleneksel Tarifler
           </h2>
-          <p id="scAboutText1" class="text-stone-700 text-sm sm:text-base leading-relaxed">
+          <p id="scAboutText1" class="text-stone-700 text-xs sm:text-base leading-relaxed">
             Yılların verdiği tecrübe ve geleneksel tariflerimizle hazırladığımız unlu mamullerimiz, Foça'nın ve Bağarası'nın vazgeçilmezi olmaya devam ediyor.
           </p>
-          <p id="scAboutText2" class="text-stone-700 text-sm sm:text-base leading-relaxed">
+          <p id="scAboutText2" class="text-stone-700 text-xs sm:text-base leading-relaxed">
             İşletmemiz en taze ve sıcak ürünleri sunabilmek adına Self Servis konseptiyle hizmet vermektedir. Kürekten yeni inen çıtır İzmir gevreği, kat kat açılan gerçek İzmir boyozu, fırınlanmış sıcak yumurta ve taze demlenen çayımızla sabahın ilk ışıklarından gece yarısına kadar yanınızdayız.
           </p>
         </div>
 
-        <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-3" id="bentoPhotoGallery"></div>
+        <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 min-w-0" id="bentoPhotoGallery"></div>
       </div>
     </section>
 
     <!-- ÖZEL GÜNLER YAŞ PASTA BANNER -->
-    <section class="py-8 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="rounded-3xl bg-gradient-to-r from-[#2c1810] via-[#3d2216] to-[#2c1810] text-white p-6 sm:p-10 shadow-xl">
-        <div class="grid lg:grid-cols-12 gap-6 sm:gap-8 items-center">
-          <div class="lg:col-span-7 space-y-3.5">
-            <span id="scCakeBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold">
+    <section class="py-6 sm:py-10 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="rounded-3xl hero-surface text-white p-5 sm:p-10 shadow-xl border border-[#f3c677]/20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
+          <div class="lg:col-span-7 space-y-3 min-w-0">
+            <span id="scCakeBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-[#f3c677]/30 text-[#f3c677] text-[11px] font-bold">
               ÖZEL GÜNLERİNİZ İÇİN YANINIZDAYIZ
             </span>
-            <h2 id="scCakeTitle" class="font-serif-title text-2xl sm:text-4xl font-bold leading-tight">
+            <h2 id="scCakeTitle" class="font-serif-title text-xl sm:text-4xl font-bold leading-tight">
               Doğum Günleri ve Kutlamalar İçin Özel Yaş Pastalar
             </h2>
-            <p id="scCakeDesc" class="text-amber-100/85 text-xs sm:text-base max-w-xl">
+            <p id="scCakeDesc" class="text-stone-300 text-xs sm:text-base max-w-xl leading-relaxed">
               Özel günleriniz, kutlamalarınız ve davetleriniz için günlük taze malzemelerle usta işi yaş pastalar ve toplu siparişler hazırlıyoruz.
             </p>
-            <div class="pt-2 flex flex-wrap items-center gap-3">
-              <a id="scWhatsappLink" href="https://wa.me/905339695335" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
+            <div class="pt-2 flex flex-wrap items-center gap-2.5">
+              <a id="scWhatsappLink" href="https://wa.me/905339695335" target="_blank" rel="noopener noreferrer" class="px-4 sm:px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
                 <span>💬</span>
                 <span>WhatsApp İletişim</span>
               </a>
-              <button onclick="filterQrMenuByCategory('pasta')" class="px-4 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition">
+              <button onclick="filterQrMenuByCategory('pasta')" class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm transition">
                 Pasta & Tatlı Menüsü →
               </button>
             </div>
           </div>
-          <div class="lg:col-span-5">
-            <div class="relative rounded-2xl overflow-hidden border-2 border-amber-500/30 shadow-2xl group cursor-pointer" onclick="openLightbox(document.getElementById('scCakeImg').src, 'Özel Gün Yaş Pastalarımız')">
-              <img id="scCakeImg" src="assets/images/pasta.jpg" alt="Özel Gün Yaş Pasta" class="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition duration-500 max-w-full" />
+          <div class="lg:col-span-5 min-w-0">
+            <div class="relative rounded-2xl overflow-hidden border border-[#f3c677]/30 shadow-2xl group cursor-pointer hero-surface h-48 sm:h-64 flex items-center justify-center" onclick="openLightbox(document.getElementById('scCakeImg').src, 'Özel Gün Yaş Pastalarımız')">
+              <span class="text-4xl">🎂</span>
+              <img id="scCakeImg" src="assets/images/pasta.jpg" alt="Özel Gün Yaş Pasta" onerror="this.classList.add('img-fallback-hidden')" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500 max-w-full" />
             </div>
           </div>
         </div>
@@ -253,24 +258,24 @@
     </section>
 
     <!-- ŞUBELERİMİZ -->
-    <section id="subeler" class="py-12 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6">
-      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-        <span class="text-xs font-bold uppercase tracking-widest text-amber-700">Tarihi Foça Simit Fırını</span>
-        <h2 class="font-serif-title text-2xl sm:text-4xl font-bold text-[#2c1810] mt-1">Şubelerimiz</h2>
+    <section id="subeler" class="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#9a5818]">Tarihi Foça Simit Fırını</span>
+        <h2 class="font-serif-title text-2xl sm:text-4xl font-bold text-[#1e120b] mt-1">Şubelerimiz</h2>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6 sm:gap-8" id="branchesContainer"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8" id="branchesContainer"></div>
     </section>
 
     <!-- MÜŞTERİ YORUMLARI -->
-    <section class="py-12 sm:py-14 bg-white border-t border-amber-200/60">
+    <section class="py-10 sm:py-14 bg-white border-t border-[#e6dac8]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-          <span class="text-xs font-bold uppercase tracking-widest text-amber-700">Müşteri Deneyimleri</span>
-          <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#2c1810] mt-1">Misafirlerimiz Ne Diyor?</h2>
+        <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
+          <span class="text-xs font-bold uppercase tracking-widest text-[#9a5818]">Müşteri Deneyimleri</span>
+          <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#1e120b] mt-1">Misafirlerimiz Ne Diyor?</h2>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="reviewsGrid"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5" id="reviewsGrid"></div>
       </div>
     </section>
   </main>
@@ -278,60 +283,60 @@
   <!-- ===================================================================== -->
   <!-- GÖRÜNÜM 2: MOBİL ÖNCELİKLİ QR MENÜ                                     -->
   <!-- ===================================================================== -->
-  <section id="viewQrMenu" class="hidden flex-1 py-3.5 sm:py-8 max-w-7xl mx-auto px-3.5 sm:px-6 w-full">
-    <div class="rounded-2xl sm:rounded-3xl bg-[#2c1810] text-white p-4 sm:p-6 shadow-lg mb-3.5">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-bold">
-              SELF SERVİS MENÜ
+  <section id="viewQrMenu" class="hidden flex-1 py-3 sm:py-7 max-w-7xl mx-auto px-3.5 sm:px-6 w-full overflow-x-hidden">
+    <div class="rounded-2xl sm:rounded-3xl hero-surface text-white p-3.5 sm:p-6 shadow-md mb-3 border border-[#f3c677]/20">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-white/10 text-[#f3c677] text-[10px] font-bold tracking-wider uppercase">
+              Self Servis Menü
             </span>
-            <span id="qrHeaderHoursBadge" class="text-[11px] text-amber-200/80">05.00 - 00.00</span>
+            <span id="qrHeaderHoursBadge" class="text-[11px] text-stone-300">05.00 - 00.00</span>
           </div>
-          <h1 class="font-serif-title text-xl sm:text-3xl font-bold mt-1" id="qrHeaderBranchTitle">
+          <h1 class="font-serif-title text-xl sm:text-3xl font-bold mt-1 truncate" id="qrHeaderBranchTitle">
             Foça Şube
           </h1>
-          <p class="text-xs text-amber-100/80 mt-0.5" id="qrHeaderBranchAddress">
+          <p class="text-[11px] sm:text-xs text-stone-300 mt-0.5 truncate" id="qrHeaderBranchAddress">
             📍 Fevzipaşa, 210. Sk. No:8, 35680 Foça/İzmir
           </p>
         </div>
 
         <!-- QR Menü Şube Seçici -->
         <div class="flex bg-white/10 p-1 rounded-xl border border-white/15 w-full sm:w-auto">
-          <button id="qrSwitchFoca" onclick="selectBranch('foca')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-amber-500 text-amber-950 shadow text-center">
+          <button id="qrSwitchFoca" onclick="selectBranch('foca')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#d99b43] text-[#1e120b] shadow text-center">
             ⚓ Foça Şube
           </button>
-          <button id="qrSwitchBagarasi" onclick="selectBranch('bagarasi')" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-white hover:bg-white/10 text-center">
+          <button id="qrSwitchBagarasi" onclick="selectBranch('bagarasi')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition text-stone-200 hover:bg-white/10 text-center">
             🌿 Bağarası Şube
           </button>
         </div>
       </div>
 
       <!-- Arama & Hızlı Filtreler -->
-      <div class="mt-3.5 pt-3.5 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+      <div class="mt-3 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
         <div class="relative flex-1">
-          <svg class="w-4 h-4 text-amber-300 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <svg class="w-4 h-4 text-[#f3c677] absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
           <input
             id="qrSearchInput"
             type="text"
             oninput="handleQrSearch(this.value)"
             placeholder="Menüde ürün ara..."
-            class="w-full pl-10 pr-9 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-amber-200/60 text-sm focus:outline-none focus:border-amber-400"
+            class="w-full pl-9 pr-8 py-1.5 sm:py-2 rounded-xl bg-white/10 border border-white/15 text-white placeholder-stone-400 text-sm focus:outline-none focus:border-[#f3c677]"
           />
-          <button id="btnClearSearch" onclick="clearQrSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-amber-200 hover:text-white text-xs font-bold">✕</button>
+          <button id="btnClearSearch" onclick="clearQrSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-white text-xs font-bold">✕</button>
         </div>
 
         <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-          <button onclick="setTagFilter('all')" id="tagBtnAll" class="px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-amber-400 text-amber-950 transition">
+          <button onclick="setTagFilter('all')" id="tagBtnAll" class="px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap bg-[#d99b43] text-[#1e120b] transition shadow-sm shrink-0">
             Tümü
           </button>
-          <button onclick="setTagFilter('sicak')" id="tagBtnSicak" class="px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white/10 text-amber-100 hover:bg-white/20 transition">
+          <button onclick="setTagFilter('sicak')" id="tagBtnSicak" class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-white/10 text-stone-200 hover:bg-white/15 transition shrink-0">
             🔥 Sıcaklar
           </button>
-          <button onclick="setTagFilter('imza')" id="tagBtnImza" class="px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white/10 text-amber-100 hover:bg-white/20 transition">
+          <button onclick="setTagFilter('imza')" id="tagBtnImza" class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-white/10 text-stone-200 hover:bg-white/15 transition shrink-0">
             ⭐ İmza Lezzetler
           </button>
-          <button onclick="setTagFilter('tatli')" id="tagBtnTatli" class="px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-white/10 text-amber-100 hover:bg-white/20 transition">
+          <button onclick="setTagFilter('tatli')" id="tagBtnTatli" class="px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-white/10 text-stone-200 hover:bg-white/15 transition shrink-0">
             🍰 Tatlı & Dondurma
           </button>
         </div>
@@ -339,35 +344,35 @@
     </div>
 
     <!-- Yapışkan Mobil Kategori Çubuğu -->
-    <div class="mobile-qr-sticky-cats mb-3.5">
-      <div id="qrCategoryPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
+    <div class="mobile-qr-sticky-cats mb-3">
+      <div id="qrCategoryPills" class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar"></div>
     </div>
 
     <!-- Görünüm Seçici -->
-    <div class="flex items-center justify-between gap-2 mb-3.5 px-1">
+    <div class="flex items-center justify-between gap-2 mb-3 px-0.5">
       <div class="text-xs text-stone-600 font-semibold truncate" id="qrMenuResultSummary"></div>
-      <div class="inline-flex items-center bg-white border border-amber-200 rounded-xl p-0.5 shrink-0">
-        <button id="btnLayoutCompact" onclick="setMobileCardLayout('compact')" class="px-3 py-1.5 rounded-lg bg-amber-700 text-white text-xs font-bold shadow-sm">
+      <div class="inline-flex items-center bg-white border border-[#e6dac8] rounded-xl p-0.5 shrink-0">
+        <button id="btnLayoutCompact" onclick="setMobileCardLayout('compact')" class="px-2.5 py-1 rounded-lg bg-[#1e120b] text-[#f3c677] text-xs font-bold shadow-sm">
           ☰ Liste
         </button>
-        <button id="btnLayoutGrid" onclick="setMobileCardLayout('grid')" class="px-3 py-1.5 rounded-lg text-stone-700 hover:bg-amber-100 text-xs font-semibold">
+        <button id="btnLayoutGrid" onclick="setMobileCardLayout('grid')" class="px-2.5 py-1 rounded-lg text-stone-700 hover:bg-stone-100 text-xs font-semibold">
           ⊞ Kart
         </button>
       </div>
     </div>
 
-    <div id="qrMenuProductGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4"></div>
+    <div id="qrMenuProductGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-4"></div>
   </section>
 
   <!-- ALT BİLGİ -->
-  <footer class="bg-[#1e0f08] text-amber-100/80 pt-10 pb-12 border-t border-amber-900/40 mt-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+  <footer class="bg-[#180d07] text-stone-300 pt-10 pb-12 border-t border-stone-800 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
       <div>
         <div id="scFooterBrand" class="font-serif-title text-xl font-bold text-white">Tarihi Foça Simit Fırını</div>
-        <p id="scFooterDesc" class="text-xs text-amber-200/70 mt-2 leading-relaxed">
+        <p id="scFooterDesc" class="text-xs text-stone-400 mt-2 leading-relaxed">
           Yarım asırlık geleneksel lezzet. İşletmemiz en taze ve sıcak ürünleri sunabilmek için self servis hizmet vermektedir. Afiyet olsun.
         </p>
-        <div class="mt-4 inline-flex items-center gap-2 text-xs text-amber-400 font-semibold">
+        <div class="mt-4 inline-flex items-center gap-2 text-xs text-[#f3c677] font-semibold">
           <span>📸 Instagram:</span>
           <a id="scInstagramHandle" href="https://www.instagram.com/tarihifocasimitfirini" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">@tarihifocasimitfirini</a>
         </div>
@@ -377,14 +382,14 @@
         <h3 class="text-sm font-bold text-white uppercase tracking-wider">⚓ Foça Şube</h3>
         <p id="footerFocaAddr" class="text-xs mt-2">📍 Fevzipaşa, 210. Sk. No:8, 35680 Foça/İzmir</p>
         <p id="footerFocaPhone" class="text-xs mt-1">📞 0533 969 53 35</p>
-        <p id="footerFocaHours" class="text-xs mt-1 text-amber-400">🕒 05.00 - 00.00</p>
+        <p id="footerFocaHours" class="text-xs mt-1 text-[#f3c677]">🕒 05.00 - 00.00</p>
       </div>
 
       <div>
         <h3 class="text-sm font-bold text-white uppercase tracking-wider">🌿 Bağarası Şube</h3>
         <p id="footerBagAddr" class="text-xs mt-2">📍 Kazım Dirik, Foça İzmir Karayolu 118A, 35680 Foça/İzmir</p>
         <p id="footerBagPhone" class="text-xs mt-1">📞 0533 969 53 35</p>
-        <p id="footerBagHours" class="text-xs mt-1 text-amber-400">🕒 06.00 - 23.30</p>
+        <p id="footerBagHours" class="text-xs mt-1 text-[#f3c677]">🕒 06.00 - 23.30</p>
       </div>
 
       <div>
@@ -397,26 +402,26 @@
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-white/10 text-xs text-center text-amber-200/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 pt-6 border-t border-white/10 text-xs text-center text-stone-500">
       © 2026 Tarihi Foça Simit Fırını. Tüm Hakları Saklıdır.
     </div>
   </footer>
 
   <!-- MOBİL UYGULAMA TİPİ ALT GEZİNME ÇUBUĞU (Sadece Telefonlarda Görünür) -->
-  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 glass-bottom-bar border-t border-amber-500/25 grid grid-cols-4">
-    <button id="mBottomHome" onclick="switchMainView('vitrin')" class="flex flex-col items-center justify-center py-2 text-amber-400 font-bold text-[11px]">
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 glass-bottom-bar border-t border-white/15 grid grid-cols-4">
+    <button id="mBottomHome" onclick="switchMainView('vitrin')" class="flex flex-col items-center justify-center py-2 text-[#f3c677] font-bold text-[11px]">
       <span class="text-base leading-none mb-0.5">🏠</span>
       <span>Ana Sayfa</span>
     </button>
-    <button id="mBottomFoca" onclick="openBranchMenuDirectly('foca')" class="flex flex-col items-center justify-center py-2 text-amber-100/70 font-medium text-[11px]">
+    <button id="mBottomFoca" onclick="openBranchMenuDirectly('foca')" class="flex flex-col items-center justify-center py-2 text-stone-400 font-medium text-[11px]">
       <span class="text-base leading-none mb-0.5">⚓</span>
       <span>Foça Menü</span>
     </button>
-    <button id="mBottomBagarasi" onclick="openBranchMenuDirectly('bagarasi')" class="flex flex-col items-center justify-center py-2 text-amber-100/70 font-medium text-[11px]">
+    <button id="mBottomBagarasi" onclick="openBranchMenuDirectly('bagarasi')" class="flex flex-col items-center justify-center py-2 text-stone-400 font-medium text-[11px]">
       <span class="text-base leading-none mb-0.5">🌿</span>
       <span>Bağarası Menü</span>
     </button>
-    <button onclick="goToBranchesSection()" class="flex flex-col items-center justify-center py-2 text-amber-100/70 font-medium text-[11px]">
+    <button onclick="goToBranchesSection()" class="flex flex-col items-center justify-center py-2 text-stone-400 font-medium text-[11px]">
       <span class="text-base leading-none mb-0.5">📍</span>
       <span>Şubeler</span>
     </button>
@@ -425,7 +430,7 @@
   <!-- GÖRSEL BÜYÜTME EKRANI -->
   <div id="modalLightbox" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4" onclick="closeLightbox()">
     <div class="max-w-3xl w-full relative" onclick="event.stopPropagation()">
-      <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-amber-300 font-bold text-sm">
+      <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-[#f3c677] font-bold text-sm">
         Kapat ✕
       </button>
       <img id="lightboxImg" src="assets/images/hero.jpg" alt="Görsel" class="w-full max-h-[78vh] object-contain rounded-2xl shadow-2xl border border-white/15 max-w-full" />
@@ -434,7 +439,7 @@
   </div>
 
   <!-- BİLDİRİM -->
-  <div id="toastNotification" class="hidden fixed top-16 right-4 z-50 bg-[#2c1810] text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-amber-500/40 text-xs font-semibold flex items-center gap-2">
+  <div id="toastNotification" class="hidden fixed top-16 right-4 z-50 bg-[#1e120b] text-[#f3c677] px-4 py-2.5 rounded-2xl shadow-2xl border border-[#f3c677]/30 text-xs font-semibold flex items-center gap-2">
     <span>✓</span>
     <span id="toastText"></span>
   </div>
@@ -443,4 +448,3 @@
   <script src="js/app.js"></script>
 </body>
 </html>
-
