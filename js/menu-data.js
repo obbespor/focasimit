@@ -3,8 +3,9 @@
  */
 
 window.FOCA_MENU_DATA = {
-  updatedAt: "2026-11-09T11:25:00+03:00",
+  updatedAt: "2026-11-09T11:50:00+03:00",
   siteContent: {
+    logoImg: "assets/images/logo.png",
     brandSub: "Yarım Asırlık Gelenek",
     brandName: "Tarihi Foça Simit Fırını",
     heroBadge: "Taş Fırın & Pastane • Self Servis",
