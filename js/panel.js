@@ -524,6 +524,17 @@ function renderAdminTable() {
     const hasImg = Boolean(p.img && p.img.trim() !== '');
     return `
       <tr class="hover:bg-amber-50/40 transition">
+        <td class="py-2.5 px-2 text-center whitespace-nowrap">
+          <div class="inline-flex items-center gap-1">
+            <button onclick="moveProductUp('${p.id}')" title="Yukarı Taşı" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-[#1e120b] hover:text-[#f3c677] text-stone-700 border border-stone-300 font-bold text-xs flex items-center justify-center transition shadow-xs">
+              ▲
+            </button>
+            <button onclick="moveProductDown('${p.id}')" title="Aşağı Taşı" class="w-7 h-7 rounded-lg bg-stone-100 hover:bg-[#1e120b] hover:text-[#f3c677] text-stone-700 border border-stone-300 font-bold text-xs flex items-center justify-center transition shadow-xs">
+              ▼
+            </button>
+          </div>
+        </td>
+
         <td class="py-2.5 px-3">
           <div class="flex items-center gap-2">
             ${hasImg ? `
@@ -594,6 +605,10 @@ function renderAdminTable() {
 
         <td class="py-2.5 px-3 text-center">
           <input type="checkbox" ${p.hot ? 'checked' : ''} onchange="updateProductField('${p.id}', 'hot', this.checked)" class="w-4 h-4 rounded text-red-600 cursor-pointer" />
+        </td>
+
+        <td class="py-2.5 px-3 text-center">
+          <input type="checkbox" ${p.signature ? 'checked' : ''} onchange="updateProductField('${p.id}', 'signature', this.checked)" title="Ana sayfada vitrine çıkar" class="w-4 h-4 rounded text-amber-600 cursor-pointer" />
         </td>
 
         <td class="py-2.5 px-3 text-right">
@@ -904,7 +919,7 @@ function processBulkPaste() {
       existing.price = price;
       updated++;
     } else {
-      panelState.products.unshift({
+      const newProd = {
         id: 'custom_' + Date.now() + '_' + idx,
         name,
         nameEn: name,
@@ -916,7 +931,19 @@ function processBulkPaste() {
         signature: false,
         img: defaultImg,
         desc: 'Günlük taze üretim.'
-      });
+      };
+      let insertIdx = -1;
+      for (let i = panelState.products.length - 1; i >= 0; i--) {
+        if (panelState.products[i].cat === defaultCat) {
+          insertIdx = i + 1;
+          break;
+        }
+      }
+      if (insertIdx !== -1) {
+        panelState.products.splice(insertIdx, 0, newProd);
+      } else {
+        panelState.products.push(newProd);
+      }
       added++;
     }
   });
@@ -965,7 +992,7 @@ function saveNewSingleProduct() {
   const bagarasi = document.getElementById('newProdBagarasi').checked;
   if (!name) return;
 
-  panelState.products.unshift({
+  const newProdObj = {
     id: 'item_' + Date.now(),
     name,
     nameEn: name,
@@ -977,7 +1004,19 @@ function saveNewSingleProduct() {
     signature: false,
     img: panelState.newProductTempImg,
     desc
-  });
+  };
+  let insertIdx = -1;
+  for (let i = panelState.products.length - 1; i >= 0; i--) {
+    if (panelState.products[i].cat === cat) {
+      insertIdx = i + 1;
+      break;
+    }
+  }
+  if (insertIdx !== -1) {
+    panelState.products.splice(insertIdx, 0, newProdObj);
+  } else {
+    panelState.products.push(newProdObj);
+  }
   savePanelState();
   closeAddSingleProductModal();
   document.getElementById('newProdName').value = '';
@@ -1068,3 +1107,127 @@ async function publishToGitHubDirectly() {
 window.addEventListener('DOMContentLoaded', () => {
   loadPanelState();
 });
+
+function moveProductUp(id) {
+  if (!requireAuth()) return;
+  const catFilter = document.getElementById('adminCategoryFilter')?.value || 'all';
+  const q = (document.getElementById('adminSearchInput')?.value || '').toLowerCase();
+
+  if (catFilter !== 'all' || q) {
+    const visible = panelState.products.filter(p => {
+      if (catFilter !== 'all' && p.cat !== catFilter) return false;
+      if (q && !p.name.toLowerCase().includes(q) && !(p.desc || '').toLowerCase().includes(q)) return false;
+      return true;
+    });
+    const visIdx = visible.findIndex(p => p.id === id);
+    if (visIdx <= 0) return;
+    const targetProduct = visible[visIdx - 1];
+
+    const currentIdx = panelState.products.findIndex(p => p.id === id);
+    const targetIdx = panelState.products.findIndex(p => p.id === targetProduct.id);
+    if (currentIdx === -1 || targetIdx === -1) return;
+
+    const item = panelState.products.splice(currentIdx, 1)[0];
+    panelState.products.splice(targetIdx, 0, item);
+  } else {
+    const idx = panelState.products.findIndex(p => p.id === id);
+    if (idx <= 0) return;
+    const temp = panelState.products[idx];
+    panelState.products[idx] = panelState.products[idx - 1];
+    panelState.products[idx - 1] = temp;
+  }
+
+  savePanelState();
+  renderAdminTable();
+  showToast('Sıralama güncellendi');
+}
+
+function moveProductDown(id) {
+  if (!requireAuth()) return;
+  const catFilter = document.getElementById('adminCategoryFilter')?.value || 'all';
+  const q = (document.getElementById('adminSearchInput')?.value || '').toLowerCase();
+
+  if (catFilter !== 'all' || q) {
+    const visible = panelState.products.filter(p => {
+      if (catFilter !== 'all' && p.cat !== catFilter) return false;
+      if (q && !p.name.toLowerCase().includes(q) && !(p.desc || '').toLowerCase().includes(q)) return false;
+      return true;
+    });
+    const visIdx = visible.findIndex(p => p.id === id);
+    if (visIdx < 0 || visIdx >= visible.length - 1) return;
+    const targetProduct = visible[visIdx + 1];
+
+    const currentIdx = panelState.products.findIndex(p => p.id === id);
+    const targetIdx = panelState.products.findIndex(p => p.id === targetProduct.id);
+    if (currentIdx === -1 || targetIdx === -1) return;
+
+    const item = panelState.products.splice(currentIdx, 1)[0];
+    panelState.products.splice(targetIdx, 0, item);
+  } else {
+    const idx = panelState.products.findIndex(p => p.id === id);
+    if (idx < 0 || idx >= panelState.products.length - 1) return;
+    const temp = panelState.products[idx];
+    panelState.products[idx] = panelState.products[idx + 1];
+    panelState.products[idx + 1] = temp;
+  }
+
+  savePanelState();
+  renderAdminTable();
+  showToast('Sıralama güncellendi');
+}
+
+function openImportDataModal() {
+  if (!requireAuth()) return;
+  const textarea = document.getElementById('importDataTextarea');
+  if (textarea) textarea.value = '';
+  document.getElementById('modalImportData')?.classList.remove('hidden');
+}
+
+function closeImportDataModal() {
+  document.getElementById('modalImportData')?.classList.add('hidden');
+}
+
+function applyImportedData() {
+  if (!requireAuth()) return;
+  let text = (document.getElementById('importDataTextarea')?.value || '').trim();
+  if (!text) {
+    showToast('Lütfen yapıştırılacak veriyi girin');
+    return;
+  }
+
+  if (text.includes('window.FOCA_MENU_DATA')) {
+    const firstBrace = text.indexOf('{');
+    if (firstBrace !== -1) {
+      text = text.substring(firstBrace);
+      const lastSemi = text.lastIndexOf(';');
+      if (lastSemi !== -1 && lastSemi > text.lastIndexOf('}')) {
+        text = text.substring(0, lastSemi);
+      }
+    }
+  }
+
+  try {
+    const data = JSON.parse(text);
+    if (data.products && Array.isArray(data.products)) {
+      panelState.products = data.products;
+    }
+    if (data.categories && Array.isArray(data.categories)) {
+      panelState.categories = data.categories;
+    }
+    if (data.branches) {
+      panelState.branches = data.branches;
+    }
+    if (data.siteContent) {
+      panelState.siteContent = { ...panelState.siteContent, ...data.siteContent };
+    }
+    if (data.gallery && Array.isArray(data.gallery)) {
+      panelState.gallery = data.gallery;
+    }
+    savePanelState();
+    closeImportDataModal();
+    renderPanelAll();
+    showToast('Tüm veriler başarıyla aktarıldı ve kaydedildi!');
+  } catch (err) {
+    alert('Veri formatı okunamadı. Lütfen geçerli bir JSON veya window.FOCA_MENU_DATA bloğu yapıştırın.\nHata: ' + err.message);
+  }
+}
