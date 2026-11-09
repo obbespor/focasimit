@@ -1,1 +1,102 @@
+/* Tarihi Foça Simit Fırını — Stil Dosyası (css/style.css) */
+:root {
+  --bg-cream: #fdf8f3;
+  --text-dark: #2c1810;
+  --accent-amber: #b45309;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  margin: 0;
+  padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+.font-serif-title {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #faeee1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d47632;
+  border-radius: 9999px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glass-nav {
+  background: rgba(253, 248, 243, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-bottom-bar {
+  background: rgba(36, 18, 9, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(28, 13, 6, 0.42) 0%,
+    rgba(28, 13, 6, 0.76) 65%,
+    rgba(28, 13, 6, 0.95) 100%
+  );
+}
+
+.card-zoom:hover .zoom-img {
+  transform: scale(1.05);
+}
+
+/* iOS Safari otomatik yakınlaştırmayı önlemek için mobilde 16px input */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  .mobile-qr-sticky-cats {
+    position: sticky;
+    top: 61px;
+    z-index: 30;
+    background: rgba(253, 248, 243, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 10px 1rem;
+    margin-left: -0.875rem;
+    margin-right: -0.875rem;
+    border-bottom: 1px solid rgba(180, 83, 9, 0.14);
+  }
+}
 
