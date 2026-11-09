@@ -1,6 +1,6 @@
 /**
  * Tarihi Foça Simit Fırını — Yönetim Paneli Motoru (js/panel.js)
- * Ürünler/Fiyatlar, Kategoriler/Kategori Görselleri ve Site Yazıları/Şubeler yönetimi.
+ * SHA-256 Kriptografik Şifre Doğrulaması + Ürün, Kategori ve Site İçeriği Yönetimi
  */
 
 const STORAGE_KEY_PRODUCTS = 'tarihi_foca_simit_firini_menu_v4';
@@ -8,20 +8,24 @@ const STORAGE_KEY_CATEGORIES = 'tarihi_foca_simit_firini_categories_v4';
 const STORAGE_KEY_BRANCHES = 'tarihi_foca_simit_firini_branches_v4';
 const STORAGE_KEY_SITE = 'tarihi_foca_simit_firini_site_v4';
 const STORAGE_KEY_GALLERY = 'tarihi_foca_simit_firini_gallery_v4';
-const STORAGE_KEY_PASS = 'tarihi_foca_simit_firini_pass_v4';
+const STORAGE_KEY_PASS_HASH = 'tarihi_foca_simit_firini_pass_hash_v4';
+const STORAGE_KEY_AUTH_SESSION = 'tarihi_foca_simit_firini_auth_ok';
 const STORAGE_KEY_GH = 'tarihi_foca_simit_firini_gh_config';
+
+// Şifre kod içerisinde açık metin olarak tutulmaz; yalnızca SHA-256 özeti (hash) tutulur.
+const DEFAULT_ADMIN_HASH = 'df440dc8455395b1bd6f4e0a38d74c4cc452ce43300d37d57b78d2b858cbfb68';
 
 const panelState = {
   isAuthenticated: false,
   activeTab: 'menu', // 'menu' | 'categories' | 'site'
-  adminPassword: 'foca2026',
+  adminPasswordHash: DEFAULT_ADMIN_HASH,
   siteContent: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.siteContent)),
   branches: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.branches)),
   products: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.products)),
   categories: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.categories)),
   gallery: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.gallery)),
   categoryImages: window.FOCA_MENU_DATA.categoryImages,
-  editingImageTarget: null, // 'branch_foca' | 'branch_bagarasi' | 'site_hero' | 'site_cake' | 'gallery_0'..'gallery_5' | 'cat_<id>' | productId
+  editingImageTarget: null, // 'site_logo' | 'branch_foca' | 'branch_bagarasi' | 'site_hero' | 'site_cake' | 'gallery_0'..'gallery_5' | 'cat_<id>' | productId
   editingImageTempSrc: '',
   newProductTempImg: 'assets/images/gevrek.jpg',
   newCategoryTempImg: 'assets/images/gevrek.jpg',
@@ -29,6 +33,7 @@ const panelState = {
 };
 
 const PRESET_GALLERY = [
+  { label: 'Site Logosu', src: 'assets/images/logo.png' },
   { label: 'Taş Fırın & Gevrek', src: 'assets/images/hero.jpg' },
   { label: 'İzmir Gevreği', src: 'assets/images/gevrek.jpg' },
   { label: 'İzmir Boyozu & Yumurta', src: 'assets/images/boyoz.jpg' },
@@ -40,6 +45,20 @@ const PRESET_GALLERY = [
   { label: 'Foça Şube', src: 'assets/images/foca-sube.jpg' },
   { label: 'Bağarası Şube', src: 'assets/images/bagarasi-sube.jpg' }
 ];
+
+async function sha256Hex(text) {
+  const data = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function requireAuth() {
+  if (!panelState.isAuthenticated) {
+    showToast('Önce yönetici şifresi ile giriş yapmalısınız');
+    return false;
+  }
+  return true;
+}
 
 function loadPanelState() {
   try {
@@ -68,8 +87,8 @@ function loadPanelState() {
       const parsedG = JSON.parse(rawGal);
       if (Array.isArray(parsedG) && parsedG.length > 0) panelState.gallery = parsedG;
     }
-    const savedPass = localStorage.getItem(STORAGE_KEY_PASS);
-    if (savedPass) panelState.adminPassword = savedPass;
+    const savedHash = localStorage.getItem(STORAGE_KEY_PASS_HASH);
+    if (savedHash && savedHash.length === 64) panelState.adminPasswordHash = savedHash;
 
     const savedGh = localStorage.getItem(STORAGE_KEY_GH);
     if (savedGh) panelState.ghConfig = JSON.parse(savedGh);
@@ -77,13 +96,14 @@ function loadPanelState() {
 }
 
 function savePanelState() {
+  if (!requireAuth()) return;
   try {
     localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(panelState.products));
     localStorage.setItem(STORAGE_KEY_CATEGORIES, JSON.stringify(panelState.categories));
     localStorage.setItem(STORAGE_KEY_BRANCHES, JSON.stringify(panelState.branches));
     localStorage.setItem(STORAGE_KEY_SITE, JSON.stringify(panelState.siteContent));
     localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(panelState.gallery));
-    localStorage.setItem(STORAGE_KEY_PASS, panelState.adminPassword);
+    localStorage.setItem(STORAGE_KEY_PASS_HASH, panelState.adminPasswordHash);
     localStorage.setItem(STORAGE_KEY_GH, JSON.stringify(panelState.ghConfig));
   } catch (e) {}
 }
@@ -100,10 +120,13 @@ function showToast(msg) {
   }, 2400);
 }
 
-function verifyPanelLogin() {
+async function verifyPanelLogin() {
   const val = (document.getElementById('loginPassInput')?.value || '').trim();
-  if (val === panelState.adminPassword) {
+  if (!val) return;
+  const inputHash = await sha256Hex(val);
+  if (inputHash === panelState.adminPasswordHash) {
     panelState.isAuthenticated = true;
+    sessionStorage.setItem(STORAGE_KEY_AUTH_SESSION, '1');
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('panelDashboard').classList.remove('hidden');
     renderPanelAll();
@@ -114,12 +137,14 @@ function verifyPanelLogin() {
 
 function lockPanel() {
   panelState.isAuthenticated = false;
+  sessionStorage.removeItem(STORAGE_KEY_AUTH_SESSION);
   document.getElementById('panelDashboard').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('loginPassInput').value = '';
 }
 
 function switchPanelTab(tabName) {
+  if (!requireAuth()) return;
   panelState.activeTab = tabName;
   document.getElementById('tabSectionMenu').classList.toggle('hidden', tabName !== 'menu');
   document.getElementById('tabSectionCategories').classList.toggle('hidden', tabName !== 'categories');
@@ -141,16 +166,17 @@ function switchPanelTab(tabName) {
   renderPanelAll();
 }
 
-function updateAdminPassword() {
+async function updateAdminPassword() {
+  if (!requireAuth()) return;
   const newPass = (document.getElementById('adminNewPasswordInput')?.value || '').trim();
   if (newPass.length < 4) {
     showToast('En az 4 karakterli bir şifre girin');
     return;
   }
-  panelState.adminPassword = newPass;
+  panelState.adminPasswordHash = await sha256Hex(newPass);
   savePanelState();
   document.getElementById('adminNewPasswordInput').value = '';
-  showToast('Şifre güncellendi');
+  showToast('Şifre güvenli olarak güncellendi');
 }
 
 function syncCategorySelectDropdowns() {
@@ -179,6 +205,7 @@ function syncCategorySelectDropdowns() {
 }
 
 function renderPanelAll() {
+  if (!panelState.isAuthenticated) return;
   syncCategorySelectDropdowns();
   renderAdminTable();
   renderCategoriesManager();
@@ -191,7 +218,7 @@ function renderPanelAll() {
 }
 
 // =========================================================================
-// SEKME 2: KATEGORİ YÖNETİMİ (KATEGORİ EKLEME & KATEGORİ GÖRSELİ EKLEME)
+// SEKME 2: KATEGORİ YÖNETİMİ
 // =========================================================================
 function renderCategoriesManager() {
   const grid = document.getElementById('adminCategoriesGrid');
@@ -264,6 +291,7 @@ function renderCategoriesManager() {
 }
 
 function updateCategoryField(catId, field, value) {
+  if (!requireAuth()) return;
   const cat = panelState.categories.find(c => c.id === catId);
   if (!cat) return;
   cat[field] = value;
@@ -273,8 +301,9 @@ function updateCategoryField(catId, field, value) {
 }
 
 function moveCategoryOrder(catId, direction) {
+  if (!requireAuth()) return;
   const idx = panelState.categories.findIndex(c => c.id === catId);
-  if (idx <= 0) return; // index 0 is 'all'
+  if (idx <= 0) return;
   const targetIdx = idx + direction;
   if (targetIdx <= 0 || targetIdx >= panelState.categories.length) return;
   const temp = panelState.categories[idx];
@@ -285,6 +314,7 @@ function moveCategoryOrder(catId, direction) {
 }
 
 function deleteCategory(catId) {
+  if (!requireAuth()) return;
   const editable = panelState.categories.filter(c => c.id !== 'all');
   if (editable.length <= 1) {
     showToast('En az 1 kategori kalmalıdır');
@@ -301,6 +331,7 @@ function deleteCategory(catId) {
 }
 
 function openAddCategoryModal() {
+  if (!requireAuth()) return;
   panelState.newCategoryTempImg = 'assets/images/gevrek.jpg';
   const prev = document.getElementById('newCatImgPreview');
   if (prev) {
@@ -344,6 +375,7 @@ function applyNewCatImageUrl() {
 }
 
 function saveNewCategory() {
+  if (!requireAuth()) return;
   const name = (document.getElementById('newCatName')?.value || '').trim();
   const nameEn = (document.getElementById('newCatNameEn')?.value || name).trim();
   const icon = (document.getElementById('newCatIcon')?.value || '🥨').trim();
@@ -385,6 +417,7 @@ function renderSiteEditorFields() {
   setVal('editHeroTitle1', sc.heroTitle1);
   setVal('editHeroTitle2', sc.heroTitle2);
   setVal('editHeroDesc', sc.heroDesc);
+  setImg('previewLogoImg', sc.logoImg || 'assets/images/logo.png');
   setImg('previewHeroImg', sc.heroImg);
 
   setVal('editStat1Val', sc.stat1Val);
@@ -448,12 +481,14 @@ function renderSiteEditorFields() {
 }
 
 function updateSiteContentField(key, value) {
+  if (!requireAuth()) return;
   panelState.siteContent[key] = value;
   savePanelState();
   showToast('Metin kaydedildi');
 }
 
 function updateBranchDetail(branchKey, field, value) {
+  if (!requireAuth()) return;
   if (!panelState.branches[branchKey]) return;
   panelState.branches[branchKey][field] = value;
   savePanelState();
@@ -461,6 +496,7 @@ function updateBranchDetail(branchKey, field, value) {
 }
 
 function updateGalleryTitle(idx, value) {
+  if (!requireAuth()) return;
   if (!panelState.gallery[idx]) return;
   panelState.gallery[idx].title = value;
   savePanelState();
@@ -594,13 +630,19 @@ function compressUploadedImageFile(file, maxWidth, callback) {
 }
 
 function openImageEditorModal(targetId) {
+  if (!requireAuth()) return;
   panelState.editingImageTarget = targetId;
   const titleEl = document.getElementById('imageEditorTitle');
   const nameEl = document.getElementById('imageEditorTargetName');
   const removeBtn = document.getElementById('btnRemoveImageInModal');
   document.getElementById('imageEditorUrlInput').value = '';
 
-  if (targetId === 'branch_foca') {
+  if (targetId === 'site_logo') {
+    titleEl.textContent = 'Site Logosu';
+    nameEl.textContent = 'Sol Üst Marka Logosu';
+    panelState.editingImageTempSrc = panelState.siteContent.logoImg || 'assets/images/logo.png';
+    removeBtn.classList.add('hidden');
+  } else if (targetId === 'branch_foca') {
     titleEl.textContent = 'Foça Şube Fotoğrafı';
     nameEl.textContent = panelState.branches.foca.name;
     panelState.editingImageTempSrc = panelState.branches.foca.img;
@@ -700,8 +742,11 @@ function removeImageFromTarget() {
 }
 
 function saveImageEditorChanges() {
+  if (!requireAuth()) return;
   const t = panelState.editingImageTarget || '';
-  if (t === 'branch_foca') {
+  if (t === 'site_logo') {
+    panelState.siteContent.logoImg = panelState.editingImageTempSrc || 'assets/images/logo.png';
+  } else if (t === 'branch_foca') {
     panelState.branches.foca.img = panelState.editingImageTempSrc || 'assets/images/foca-sube.jpg';
   } else if (t === 'branch_bagarasi') {
     panelState.branches.bagarasi.img = panelState.editingImageTempSrc || 'assets/images/bagarasi-sube.jpg';
@@ -733,6 +778,7 @@ function closeImageEditorModal() {
 }
 
 function deleteProductImage(prodId) {
+  if (!requireAuth()) return;
   const prod = panelState.products.find(p => p.id === prodId);
   if (!prod) return;
   prod.img = '';
@@ -742,6 +788,7 @@ function deleteProductImage(prodId) {
 }
 
 function updateProductPrice(prodId, newPriceVal) {
+  if (!requireAuth()) return;
   const prod = panelState.products.find(p => p.id === prodId);
   if (!prod) return;
   prod.price = Math.max(1, Math.round(parseFloat(newPriceVal) || prod.price));
@@ -750,6 +797,7 @@ function updateProductPrice(prodId, newPriceVal) {
 }
 
 function updateProductField(prodId, field, value) {
+  if (!requireAuth()) return;
   const prod = panelState.products.find(p => p.id === prodId);
   if (!prod) return;
   prod[field] = value;
@@ -759,6 +807,7 @@ function updateProductField(prodId, field, value) {
 }
 
 function updateProductBranch(prodId, branchKey, isChecked) {
+  if (!requireAuth()) return;
   const prod = panelState.products.find(p => p.id === prodId);
   if (!prod) return;
   prod[branchKey] = Boolean(isChecked);
@@ -767,6 +816,7 @@ function updateProductBranch(prodId, branchKey, isChecked) {
 }
 
 function deleteProduct(prodId) {
+  if (!requireAuth()) return;
   panelState.products = panelState.products.filter(p => p.id !== prodId);
   savePanelState();
   renderPanelAll();
@@ -774,6 +824,7 @@ function deleteProduct(prodId) {
 }
 
 function applyBulkPercentChange(percent) {
+  if (!requireAuth()) return;
   const targetCat = document.getElementById('bulkCategoryTarget').value;
   const roundUnit = parseInt(document.getElementById('bulkRoundMode').value, 10) || 1;
   let count = 0;
@@ -790,6 +841,7 @@ function applyBulkPercentChange(percent) {
 }
 
 function applyBulkFixedChange(amountTl) {
+  if (!requireAuth()) return;
   const targetCat = document.getElementById('bulkCategoryTarget').value;
   let count = 0;
   panelState.products.forEach(p => {
@@ -804,6 +856,7 @@ function applyBulkFixedChange(amountTl) {
 }
 
 function resetMenuToDefaults() {
+  if (!requireAuth()) return;
   panelState.siteContent = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.siteContent));
   panelState.products = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.products));
   panelState.categories = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.categories));
@@ -815,6 +868,7 @@ function resetMenuToDefaults() {
 }
 
 function openBulkPasteModal() {
+  if (!requireAuth()) return;
   document.getElementById('modalBulkPaste').classList.remove('hidden');
 }
 function closeBulkPasteModal() {
@@ -829,6 +883,7 @@ function fillSampleBulkText() {
 }
 
 function processBulkPaste() {
+  if (!requireAuth()) return;
   const rawText = document.getElementById('bulkPasteTextarea').value || '';
   const defaultCat = document.getElementById('bulkPasteCategory').value || 'gevrek';
   const branchScope = document.getElementById('bulkPasteBranchScope').value || 'both';
@@ -872,6 +927,7 @@ function processBulkPaste() {
 }
 
 function openAddSingleProductModal() {
+  if (!requireAuth()) return;
   panelState.newProductTempImg = 'assets/images/gevrek.jpg';
   const prev = document.getElementById('newProdImgPreview');
   if (prev) {
@@ -900,6 +956,7 @@ function clearNewProdImage() {
   document.getElementById('newProdImgPreview')?.classList.add('hidden');
 }
 function saveNewSingleProduct() {
+  if (!requireAuth()) return;
   const name = (document.getElementById('newProdName').value || '').trim();
   const price = Math.max(1, Math.round(parseFloat(document.getElementById('newProdPrice').value) || 30));
   const cat = document.getElementById('newProdCat').value || 'gevrek';
@@ -943,6 +1000,7 @@ function buildMenuDataJsContent() {
 }
 
 function downloadMenuDataJsFile() {
+  if (!requireAuth()) return;
   const content = buildMenuDataJsContent();
   const blob = new Blob([content], { type: 'application/javascript;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -957,6 +1015,7 @@ function downloadMenuDataJsFile() {
 }
 
 async function publishToGitHubDirectly() {
+  if (!requireAuth()) return;
   const repo = (document.getElementById('ghRepoInput')?.value || '').trim();
   const token = (document.getElementById('ghTokenInput')?.value || '').trim();
   panelState.ghConfig = { repo, token, branch: 'main' };
