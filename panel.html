@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Yönetim Paneli | Tarihi Foça Simit Fırını</title>
   <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon.png" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +47,6 @@
   <!-- 2. YÖNETİM PANELİ -->
   <div id="panelDashboard" class="hidden flex-1 py-6 max-w-7xl mx-auto px-4 sm:px-6 w-full">
     <div class="bg-white rounded-3xl border border-[#e6dac8] shadow-xl p-5 sm:p-7">
-      <!-- Üst Çubuk -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-stone-200">
         <div>
           <h1 class="font-serif-title text-xl sm:text-2xl font-bold text-[#1e120b]">
@@ -60,7 +60,7 @@
               🗂️ Kategoriler & Kategori Görselleri
             </button>
             <button id="tabBtnSite" onclick="switchPanelTab('site')" class="px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition">
-              🎨 Site Yazıları & Şubeler
+              🎨 Site Yazıları, Logo & Şubeler
             </button>
           </div>
         </div>
@@ -69,8 +69,8 @@
           <button onclick="downloadMenuDataJsFile()" class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md transition">
             📦 menu-data.js İndir
           </button>
-          <a href="index.html" class="px-3.5 py-2.5 rounded-xl bg-[#efe6d8] hover:bg-[#e3d5bf] text-[#1e120b] font-bold text-xs transition">
-            👁️ Siteyi Gör
+          <a href="index.html?preview=1" class="px-3.5 py-2.5 rounded-xl bg-[#efe6d8] hover:bg-[#e3d5bf] text-[#1e120b] font-bold text-xs transition">
+            👁️ Siteyi Önizle
           </a>
           <button onclick="lockPanel()" class="px-3.5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition">
             🔒 Çıkış
@@ -78,9 +78,7 @@
         </div>
       </div>
 
-      <!-- =================================================================== -->
-      <!-- SEKME 1: ÜRÜNLER, FİYATLAR VE ÜRÜN GÖRSELLERİ                       -->
-      <!-- =================================================================== -->
+      <!-- SEKME 1: ÜRÜNLER, FİYATLAR VE ÜRÜN GÖRSELLERİ -->
       <div id="tabSectionMenu" class="pt-5">
         <div class="p-4 rounded-2xl bg-[#faf6f0] border border-[#e6dac8] flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-5">
           <div class="flex flex-wrap items-center gap-2">
@@ -109,7 +107,6 @@
           </div>
         </div>
 
-        <!-- Filtre & Arama -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div class="flex items-center gap-2">
             <input
@@ -126,7 +123,6 @@
           </button>
         </div>
 
-        <!-- Ürün Tablosu -->
         <div class="overflow-x-auto rounded-2xl border border-stone-200">
           <table class="w-full text-left border-collapse">
             <thead>
@@ -146,9 +142,7 @@
         </div>
       </div>
 
-      <!-- =================================================================== -->
-      <!-- SEKME 2: KATEGORİLER VE KATEGORİ GÖRSELLERİ YÖNETİMİ                -->
-      <!-- =================================================================== -->
+      <!-- SEKME 2: KATEGORİLER VE KATEGORİ GÖRSELLERİ YÖNETİMİ -->
       <div id="tabSectionCategories" class="hidden pt-5 space-y-5">
         <div class="p-4 sm:p-5 rounded-2xl bg-[#faf6f0] border border-[#e6dac8] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -163,12 +157,10 @@
         <div id="adminCategoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
       </div>
 
-      <!-- =================================================================== -->
-      <!-- SEKME 3: SİTE YAZILARI, ŞUBELER VE GÖRSELLER EDİTÖRÜ                -->
-      <!-- =================================================================== -->
+      <!-- SEKME 3: SİTE YAZILARI, LOGO, ŞUBELER VE GÖRSELLER EDİTÖRÜ -->
       <div id="tabSectionSite" class="hidden pt-5 space-y-6">
         <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-          <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">1. Ana Kapak & Marka Yazıları</h2>
+          <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">1. Marka Logosu, Ana Kapak & Yazılar</h2>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             <div>
               <label class="block text-xs font-bold text-stone-600 mb-1">Marka Üst Başlık</label>
@@ -190,11 +182,20 @@
               <label class="block text-xs font-bold text-stone-600 mb-1">Kapak Başlık 2. Satır</label>
               <input id="editHeroTitle2" type="text" onchange="updateSiteContentField('heroTitle2', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
             </div>
-            <div class="flex items-center gap-3 bg-white p-2.5 rounded-xl border border-stone-200">
-              <img id="previewHeroImg" src="assets/images/hero.jpg" alt="Kapak" onerror="this.classList.add('img-fallback-hidden')" class="w-14 h-14 rounded-lg object-cover border border-stone-300 shrink-0" />
-              <div>
-                <div class="text-xs font-bold">Kapak Arka Plan Görseli</div>
-                <button onclick="openImageEditorModal('site_hero')" class="mt-1 px-2.5 py-1 rounded-lg bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Görseli Değiştir</button>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-stone-200">
+                <img id="previewLogoImg" src="assets/images/logo.png" alt="Logo" onerror="this.classList.add('img-fallback-hidden')" class="w-11 h-11 rounded-lg object-cover border border-stone-300 shrink-0" />
+                <div class="min-w-0">
+                  <div class="text-[11px] font-bold truncate">Sol Üst Logo</div>
+                  <button onclick="openImageEditorModal('site_logo')" class="mt-1 px-2 py-1 rounded bg-[#1e120b] text-[#f3c677] text-[10px] font-bold">📷 Değiştir</button>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 bg-white p-2 rounded-xl border border-stone-200">
+                <img id="previewHeroImg" src="assets/images/hero.jpg" alt="Kapak" onerror="this.classList.add('img-fallback-hidden')" class="w-11 h-11 rounded-lg object-cover border border-stone-300 shrink-0" />
+                <div class="min-w-0">
+                  <div class="text-[11px] font-bold truncate">Kapak Fotoğrafı</div>
+                  <button onclick="openImageEditorModal('site_hero')" class="mt-1 px-2 py-1 rounded bg-[#1e120b] text-[#f3c677] text-[10px] font-bold">📷 Değiştir</button>
+                </div>
               </div>
             </div>
           </div>
@@ -220,7 +221,6 @@
           </div>
         </div>
 
-        <!-- 2. Şube Kartları -->
         <div class="grid md:grid-cols-2 gap-4">
           <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
             <div class="flex items-center justify-between gap-3">
@@ -231,31 +231,13 @@
               <img id="adminPreviewBranchFoca" src="assets/images/foca-sube.jpg" alt="Foça Şube" onerror="this.classList.add('img-fallback-hidden')" class="w-full h-full object-cover" />
             </div>
             <div class="grid sm:grid-cols-2 gap-2.5">
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Şube Adı</label>
-                <input id="editFocaName" type="text" onchange="updateBranchDetail('foca', 'name', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white font-semibold" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Üst Etiket</label>
-                <input id="editFocaTag" type="text" onchange="updateBranchDetail('foca', 'tag', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Çalışma Saatleri</label>
-                <input id="editFocaHours" type="text" onchange="updateBranchDetail('foca', 'hours', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Telefon</label>
-                <input id="editFocaPhone" type="text" onchange="updateBranchDetail('foca', 'phone', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
+              <input id="editFocaName" type="text" onchange="updateBranchDetail('foca', 'name', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white font-semibold" />
+              <input id="editFocaTag" type="text" onchange="updateBranchDetail('foca', 'tag', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+              <input id="editFocaHours" type="text" onchange="updateBranchDetail('foca', 'hours', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+              <input id="editFocaPhone" type="text" onchange="updateBranchDetail('foca', 'phone', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
             </div>
-            <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Adres</label>
-              <input id="editFocaAddress" type="text" onchange="updateBranchDetail('foca', 'address', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Harita Linki</label>
-              <input id="editFocaMap" type="text" onchange="updateBranchDetail('foca', 'mapUrl', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-            </div>
+            <input id="editFocaAddress" type="text" onchange="updateBranchDetail('foca', 'address', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+            <input id="editFocaMap" type="text" onchange="updateBranchDetail('foca', 'mapUrl', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
           </div>
 
           <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
@@ -267,63 +249,27 @@
               <img id="adminPreviewBranchBagarasi" src="assets/images/bagarasi-sube.jpg" alt="Bağarası Şube" onerror="this.classList.add('img-fallback-hidden')" class="w-full h-full object-cover" />
             </div>
             <div class="grid sm:grid-cols-2 gap-2.5">
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Şube Adı</label>
-                <input id="editBagName" type="text" onchange="updateBranchDetail('bagarasi', 'name', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white font-semibold" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Üst Etiket</label>
-                <input id="editBagTag" type="text" onchange="updateBranchDetail('bagarasi', 'tag', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Çalışma Saatleri</label>
-                <input id="editBagHours" type="text" onchange="updateBranchDetail('bagarasi', 'hours', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Telefon</label>
-                <input id="editBagPhone" type="text" onchange="updateBranchDetail('bagarasi', 'phone', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-              </div>
+              <input id="editBagName" type="text" onchange="updateBranchDetail('bagarasi', 'name', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white font-semibold" />
+              <input id="editBagTag" type="text" onchange="updateBranchDetail('bagarasi', 'tag', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+              <input id="editBagHours" type="text" onchange="updateBranchDetail('bagarasi', 'hours', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+              <input id="editBagPhone" type="text" onchange="updateBranchDetail('bagarasi', 'phone', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
             </div>
-            <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Adres</label>
-              <input id="editBagAddress" type="text" onchange="updateBranchDetail('bagarasi', 'address', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-stone-600 mb-0.5">Harita Linki</label>
-              <input id="editBagMap" type="text" onchange="updateBranchDetail('bagarasi', 'mapUrl', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
-            </div>
+            <input id="editBagAddress" type="text" onchange="updateBranchDetail('bagarasi', 'address', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
+            <input id="editBagMap" type="text" onchange="updateBranchDetail('bagarasi', 'mapUrl', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 text-xs bg-white" />
           </div>
         </div>
 
-        <!-- 3. Hakkımızda & Galeri -->
         <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
           <h2 class="font-serif-title text-lg font-bold text-[#1e120b]">3. Hakkımızda Yazıları & Galeri Görselleri</h2>
           <div class="grid sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">Üst Etiket</label>
-              <input id="editAboutBadge" type="text" onchange="updateSiteContentField('aboutBadge', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">Hakkımızda Başlığı</label>
-              <input id="editAboutTitle" type="text" onchange="updateSiteContentField('aboutTitle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white font-bold" />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">1. Paragraf</label>
-              <textarea id="editAboutText1" rows="3" onchange="updateSiteContentField('aboutText1', this.value)" class="w-full p-2.5 rounded-xl border border-stone-300 text-xs bg-white"></textarea>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-stone-600 mb-1">2. Paragraf</label>
-              <textarea id="editAboutText2" rows="3" onchange="updateSiteContentField('aboutText2', this.value)" class="w-full p-2.5 rounded-xl border border-stone-300 text-xs bg-white"></textarea>
-            </div>
+            <input id="editAboutBadge" type="text" onchange="updateSiteContentField('aboutBadge', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
+            <input id="editAboutTitle" type="text" onchange="updateSiteContentField('aboutTitle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white font-bold" />
+            <textarea id="editAboutText1" rows="3" onchange="updateSiteContentField('aboutText1', this.value)" class="w-full p-2.5 rounded-xl border border-stone-300 text-xs bg-white"></textarea>
+            <textarea id="editAboutText2" rows="3" onchange="updateSiteContentField('aboutText2', this.value)" class="w-full p-2.5 rounded-xl border border-stone-300 text-xs bg-white"></textarea>
           </div>
-
-          <div>
-            <label class="block text-xs font-bold text-stone-600 mb-2">Galeri Fotoğrafları & Başlıkları</label>
-            <div id="adminGalleryEditorGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-          </div>
+          <div id="adminGalleryEditorGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
         </div>
 
-        <!-- 4. Özel Gün Pasta, İletişim & Ayarlar -->
         <div class="grid lg:grid-cols-3 gap-4">
           <div class="lg:col-span-2 p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
             <div class="flex items-center justify-between">
@@ -331,30 +277,12 @@
               <button onclick="openImageEditorModal('site_cake')" class="px-3 py-1.5 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">📷 Pasta Görselini Değiştir</button>
             </div>
             <div class="grid sm:grid-cols-2 gap-3">
-              <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">Banner Etiketi</label>
-                <input id="editCakeBadge" type="text" onchange="updateSiteContentField('cakeBadge', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">Banner Başlığı</label>
-                <input id="editCakeTitle" type="text" onchange="updateSiteContentField('cakeTitle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white font-bold" />
-              </div>
-              <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-stone-600 mb-1">Banner Açıklaması</label>
-                <input id="editCakeDesc" type="text" onchange="updateSiteContentField('cakeDesc', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">WhatsApp Numarası</label>
-                <input id="editWhatsappNumber" type="text" onchange="updateSiteContentField('whatsappNumber', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-stone-600 mb-1">Instagram Kullanıcı Adı</label>
-                <input id="editInstagramHandle" type="text" onchange="updateSiteContentField('instagramHandle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-              </div>
-              <div class="sm:col-span-2">
-                <label class="block text-xs font-bold text-stone-600 mb-1">Alt Bilgi Açıklama Metni</label>
-                <input id="editFooterDesc" type="text" onchange="updateSiteContentField('footerDesc', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
-              </div>
+              <input id="editCakeBadge" type="text" onchange="updateSiteContentField('cakeBadge', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
+              <input id="editCakeTitle" type="text" onchange="updateSiteContentField('cakeTitle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white font-bold" />
+              <input id="editCakeDesc" type="text" onchange="updateSiteContentField('cakeDesc', this.value)" class="sm:col-span-2 w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
+              <input id="editWhatsappNumber" type="text" onchange="updateSiteContentField('whatsappNumber', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
+              <input id="editInstagramHandle" type="text" onchange="updateSiteContentField('instagramHandle', this.value)" class="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
+              <input id="editFooterDesc" type="text" onchange="updateSiteContentField('footerDesc', this.value)" class="sm:col-span-2 w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white" />
             </div>
           </div>
 
@@ -390,7 +318,7 @@
     </div>
   </div>
 
-  <!-- YENİ KATEGORİ EKLEME MODALI -->
+  <!-- MODALLAR -->
   <div id="modalAddCategory" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 relative">
       <button onclick="closeAddCategoryModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
@@ -438,7 +366,6 @@
     </div>
   </div>
 
-  <!-- GÖRSEL DÜZENLEME MODALI -->
   <div id="modalImageEditor" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto">
       <button onclick="closeImageEditorModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-sm">✕</button>
@@ -479,7 +406,6 @@
     </div>
   </div>
 
-  <!-- TOPLU LİSTE YAPIŞTIRMA MODALI -->
   <div id="modalBulkPaste" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-stone-200 relative">
       <button onclick="closeBulkPasteModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
@@ -500,7 +426,6 @@
     </div>
   </div>
 
-  <!-- YENİ ÜRÜN EKLEME MODALI -->
   <div id="modalAddProduct" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 relative">
       <button onclick="closeAddSingleProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 text-stone-700 font-bold text-sm">✕</button>
