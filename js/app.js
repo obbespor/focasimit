@@ -7,15 +7,14 @@ const STORAGE_KEY_CATEGORIES = 'tarihi_foca_simit_firini_categories_v4';
 const STORAGE_KEY_BRANCHES = 'tarihi_foca_simit_firini_branches_v4';
 const STORAGE_KEY_SITE = 'tarihi_foca_simit_firini_site_v4';
 const STORAGE_KEY_GALLERY = 'tarihi_foca_simit_firini_gallery_v4';
+const STORAGE_KEY_AUTH_SESSION = 'tarihi_foca_simit_firini_auth_ok';
 
 const state = {
   lang: 'tr',
-  activeView: 'vitrin', // 'vitrin' | 'qrmenu'
-  activeBranch: 'foca', // 'foca' | 'bagarasi'
+  activeView: 'vitrin',
+  activeBranch: 'foca',
   selectedCategory: 'all',
-  selectedTag: 'all', // 'all' | 'sicak' | 'imza' | 'tatli'
   mobileLayout: window.innerWidth < 640 ? 'compact' : 'grid',
-  searchQuery: '',
   siteContent: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.siteContent)),
   branches: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.branches)),
   products: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.products)),
@@ -26,6 +25,10 @@ const state = {
 
 function loadPreviewOverridesFromStorage() {
   try {
+    // Yalnızca yönetici panelinden şifreyle giriş yapılmış oturumda önizleme verilerini yükle
+    const isPreviewSession = sessionStorage.getItem(STORAGE_KEY_AUTH_SESSION) === '1' || window.location.search.includes('preview=1');
+    if (!isPreviewSession) return;
+
     const rawProds = localStorage.getItem(STORAGE_KEY_PRODUCTS);
     if (rawProds) {
       const parsed = JSON.parse(rawProds);
@@ -110,6 +113,7 @@ function renderSiteContentBindings() {
     setTxt('scInstagramHandle', sc.instagramHandle);
   }
 
+  if (sc.logoImg) setSrc('scBrandLogo', sc.logoImg);
   setSrc('scHeroImg', sc.heroImg);
   setSrc('scCakeImg', sc.cakeImg);
 
@@ -151,8 +155,8 @@ function switchMainView(viewName) {
   }
   if (btnQr) {
     btnQr.className = viewName === 'qrmenu'
-      ? 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm flex items-center gap-1.5'
-      : 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#9a5818] text-white shadow-sm hover:bg-[#7c4510] flex items-center gap-1.5';
+      ? 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm flex items-center gap-1.5'
+      : 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#9a5818] text-white shadow-sm hover:bg-[#7c4510] flex items-center gap-1.5';
   }
 
   renderAll();
@@ -180,7 +184,6 @@ function goToBranchesSection() {
 
 function filterQrMenuByCategory(catId) {
   state.selectedCategory = catId;
-  state.selectedTag = 'all';
   switchMainView('qrmenu');
 }
 
@@ -234,44 +237,8 @@ function getFilteredQrProducts() {
   const branchProds = getBranchProducts(state.activeBranch);
   return branchProds.filter(p => {
     if (state.selectedCategory !== 'all' && p.cat !== state.selectedCategory) return false;
-    if (state.selectedTag === 'sicak' && !p.hot) return false;
-    if (state.selectedTag === 'imza' && !p.signature) return false;
-    if (state.selectedTag === 'tatli' && p.cat !== 'kurupasta' && p.cat !== 'pasta' && p.cat !== 'dondurma') return false;
-    if (state.searchQuery.trim() !== '') {
-      const q = state.searchQuery.toLowerCase();
-      const matchName = (p.name || '').toLowerCase().includes(q) || (p.nameEn || '').toLowerCase().includes(q);
-      const matchDesc = (p.desc || '').toLowerCase().includes(q);
-      if (!matchName && !matchDesc) return false;
-    }
     return true;
   });
-}
-
-function handleQrSearch(val) {
-  state.searchQuery = val || '';
-  document.getElementById('btnClearSearch')?.classList.toggle('hidden', !state.searchQuery);
-  renderQrMenuSection();
-}
-
-function clearQrSearch() {
-  state.searchQuery = '';
-  const input = document.getElementById('qrSearchInput');
-  if (input) input.value = '';
-  document.getElementById('btnClearSearch')?.classList.add('hidden');
-  renderQrMenuSection();
-}
-
-function setTagFilter(tag) {
-  state.selectedTag = tag;
-  const mapIds = { all: 'tagBtnAll', sicak: 'tagBtnSicak', imza: 'tagBtnImza', tatli: 'tagBtnTatli' };
-  Object.keys(mapIds).forEach(t => {
-    const btn = document.getElementById(mapIds[t]);
-    if (!btn) return;
-    btn.className = t === tag
-      ? 'px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap bg-[#d99b43] text-[#1e120b] transition shadow-sm shrink-0'
-      : 'px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap bg-white/10 text-stone-200 hover:bg-white/15 transition shrink-0';
-  });
-  renderQrMenuSection();
 }
 
 function selectCategory(catId, btnEl) {
@@ -308,7 +275,6 @@ function renderBranchIndicators() {
       : 'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-stone-700 hover:bg-stone-200/70';
   }
 
-  // Mobil Alt Gezinme Çubuğu
   const bNavHome = document.getElementById('mBottomHome');
   const bNavFoca = document.getElementById('mBottomFoca');
   const bNavBag = document.getElementById('mBottomBagarasi');
@@ -332,11 +298,11 @@ function renderBranchIndicators() {
   const vBtnBag = document.getElementById('vitrinBtnBagarasi');
   if (vBtnFoca && vBtnBag) {
     vBtnFoca.className = isFoca
-      ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm'
-      : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-stone-800 border border-stone-300 hover:bg-stone-50';
+      ? 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm'
+      : 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-stone-800 border border-stone-300 hover:bg-stone-50';
     vBtnBag.className = !isFoca
-      ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm'
-      : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-stone-800 border border-stone-300 hover:bg-stone-50';
+      ? 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#1e120b] text-[#f3c677] shadow-sm'
+      : 'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-stone-800 border border-stone-300 hover:bg-stone-50';
   }
 
   const qTitle = document.getElementById('qrHeaderBranchTitle');
@@ -344,17 +310,17 @@ function renderBranchIndicators() {
   const qHours = document.getElementById('qrHeaderHoursBadge');
   if (qTitle) qTitle.textContent = bInfo.name;
   if (qAddr) qAddr.textContent = '📍 ' + bInfo.address;
-  if (qHours) qHours.textContent = bInfo.hours;
+  if (qHours) qHours.textContent = '🕒 ' + bInfo.hours;
 
   const qSwFoca = document.getElementById('qrSwitchFoca');
   const qSwBag = document.getElementById('qrSwitchBagarasi');
   if (qSwFoca && qSwBag) {
     qSwFoca.className = isFoca
-      ? 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#d99b43] text-[#1e120b] shadow text-center'
-      : 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition text-stone-200 hover:bg-white/10 text-center';
+      ? 'flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-[#d99b43] text-[#1e120b] shadow text-center'
+      : 'flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-stone-200 hover:bg-white/10 text-center';
     qSwBag.className = !isFoca
-      ? 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-[#d99b43] text-[#1e120b] shadow text-center'
-      : 'flex-1 sm:flex-initial px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition text-stone-200 hover:bg-white/10 text-center';
+      ? 'flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-[#d99b43] text-[#1e120b] shadow text-center'
+      : 'flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg text-xs font-semibold transition text-stone-200 hover:bg-white/10 text-center';
   }
 }
 
@@ -465,7 +431,6 @@ function buildProductCardHtml(p, isQrMenuView) {
   const safeTitle = title.replace(/'/g, "\\'");
   const catIcon = getCategoryIcon(p.cat);
 
-  // Mobil Öncelikli Liste Kartı (Sıkışıklığı Önleyen Zarif Tasarım)
   if (isQrMenuView && state.mobileLayout === 'compact') {
     return `
       <div class="bg-white rounded-2xl border border-[#e6dac8] shadow-sm hover:shadow-md transition p-3 sm:p-4 flex items-start gap-3 sm:gap-4 min-w-0">
@@ -494,7 +459,6 @@ function buildProductCardHtml(p, isQrMenuView) {
     `;
   }
 
-  // Görsel vitrin / Kart görünümü
   if (hasImage) {
     return `
       <div class="bg-white rounded-2xl sm:rounded-3xl border border-[#e6dac8] shadow-sm hover:shadow-lg transition overflow-hidden flex flex-col justify-between card-zoom min-w-0">
@@ -601,19 +565,7 @@ function renderQrMenuSection() {
     ? 'grid grid-cols-1 lg:grid-cols-2 gap-2.5 sm:gap-4'
     : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5';
 
-  if (filtered.length === 0) {
-    gridEl.innerHTML = `
-      <div class="col-span-full bg-white rounded-2xl p-8 text-center border border-[#e6dac8]">
-        <div class="text-2xl mb-2">🥨</div>
-        <div class="font-bold text-sm text-[#1e120b]">Ürün bulunamadı</div>
-        <button onclick="state.selectedCategory='all'; setTagFilter('all'); clearQrSearch();" class="mt-3 px-4 py-2 rounded-xl bg-[#1e120b] text-[#f3c677] text-xs font-bold">
-          Tüm Ürünleri Göster
-        </button>
-      </div>
-    `;
-  } else {
-    gridEl.innerHTML = filtered.map(p => buildProductCardHtml(p, true)).join('');
-  }
+  gridEl.innerHTML = filtered.map(p => buildProductCardHtml(p, true)).join('');
 }
 
 function renderGalleryAndReviews() {
