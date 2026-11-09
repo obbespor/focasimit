@@ -372,7 +372,11 @@ function renderBranchesSection() {
 function renderHeroSignatureCard() {
   const container = document.getElementById('heroSignatureItemsList');
   if (!container) return;
-  const featured = getBranchProducts(state.activeBranch).filter(p => p.signature).slice(0, 4);
+  const branchProds = getBranchProducts(state.activeBranch);
+  let featured = branchProds.filter(p => p.signature).slice(0, 4);
+  if (featured.length === 0) {
+    featured = branchProds.slice(0, 4);
+  }
   container.innerHTML = featured.map(p => {
     const title = state.lang === 'en' && p.nameEn ? p.nameEn : p.name;
     const icon = getCategoryIcon(p.cat);
