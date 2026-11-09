@@ -1,28 +1,30 @@
 /**
  * Tarihi Foça Simit Fırını — Yönetim Paneli Motoru (js/panel.js)
- * Hem Menü/Fiyat/Ürün Görsellerini hem de Site Yazılarını, Şube Bilgilerini ve Galeri Görsellerini düzenler.
+ * Ürünler/Fiyatlar, Kategoriler/Kategori Görselleri ve Site Yazıları/Şubeler yönetimi.
  */
 
-const STORAGE_KEY_PRODUCTS = 'tarihi_foca_simit_firini_menu_v3';
-const STORAGE_KEY_BRANCHES = 'tarihi_foca_simit_firini_branches_v3';
-const STORAGE_KEY_SITE = 'tarihi_foca_simit_firini_site_v3';
-const STORAGE_KEY_GALLERY = 'tarihi_foca_simit_firini_gallery_v3';
-const STORAGE_KEY_PASS = 'tarihi_foca_simit_firini_pass_v3';
+const STORAGE_KEY_PRODUCTS = 'tarihi_foca_simit_firini_menu_v4';
+const STORAGE_KEY_CATEGORIES = 'tarihi_foca_simit_firini_categories_v4';
+const STORAGE_KEY_BRANCHES = 'tarihi_foca_simit_firini_branches_v4';
+const STORAGE_KEY_SITE = 'tarihi_foca_simit_firini_site_v4';
+const STORAGE_KEY_GALLERY = 'tarihi_foca_simit_firini_gallery_v4';
+const STORAGE_KEY_PASS = 'tarihi_foca_simit_firini_pass_v4';
 const STORAGE_KEY_GH = 'tarihi_foca_simit_firini_gh_config';
 
 const panelState = {
   isAuthenticated: false,
-  activeTab: 'menu', // 'menu' | 'site'
+  activeTab: 'menu', // 'menu' | 'categories' | 'site'
   adminPassword: 'foca2026',
   siteContent: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.siteContent)),
   branches: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.branches)),
   products: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.products)),
+  categories: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.categories)),
   gallery: JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.gallery)),
-  categories: window.FOCA_MENU_DATA.categories,
   categoryImages: window.FOCA_MENU_DATA.categoryImages,
-  editingImageTarget: null, // 'branch_foca' | 'branch_bagarasi' | 'site_hero' | 'site_cake' | 'gallery_0'..'gallery_5' | productId
+  editingImageTarget: null, // 'branch_foca' | 'branch_bagarasi' | 'site_hero' | 'site_cake' | 'gallery_0'..'gallery_5' | 'cat_<id>' | productId
   editingImageTempSrc: '',
-  newProductTempImg: window.FOCA_MENU_DATA.categoryImages.gevrek,
+  newProductTempImg: 'assets/images/gevrek.jpg',
+  newCategoryTempImg: 'assets/images/gevrek.jpg',
   ghConfig: { repo: '', token: '', branch: 'main' }
 };
 
@@ -45,6 +47,11 @@ function loadPanelState() {
     if (rawProds) {
       const parsed = JSON.parse(rawProds);
       if (Array.isArray(parsed) && parsed.length > 0) panelState.products = parsed;
+    }
+    const rawCats = localStorage.getItem(STORAGE_KEY_CATEGORIES);
+    if (rawCats) {
+      const parsedC = JSON.parse(rawCats);
+      if (Array.isArray(parsedC) && parsedC.length > 0) panelState.categories = parsedC;
     }
     const rawBranches = localStorage.getItem(STORAGE_KEY_BRANCHES);
     if (rawBranches) {
@@ -72,6 +79,7 @@ function loadPanelState() {
 function savePanelState() {
   try {
     localStorage.setItem(STORAGE_KEY_PRODUCTS, JSON.stringify(panelState.products));
+    localStorage.setItem(STORAGE_KEY_CATEGORIES, JSON.stringify(panelState.categories));
     localStorage.setItem(STORAGE_KEY_BRANCHES, JSON.stringify(panelState.branches));
     localStorage.setItem(STORAGE_KEY_SITE, JSON.stringify(panelState.siteContent));
     localStorage.setItem(STORAGE_KEY_GALLERY, JSON.stringify(panelState.gallery));
@@ -89,7 +97,7 @@ function showToast(msg) {
   if (window._toastTimer) clearTimeout(window._toastTimer);
   window._toastTimer = setTimeout(() => {
     toast.classList.add('hidden');
-  }, 2600);
+  }, 2400);
 }
 
 function verifyPanelLogin() {
@@ -114,15 +122,21 @@ function lockPanel() {
 function switchPanelTab(tabName) {
   panelState.activeTab = tabName;
   document.getElementById('tabSectionMenu').classList.toggle('hidden', tabName !== 'menu');
+  document.getElementById('tabSectionCategories').classList.toggle('hidden', tabName !== 'categories');
   document.getElementById('tabSectionSite').classList.toggle('hidden', tabName !== 'site');
 
-  document.getElementById('tabBtnMenu').className = tabName === 'menu'
-    ? 'px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-amber-700 text-white shadow-sm transition'
-    : 'px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
-
-  document.getElementById('tabBtnSite').className = tabName === 'site'
-    ? 'px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-amber-700 text-white shadow-sm transition'
-    : 'px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+  const tabs = [
+    { id: 'tabBtnMenu', key: 'menu' },
+    { id: 'tabBtnCategories', key: 'categories' },
+    { id: 'tabBtnSite', key: 'site' }
+  ];
+  tabs.forEach(t => {
+    const el = document.getElementById(t.id);
+    if (!el) return;
+    el.className = t.key === tabName
+      ? 'px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-[#1e120b] text-[#f3c677] shadow-sm transition'
+      : 'px-4 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-stone-100 text-stone-700 hover:bg-stone-200 transition';
+  });
 
   renderPanelAll();
 }
@@ -139,8 +153,35 @@ function updateAdminPassword() {
   showToast('Şifre güncellendi');
 }
 
+function syncCategorySelectDropdowns() {
+  const realCats = panelState.categories.filter(c => c.id !== 'all');
+  const allPlusOpts = `<option value="all">Tüm Kategoriler</option>` +
+    realCats.map(c => `<option value="${c.id}">${c.icon || '🥨'} ${c.name}</option>`).join('');
+  const onlyRealOpts = realCats.map(c => `<option value="${c.id}">${c.icon || '🥨'} ${c.name}</option>`).join('');
+
+  const bulkTarget = document.getElementById('bulkCategoryTarget');
+  const adminFilter = document.getElementById('adminCategoryFilter');
+  const bulkPasteCat = document.getElementById('bulkPasteCategory');
+  const newProdCat = document.getElementById('newProdCat');
+
+  if (bulkTarget) {
+    const prev = bulkTarget.value || 'all';
+    bulkTarget.innerHTML = allPlusOpts;
+    bulkTarget.value = prev;
+  }
+  if (adminFilter) {
+    const prev = adminFilter.value || 'all';
+    adminFilter.innerHTML = allPlusOpts;
+    adminFilter.value = prev;
+  }
+  if (bulkPasteCat) bulkPasteCat.innerHTML = onlyRealOpts;
+  if (newProdCat) newProdCat.innerHTML = onlyRealOpts;
+}
+
 function renderPanelAll() {
+  syncCategorySelectDropdowns();
   renderAdminTable();
+  renderCategoriesManager();
   renderSiteEditorFields();
 
   const ghRepoEl = document.getElementById('ghRepoInput');
@@ -150,7 +191,182 @@ function renderPanelAll() {
 }
 
 // =========================================================================
-// TAB 2: SITE METİNLERİ, ŞUBE BİLGİLERİ VE VİTRİN GÖRSELLERİ EDİTÖRÜ
+// SEKME 2: KATEGORİ YÖNETİMİ (KATEGORİ EKLEME & KATEGORİ GÖRSELİ EKLEME)
+// =========================================================================
+function renderCategoriesManager() {
+  const grid = document.getElementById('adminCategoriesGrid');
+  if (!grid) return;
+
+  const editableCats = panelState.categories.filter(c => c.id !== 'all');
+
+  grid.innerHTML = editableCats.map((c, idx) => {
+    const prodCount = panelState.products.filter(p => p.cat === c.id).length;
+    const hasImg = Boolean(c.img && c.img.trim() !== '');
+    return `
+      <div class="bg-stone-50 rounded-2xl border border-stone-200 p-4 flex flex-col justify-between gap-3">
+        <div>
+          <div class="relative h-36 rounded-xl overflow-hidden hero-surface border border-stone-200 flex items-center justify-center">
+            <span class="text-3xl">${c.icon || '🥨'}</span>
+            ${hasImg ? `<img src="${c.img}" alt="${c.name}" onerror="this.classList.add('img-fallback-hidden')" class="absolute inset-0 w-full h-full object-cover" />` : ''}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20"></div>
+            <div class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/60 text-[#f3c677] text-[11px] font-bold">
+              ${prodCount} Ürün
+            </div>
+            <button onclick="openImageEditorModal('cat_${c.id}')" class="absolute bottom-2.5 right-2.5 px-3 py-1.5 rounded-xl bg-[#1e120b]/90 hover:bg-black text-[#f3c677] text-xs font-bold shadow">
+              📷 Görseli Değiştir
+            </button>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 mt-3">
+            <div>
+              <label class="block text-[10px] font-bold text-stone-500 mb-0.5">İkon</label>
+              <input
+                type="text"
+                value="${(c.icon || '🥨').replace(/"/g, '&quot;')}"
+                onchange="updateCategoryField('${c.id}', 'icon', this.value)"
+                class="w-full px-2 py-1.5 rounded-lg border border-stone-300 bg-white text-center text-sm"
+              />
+            </div>
+            <div class="col-span-3">
+              <label class="block text-[10px] font-bold text-stone-500 mb-0.5">Kategori Adı (TR)</label>
+              <input
+                type="text"
+                value="${c.name.replace(/"/g, '&quot;')}"
+                onchange="updateCategoryField('${c.id}', 'name', this.value)"
+                class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 bg-white font-bold text-xs"
+              />
+            </div>
+          </div>
+
+          <div class="mt-2">
+            <label class="block text-[10px] font-bold text-stone-500 mb-0.5">İngilizce Adı (EN)</label>
+            <input
+              type="text"
+              value="${(c.nameEn || c.name).replace(/"/g, '&quot;')}"
+              onchange="updateCategoryField('${c.id}', 'nameEn', this.value)"
+              class="w-full px-2.5 py-1.5 rounded-lg border border-stone-300 bg-white text-xs text-stone-700"
+            />
+          </div>
+        </div>
+
+        <div class="pt-2.5 border-t border-stone-200 flex items-center justify-between">
+          <div class="flex items-center gap-1">
+            <button onclick="moveCategoryOrder('${c.id}', -1)" ${idx === 0 ? 'disabled' : ''} class="px-2 py-1 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 text-xs font-bold">↑</button>
+            <button onclick="moveCategoryOrder('${c.id}', 1)" ${idx === editableCats.length - 1 ? 'disabled' : ''} class="px-2 py-1 rounded bg-stone-200 hover:bg-stone-300 disabled:opacity-40 text-xs font-bold">↓</button>
+          </div>
+          <button onclick="deleteCategory('${c.id}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50">
+            Kategoriyi Sil
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateCategoryField(catId, field, value) {
+  const cat = panelState.categories.find(c => c.id === catId);
+  if (!cat) return;
+  cat[field] = value;
+  savePanelState();
+  renderPanelAll();
+  showToast('Kategori güncellendi');
+}
+
+function moveCategoryOrder(catId, direction) {
+  const idx = panelState.categories.findIndex(c => c.id === catId);
+  if (idx <= 0) return; // index 0 is 'all'
+  const targetIdx = idx + direction;
+  if (targetIdx <= 0 || targetIdx >= panelState.categories.length) return;
+  const temp = panelState.categories[idx];
+  panelState.categories[idx] = panelState.categories[targetIdx];
+  panelState.categories[targetIdx] = temp;
+  savePanelState();
+  renderPanelAll();
+}
+
+function deleteCategory(catId) {
+  const editable = panelState.categories.filter(c => c.id !== 'all');
+  if (editable.length <= 1) {
+    showToast('En az 1 kategori kalmalıdır');
+    return;
+  }
+  const fallbackCat = editable.find(c => c.id !== catId)?.id || 'gevrek';
+  panelState.products.forEach(p => {
+    if (p.cat === catId) p.cat = fallbackCat;
+  });
+  panelState.categories = panelState.categories.filter(c => c.id !== catId);
+  savePanelState();
+  renderPanelAll();
+  showToast('Kategori silindi');
+}
+
+function openAddCategoryModal() {
+  panelState.newCategoryTempImg = 'assets/images/gevrek.jpg';
+  const prev = document.getElementById('newCatImgPreview');
+  if (prev) {
+    prev.src = panelState.newCategoryTempImg;
+    prev.classList.remove('hidden');
+  }
+  document.getElementById('newCatName').value = '';
+  document.getElementById('newCatNameEn').value = '';
+  document.getElementById('newCatIcon').value = '🥖';
+  document.getElementById('newCatImgUrl').value = '';
+  document.getElementById('modalAddCategory').classList.remove('hidden');
+}
+
+function closeAddCategoryModal() {
+  document.getElementById('modalAddCategory').classList.add('hidden');
+}
+
+function handleNewCatFileUpload(inputEl) {
+  const file = inputEl.files && inputEl.files[0];
+  if (!file) return;
+  compressUploadedImageFile(file, 900, (dataUrl) => {
+    panelState.newCategoryTempImg = dataUrl;
+    const prev = document.getElementById('newCatImgPreview');
+    if (prev) {
+      prev.src = dataUrl;
+      prev.classList.remove('hidden');
+    }
+    showToast('Kategori görseli yüklendi');
+  });
+}
+
+function applyNewCatImageUrl() {
+  const url = (document.getElementById('newCatImgUrl')?.value || '').trim();
+  if (!url) return;
+  panelState.newCategoryTempImg = url;
+  const prev = document.getElementById('newCatImgPreview');
+  if (prev) {
+    prev.src = url;
+    prev.classList.remove('hidden');
+  }
+}
+
+function saveNewCategory() {
+  const name = (document.getElementById('newCatName')?.value || '').trim();
+  const nameEn = (document.getElementById('newCatNameEn')?.value || name).trim();
+  const icon = (document.getElementById('newCatIcon')?.value || '🥨').trim();
+  if (!name) {
+    showToast('Kategori adı girin');
+    return;
+  }
+  const slug = 'cat_' + Date.now();
+  panelState.categories.push({
+    id: slug,
+    name,
+    nameEn: nameEn || name,
+    icon: icon || '🥨',
+    img: panelState.newCategoryTempImg || 'assets/images/gevrek.jpg'
+  });
+  savePanelState();
+  closeAddCategoryModal();
+  renderPanelAll();
+  showToast(`${name} kategorisi eklendi`);
+}
+
+// =========================================================================
+// SEKME 3: SITE METİNLERİ, ŞUBE BİLGİLERİ VE VİTRİN GÖRSELLERİ EDİTÖRÜ
 // =========================================================================
 function renderSiteEditorFields() {
   const sc = panelState.siteContent;
@@ -163,7 +379,6 @@ function renderSiteEditorFields() {
     if (el && v) el.src = v;
   };
 
-  // Hero & Marka
   setVal('editBrandSub', sc.brandSub);
   setVal('editBrandName', sc.brandName);
   setVal('editHeroBadge', sc.heroBadge);
@@ -172,7 +387,6 @@ function renderSiteEditorFields() {
   setVal('editHeroDesc', sc.heroDesc);
   setImg('previewHeroImg', sc.heroImg);
 
-  // İstatistikler
   setVal('editStat1Val', sc.stat1Val);
   setVal('editStat1Label', sc.stat1Label);
   setVal('editStat2Val', sc.stat2Val);
@@ -180,13 +394,11 @@ function renderSiteEditorFields() {
   setVal('editStat3Val', sc.stat3Val);
   setVal('editStat3Label', sc.stat3Label);
 
-  // Hakkımızda
   setVal('editAboutBadge', sc.aboutBadge);
   setVal('editAboutTitle', sc.aboutTitle);
   setVal('editAboutText1', sc.aboutText1);
   setVal('editAboutText2', sc.aboutText2);
 
-  // Özel Gün Pasta & İletişim
   setVal('editCakeBadge', sc.cakeBadge);
   setVal('editCakeTitle', sc.cakeTitle);
   setVal('editCakeDesc', sc.cakeDesc);
@@ -196,7 +408,6 @@ function renderSiteEditorFields() {
   setVal('editFooterDesc', sc.footerDesc);
   setImg('previewCakeImg', sc.cakeImg);
 
-  // Şubeler (Foça & Bağarası)
   const bf = panelState.branches.foca;
   const bb = panelState.branches.bagarasi;
   setVal('editFocaName', bf.name);
@@ -215,14 +426,13 @@ function renderSiteEditorFields() {
   setVal('editBagMap', bb.mapUrl);
   setImg('adminPreviewBranchBagarasi', bb.img);
 
-  // Galeri 6 Fotoğraf
   const galGrid = document.getElementById('adminGalleryEditorGrid');
   if (galGrid) {
     galGrid.innerHTML = panelState.gallery.map((g, idx) => `
       <div class="p-3 rounded-2xl bg-stone-50 border border-stone-200 flex flex-col gap-2">
-        <div class="relative h-28 rounded-xl overflow-hidden bg-amber-100 border border-amber-200">
-          <img src="${g.src}" alt="${g.title}" class="w-full h-full object-cover" />
-          <button onclick="openImageEditorModal('gallery_${idx}')" class="absolute bottom-2 right-2 px-2.5 py-1 rounded-lg bg-black/75 text-white text-[11px] font-bold">
+        <div class="relative h-28 rounded-xl overflow-hidden hero-surface border border-stone-200">
+          <img src="${g.src}" alt="${g.title}" onerror="this.classList.add('img-fallback-hidden')" class="w-full h-full object-cover" />
+          <button onclick="openImageEditorModal('gallery_${idx}')" class="absolute bottom-2 right-2 px-2.5 py-1 rounded-lg bg-black/80 text-[#f3c677] text-[11px] font-bold">
             📷 Değiştir
           </button>
         </div>
@@ -258,7 +468,7 @@ function updateGalleryTitle(idx, value) {
 }
 
 // =========================================================================
-// TAB 1: MENÜ, FİYAT VE ÜRÜN GÖRSELLERİ TABLOSU
+// SEKME 1: MENÜ, FİYAT VE ÜRÜN GÖRSELLERİ TABLOSU
 // =========================================================================
 function renderAdminTable() {
   const tbody = document.getElementById('adminProductsTableBody');
@@ -277,18 +487,21 @@ function renderAdminTable() {
   tbody.innerHTML = rows.map(p => {
     const hasImg = Boolean(p.img && p.img.trim() !== '');
     return `
-      <tr class="hover:bg-amber-50/50 transition">
+      <tr class="hover:bg-amber-50/40 transition">
         <td class="py-2.5 px-3">
           <div class="flex items-center gap-2">
             ${hasImg ? `
-              <img src="${p.img}" alt="${p.name.replace(/"/g, '&quot;')}" onclick="openImageEditorModal('${p.id}')" class="w-12 h-12 rounded-xl object-cover border border-amber-300 cursor-pointer shrink-0 hover:opacity-80" />
+              <div onclick="openImageEditorModal('${p.id}')" class="relative w-12 h-12 rounded-xl overflow-hidden fallback-thumb border border-stone-300 cursor-pointer shrink-0 flex items-center justify-center">
+                <span class="text-base">🥨</span>
+                <img src="${p.img}" alt="${p.name.replace(/"/g, '&quot;')}" onerror="this.classList.add('img-fallback-hidden')" class="absolute inset-0 w-full h-full object-cover" />
+              </div>
             ` : `
               <div onclick="openImageEditorModal('${p.id}')" class="w-12 h-12 rounded-xl bg-stone-100 border border-dashed border-stone-300 flex items-center justify-center text-[10px] text-stone-400 font-bold text-center cursor-pointer shrink-0 px-1">
                 Yok
               </div>
             `}
             <div class="flex flex-col gap-1">
-              <button onclick="openImageEditorModal('${p.id}')" class="px-2 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-[11px] transition whitespace-nowrap">
+              <button onclick="openImageEditorModal('${p.id}')" class="px-2 py-1 rounded-lg bg-stone-200 hover:bg-stone-300 text-[#1e120b] font-bold text-[11px] transition whitespace-nowrap">
                 📷 ${hasImg ? 'Değiştir' : 'Ekle'}
               </button>
               ${hasImg ? `
@@ -305,19 +518,19 @@ function renderAdminTable() {
             type="text"
             value="${p.name.replace(/"/g, '&quot;')}"
             onchange="updateProductField('${p.id}', 'name', this.value)"
-            class="w-full font-bold text-stone-900 bg-transparent border-b border-transparent focus:border-amber-600 focus:bg-white px-1 py-0.5 rounded text-xs sm:text-sm focus:outline-none"
+            class="w-full font-bold text-stone-900 bg-transparent border-b border-transparent focus:border-amber-700 focus:bg-white px-1 py-0.5 rounded text-xs sm:text-sm focus:outline-none"
           />
           <input
             type="text"
             value="${(p.desc || '').replace(/"/g, '&quot;')}"
             onchange="updateProductField('${p.id}', 'desc', this.value)"
-            class="w-full text-xs text-stone-500 bg-transparent border-b border-transparent focus:border-amber-500 focus:bg-white px-1 py-0.5 rounded mt-0.5 focus:outline-none"
+            class="w-full text-xs text-stone-500 bg-transparent border-b border-transparent focus:border-amber-600 focus:bg-white px-1 py-0.5 rounded mt-0.5 focus:outline-none"
           />
         </td>
 
         <td class="py-2.5 px-3">
-          <select onchange="updateProductField('${p.id}', 'cat', this.value)" class="px-2 py-1 rounded-lg border border-stone-200 bg-white text-xs font-medium">
-            ${catOptions.map(c => `<option value="${c.id}" ${c.id === p.cat ? 'selected' : ''}>${c.name}</option>`).join('')}
+          <select onchange="updateProductField('${p.id}', 'cat', this.value)" class="px-2 py-1.5 rounded-lg border border-stone-200 bg-white text-xs font-medium">
+            ${catOptions.map(c => `<option value="${c.id}" ${c.id === p.cat ? 'selected' : ''}>${c.icon || '🥨'} ${c.name}</option>`).join('')}
           </select>
         </td>
 
@@ -329,14 +542,14 @@ function renderAdminTable() {
               step="1"
               value="${p.price}"
               onchange="updateProductPrice('${p.id}', this.value)"
-              class="w-20 px-2.5 py-1.5 rounded-xl border-2 border-amber-400 bg-amber-50/60 font-extrabold text-amber-950 text-sm focus:outline-none focus:border-emerald-600 focus:bg-white"
+              class="w-20 px-2.5 py-1.5 rounded-xl border-2 border-stone-300 bg-stone-50 font-extrabold text-[#1e120b] text-sm focus:outline-none focus:border-emerald-600 focus:bg-white"
             />
             <span class="text-xs font-bold text-stone-500">₺</span>
           </div>
         </td>
 
         <td class="py-2.5 px-3 text-center">
-          <input type="checkbox" ${p.foca ? 'checked' : ''} onchange="updateProductBranch('${p.id}', 'foca', this.checked)" class="w-4 h-4 rounded text-amber-700 cursor-pointer" />
+          <input type="checkbox" ${p.foca ? 'checked' : ''} onchange="updateProductBranch('${p.id}', 'foca', this.checked)" class="w-4 h-4 rounded text-amber-800 cursor-pointer" />
         </td>
 
         <td class="py-2.5 px-3 text-center">
@@ -414,6 +627,13 @@ function openImageEditorModal(targetId) {
     nameEl.textContent = gItem ? gItem.title : 'Galeri';
     panelState.editingImageTempSrc = gItem ? gItem.src : '';
     removeBtn.classList.add('hidden');
+  } else if (targetId.startsWith('cat_')) {
+    const catId = targetId.replace(/^cat_/, '');
+    const catObj = panelState.categories.find(c => c.id === catId);
+    titleEl.textContent = 'Kategori Görseli';
+    nameEl.textContent = catObj ? catObj.name : 'Kategori';
+    panelState.editingImageTempSrc = catObj ? (catObj.img || '') : '';
+    removeBtn.classList.remove('hidden');
   } else {
     const prod = panelState.products.find(p => p.id === targetId);
     if (!prod) return;
@@ -441,7 +661,7 @@ function renderImageEditorPresetGallery() {
   const grid = document.getElementById('imageEditorPresetGrid');
   if (!grid) return;
   grid.innerHTML = PRESET_GALLERY.map((item, idx) => `
-    <button type="button" onclick="selectPresetImage(${idx})" class="rounded-xl overflow-hidden border-2 border-stone-200 hover:border-amber-600 transition text-left bg-stone-50">
+    <button type="button" onclick="selectPresetImage(${idx})" class="rounded-xl overflow-hidden border-2 border-stone-200 hover:border-amber-700 transition text-left bg-stone-50">
       <img src="${item.src}" alt="${item.label}" class="w-full h-14 object-cover" />
       <div class="p-1 text-[10px] font-semibold text-stone-700 truncate">${item.label}</div>
     </button>
@@ -459,7 +679,7 @@ function handleDeviceImageUpload(inputEl) {
   const file = inputEl.files && inputEl.files[0];
   if (!file) return;
   const t = panelState.editingImageTarget || '';
-  const isLarge = t.startsWith('branch_') || t.startsWith('site_') || t.startsWith('gallery_');
+  const isLarge = t.startsWith('branch_') || t.startsWith('site_') || t.startsWith('gallery_') || t.startsWith('cat_');
   compressUploadedImageFile(file, isLarge ? 1200 : 850, (dataUrl) => {
     panelState.editingImageTempSrc = dataUrl;
     updateImageEditorModalPreview();
@@ -494,6 +714,10 @@ function saveImageEditorChanges() {
     if (panelState.gallery[idx] && panelState.editingImageTempSrc) {
       panelState.gallery[idx].src = panelState.editingImageTempSrc;
     }
+  } else if (t.startsWith('cat_')) {
+    const catId = t.replace(/^cat_/, '');
+    const catObj = panelState.categories.find(c => c.id === catId);
+    if (catObj) catObj.img = panelState.editingImageTempSrc;
   } else {
     const prod = panelState.products.find(p => p.id === t);
     if (prod) prod.img = panelState.editingImageTempSrc;
@@ -582,6 +806,7 @@ function applyBulkFixedChange(amountTl) {
 function resetMenuToDefaults() {
   panelState.siteContent = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.siteContent));
   panelState.products = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.products));
+  panelState.categories = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.categories));
   panelState.branches = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.branches));
   panelState.gallery = JSON.parse(JSON.stringify(window.FOCA_MENU_DATA.gallery));
   savePanelState();
@@ -610,6 +835,9 @@ function processBulkPaste() {
   const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
   if (!lines.length) return;
 
+  const catObj = panelState.categories.find(c => c.id === defaultCat);
+  const defaultImg = (catObj && catObj.img) ? catObj.img : (panelState.categoryImages[defaultCat] || 'assets/images/gevrek.jpg');
+
   let updated = 0, added = 0;
   lines.forEach((line, idx) => {
     const match = line.match(/^(.+?)[-;:\t|]+\s*(\d+(?:[.,]\d+)?)\s*(?:tl|₺)?$/i);
@@ -631,7 +859,7 @@ function processBulkPaste() {
         bagarasi: branchScope === 'both' || branchScope === 'bagarasi',
         hot: defaultCat === 'gevrek' || defaultCat === 'pogaca',
         signature: false,
-        img: panelState.categoryImages[defaultCat] || 'assets/images/gevrek.jpg',
+        img: defaultImg,
         desc: 'Günlük taze üretim.'
       });
       added++;
@@ -705,7 +933,7 @@ function buildMenuDataJsContent() {
     updatedAt: new Date().toISOString(),
     siteContent: panelState.siteContent,
     categoryImages: window.FOCA_MENU_DATA.categoryImages,
-    categories: window.FOCA_MENU_DATA.categories,
+    categories: panelState.categories,
     branches: panelState.branches,
     products: panelState.products,
     reviews: window.FOCA_MENU_DATA.reviews,
@@ -762,7 +990,7 @@ async function publishToGitHubDirectly() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        message: 'Site ve menu guncellemesi',
+        message: 'Site, kategori ve menu guncellemesi',
         content: base64Content,
         sha: sha
       })
